@@ -172,7 +172,13 @@ const Places = () => {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {displayPlaces.map((place, index) => (
-                  <Link to={`/places/${place.slug}`} key={place._id || index}>
+                  <Link 
+                    to={place.stateId?.slug && place.cityId?.slug 
+                      ? `/states/${place.stateId.slug}/cities/${place.cityId.slug}/places/${place.slug}` 
+                      : `/places/${place.slug}`
+                    } 
+                    key={place._id || index}
+                  >
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -232,6 +238,7 @@ const Places = () => {
 };
 
 export default Places;
+
 
 
 

@@ -6,9 +6,13 @@ export const blogService = {
   // Public
   getAllBlogs: (params) => http.get(PREFIX, { params }),
   getFeaturedBlogs: () => http.get(`${PREFIX}/featured`),
+  getPopularBlogs: () => http.get(`${PREFIX}/popular`),
   getBlogBySlug: (slug) => http.get(`${PREFIX}/${slug}`),
   getBlogCategories: () => http.get(`${PREFIX}/categories`),
   getBlogTags: () => http.get(`${PREFIX}/tags`),
+  getBlogsByCategory: (category, params) => http.get(`${PREFIX}/category/${category}`, { params }),
+  getBlogsByTag: (tag, params) => http.get(`${PREFIX}/tag/${tag}`, { params }),
+  getRelatedBlogs: (slug) => http.get(`${PREFIX}/related/${slug}`),
   incrementView: (slug) => http.post(`${PREFIX}/${slug}/view`),
 
   // Admin
@@ -21,7 +25,8 @@ export const blogService = {
   // Interactions
   getSavedBlogs: () => http.get(`${PREFIX}/user/saved`),
   toggleSaveBlog: (blogId) => http.post(`${PREFIX}/${blogId}/save`),
-  toggleLike: (id, onModel) => http.post(`${PREFIX}/${id}/like`, { onModel }),
+  toggleLike: (id, referenceType) => http.post(`${PREFIX}/${id}/like`, { referenceType }),
   addComment: (blogId, text) => http.post(`${PREFIX}/${blogId}/comments`, { text }),
-  getComments: (blogId) => http.get(`${PREFIX}/${blogId}/comments`),
+  getComments: (blogId, params) => http.get(`${PREFIX}/${blogId}/comments`, { params }),
+  deleteComment: (id) => http.delete(`${PREFIX}/comments/${id}`),
 };

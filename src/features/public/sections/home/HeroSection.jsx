@@ -319,7 +319,7 @@ const HeroSection = () => {
             </motion.div>
 
             {/* IMAGE CARD */}
-            <div className="relative overflow-hidden rounded-[38px] border border-white/20 dark:border-white/10 shadow-2xl z-10 w-full aspect-[4/5] md:h-[600px] md:w-[480px] bg-white/10 backdrop-blur-xl">
+            <div className="relative overflow-hidden rounded-[38px] border border-white/20 dark:border-white/70 shadow-2xl z-10 w-full aspect-[4/5] md:h-[600px] md:w-[480px] bg-white/10 backdrop-blur-xl">
 
               <AnimatePresence mode="wait">
                 <motion.img

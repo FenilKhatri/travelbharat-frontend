@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { FiArrowLeft, FiCalendar, FiUser, FiLoader, FiShare2, FiHeart, FiMessageSquare, FiBookmark, FiEye, FiMapPin } from "react-icons/fi";
+import { FiArrowLeft, FiCalendar, FiUser, FiLoader, FiShare2, FiHeart, FiMessageSquare, FiBookmark, FiEye, FiMapPin, FiInfo, FiImage, FiHelpCircle } from "react-icons/fi";
 import { blogService } from "../../../services/blogService";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../context/AuthContext";
 
@@ -15,20 +15,22 @@ const BlogDetails = () => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [activeHeading, setActiveHeading] = useState("");
   const [commentText, setCommentText] = useState("");
+  const [expandedFaq, setExpandedFaq] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['blog', slug],
     queryFn: () => blogService.getBlogBySlug(slug)
   });
 
-  const blog = data?.data?.blog;
+  const blog = data?.data?.data?.blog || data?.data?.blog;
 
   const { data: commentsData } = useQuery({
     queryKey: ['blogComments', blog?._id],
     queryFn: () => blogService.getComments(blog._id),
     enabled: !!blog?._id
   });
-  const comments = commentsData?.data?.comments || [];
+  const comments = commentsData?.data?.data?.comments || commentsData?.data?.comments || [];
 
   const likeMutation = useMutation({
     mutationFn: () => blogService.toggleLike(blog._id, 'Blog'),
@@ -64,13 +66,14 @@ const BlogDetails = () => {
     commentMutation.mutate(commentText);
   };
 
-  // For TOC simulation
+  // Generate TOC dynamically
   const headings = [
-    { id: "introduction", title: "Introduction" },
-    { id: "highlights", title: "Key Highlights" },
-    { id: "travel-tips", title: "Travel Tips" },
-    { id: "conclusion", title: "Conclusion" }
+    { id: "content", title: "Article Content" }
   ];
+  if (blog?.images?.gallery?.length > 0) headings.push({ id: "gallery", title: "Photo Gallery" });
+  if (blog?.travelTips?.length > 0) headings.push({ id: "travel-tips", title: "Travel Tips" });
+  if (blog?.faqs?.length > 0) headings.push({ id: "faqs", title: "FAQs" });
+  headings.push({ id: "comments", title: "Comments" });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -79,7 +82,6 @@ const BlogDetails = () => {
 
       for (const el of headingElements) {
         const rect = el.getBoundingClientRect();
-        // If the top of the element is above a certain threshold (e.g. 150px from top)
         if (rect.top <= 150) {
           currentId = el.id;
         }
@@ -92,7 +94,7 @@ const BlogDetails = () => {
     window.addEventListener("scroll", handleScroll);
     
     // View Increment Logic
-    if (slug) {
+    if (slug && blog?._id) {
       const viewedBlogs = JSON.parse(sessionStorage.getItem('viewedBlogs') || '{}');
       if (!viewedBlogs[slug]) {
         blogService.incrementView(slug).catch(console.error);
@@ -102,7 +104,7 @@ const BlogDetails = () => {
     }
     
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [slug]);
+  }, [slug, blog?._id]);
 
   const handleShare = (platform) => {
     const url = window.location.href;
@@ -169,7 +171,7 @@ const BlogDetails = () => {
                  {blog.category?.replace(/-/g, " ")}
                </span>
                <span className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-1.5 rounded-full text-xs font-semibold">
-                 {blog.readTime || '5 min'} Read
+                 {blog.readTime || '5'} min Read
                </span>
             </div>
 
@@ -211,7 +213,7 @@ const BlogDetails = () => {
                 </div>
                 <button 
                   onClick={() => likeMutation.mutate()} 
-                  className="flex flex-col items-center hover:opacity-80 transition"
+                  className="flex flex-col items-center hover:opacity-80 transition cursor-pointer"
                   disabled={likeMutation.isPending}
                 >
                   <span className="text-white font-bold flex items-center gap-1.5"><FiHeart className="text-[#E85D04]"/> {blog.likes || blog.likeCount || 0}</span>
@@ -239,13 +241,13 @@ const BlogDetails = () => {
           <div className="flex items-center justify-between py-6 border-y border-slate-200 dark:border-slate-800 mb-12">
             <div className="flex items-center gap-4">
               <span className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Share:</span>
-              <button onClick={() => handleShare('native')} className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-[#E85D04] hover:text-white transition-colors"><FiShare2 size={18} /></button>
+              <button onClick={() => handleShare('native')} className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-[#E85D04] hover:text-white transition-colors cursor-pointer"><FiShare2 size={18} /></button>
             </div>
             <div className="flex gap-3">
               <button 
                 onClick={() => saveMutation.mutate()}
                 disabled={saveMutation.isPending}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-colors text-sm font-bold disabled:opacity-50 ${isBookmarked ? 'border-[#E85D04] text-[#E85D04] bg-[#E85D04]/10' : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900'}`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-colors cursor-pointer text-sm font-bold disabled:opacity-50 ${isBookmarked ? 'border-[#E85D04] text-[#E85D04] bg-[#E85D04]/10' : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900'}`}
               >
                 <FiBookmark className={isBookmarked ? "fill-current" : ""} /> {saveMutation.isPending ? "Saving..." : (isBookmarked ? "Saved" : "Save")}
               </button>
@@ -253,35 +255,74 @@ const BlogDetails = () => {
           </div>
 
           {/* Blog Content */}
-          <div className="prose prose-lg dark:prose-invert max-w-none prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-headings:text-slate-900 dark:prose-headings:text-white prose-headings:font-bold prose-a:text-[#E85D04] hover:prose-a:text-[#D05203] prose-img:rounded-3xl prose-img:shadow-xl">
-            <h2 id="introduction">Introduction</h2>
+          <div id="content" className="prose prose-lg dark:prose-invert max-w-none prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-headings:text-slate-900 dark:prose-headings:text-white prose-headings:font-bold prose-a:text-[#E85D04] hover:prose-a:text-[#D05203] prose-img:rounded-3xl prose-img:shadow-xl">
             <div dangerouslySetInnerHTML={{ __html: blog.content?.replace(/\n/g, '<br/>') }} />
-            
-            {/* Dummy rich content examples for UI visualization */}
-            <h2 id="highlights">Key Highlights</h2>
-            <p>India is a land of vivid contrasts and astonishing diversity. From the snow-capped peaks of the Himalayas to the sun-drenched beaches of the tropical south, the country offers a tapestry of experiences that bewitch the senses.</p>
-            
-            <div className="my-10 bg-slate-100 dark:bg-slate-900 p-8 rounded-3xl border-l-4 border-[#E85D04]">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-0 mb-4 flex items-center gap-2"><FiMapPin className="text-[#E85D04]"/> Did You Know?</h3>
-              <p className="mb-0">The intricate carvings on ancient Indian temples were not just for aesthetics but served as architectural blueprints and astronomical calendars for the local communities.</p>
-            </div>
-
-            <h2 id="travel-tips">Essential Travel Tips</h2>
-            <ul>
-              <li><strong>Pack Light, Dress Right:</strong> Modest clothing is appreciated, especially in religious sites.</li>
-              <li><strong>Stay Hydrated:</strong> Always carry a reusable water bottle.</li>
-              <li><strong>Cash is King:</strong> While digital payments are widespread, cash is essential in rural areas.</li>
-            </ul>
-
-            <img src="https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80" alt="Beautiful scenery" className="w-full" />
-            
-            <h2 id="conclusion">Conclusion</h2>
-            <p>Every journey through this remarkable country is a story waiting to be told. So pack your bags, embrace the unexpected, and let the magic unfold.</p>
           </div>
+
+          {/* Gallery */}
+          {blog.images?.gallery?.length > 0 && (
+            <div id="gallery" className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-6 flex items-center gap-2"><FiImage className="text-[#E85D04]" /> Photo Gallery</h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {blog.images.gallery.map((img, idx) => (
+                  <div key={idx} className="aspect-square rounded-2xl overflow-hidden cursor-pointer group" onClick={() => setSelectedImage(img)}>
+                    <img src={img} alt={`Gallery ${idx}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Travel Tips */}
+          {blog.travelTips?.length > 0 && (
+            <div id="travel-tips" className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-6 flex items-center gap-2"><FiInfo className="text-[#E85D04]" /> Essential Travel Tips</h3>
+              <ul className="space-y-4">
+                {blog.travelTips.map((tip, idx) => (
+                  <li key={idx} className="flex gap-4 p-5 bg-slate-100 dark:bg-slate-900 rounded-2xl border-l-4 border-[#E85D04]">
+                    <FiMapPin className="text-[#E85D04] shrink-0 mt-1" />
+                    <span className="text-slate-700 dark:text-slate-300 font-medium">{tip}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* FAQs */}
+          {blog.faqs?.length > 0 && (
+            <div id="faqs" className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-6 flex items-center gap-2"><FiHelpCircle className="text-[#E85D04]" /> Frequently Asked Questions</h3>
+              <div className="space-y-4">
+                {blog.faqs.map((faq, idx) => (
+                  <div key={idx} className="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden">
+                    <button 
+                      onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
+                      className="w-full flex items-center justify-between p-5 bg-slate-50 dark:bg-[#0A121F] hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors text-left cursor-pointer"
+                    >
+                      <span className="font-bold text-slate-900 dark:text-white">{faq.question}</span>
+                      <span className={`text-[#E85D04] font-bold text-xl transition-transform ${expandedFaq === idx ? 'rotate-45' : ''}`}>+</span>
+                    </button>
+                    <AnimatePresence>
+                      {expandedFaq === idx && (
+                        <motion.div 
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          className="px-5 pb-5 bg-slate-50 dark:bg-[#0A121F] text-slate-600 dark:text-slate-400 leading-relaxed"
+                        >
+                          {faq.answer}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           
           {/* Tags */}
           {blog.tags?.length > 0 && (
-            <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
+            <div className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
               <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4">Tags:</h3>
               <div className="flex flex-wrap gap-2">
                 {blog.tags.map(tag => (
@@ -309,26 +350,11 @@ const BlogDetails = () => {
               <p className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
                 {blog.author?.bio || "Passionate traveler and storyteller exploring the rich cultural heritage and breathtaking landscapes of India. Bringing you the best travel tips, guides, and hidden gems."}
               </p>
-              <button className="px-6 py-2 border-2 border-slate-200 dark:border-slate-700 rounded-full text-sm font-bold text-slate-900 dark:text-white hover:border-[#E85D04] hover:text-[#E85D04] transition-colors">
-                View All Posts
-              </button>
             </div>
           </div>
 
-          {/* Navigation Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-16">
-            <Link to="#" className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl group hover:border-[#E85D04] transition-colors shadow-sm text-left">
-              <span className="text-[#E85D04] text-xs font-bold uppercase tracking-wider mb-2 block">Previous Post</span>
-              <h4 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-[#E85D04] transition-colors">Exploring the Backwaters of Kerala</h4>
-            </Link>
-            <Link to="#" className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl group hover:border-[#E85D04] transition-colors shadow-sm text-right">
-              <span className="text-[#E85D04] text-xs font-bold uppercase tracking-wider mb-2 block">Next Post</span>
-              <h4 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-[#E85D04] transition-colors">The Ultimate Guide to Rajasthan Forts</h4>
-            </Link>
-          </div>
-
           {/* Comments Section */}
-          <div className="mt-20 pt-16 border-t border-slate-200 dark:border-slate-800">
+          <div id="comments" className="mt-20 pt-16 border-t border-slate-200 dark:border-slate-800">
             <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-8 flex items-center gap-3">
               <FiMessageSquare className="text-[#E85D04]" /> 
               Comments ({blog.commentCount || comments.length || 0})
@@ -346,7 +372,7 @@ const BlogDetails = () => {
               <button 
                 onClick={handlePostComment}
                 disabled={commentMutation.isPending}
-                className="px-8 py-3 bg-[#E85D04] text-white font-bold rounded-xl hover:bg-[#D05203] transition-colors disabled:opacity-50"
+                className="px-8 py-3 bg-[#E85D04] text-white font-bold rounded-xl hover:bg-[#D05203] transition-colors disabled:opacity-50 cursor-pointer"
               >
                 {commentMutation.isPending ? "Posting..." : "Post Comment"}
               </button>
@@ -371,6 +397,7 @@ const BlogDetails = () => {
                   <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">{comment.text}</p>
                 </div>
               ))}
+              {comments.length === 0 && <p className="text-slate-400">No comments yet. Be the first!</p>}
             </div>
           </div>
           
@@ -412,6 +439,13 @@ const BlogDetails = () => {
         </aside>
 
       </section>
+
+      {/* Lightbox for Gallery */}
+      {selectedImage && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 cursor-pointer" onClick={() => setSelectedImage(null)}>
+          <img src={selectedImage} alt="Gallery" className="max-w-full max-h-full rounded-lg shadow-2xl" />
+        </div>
+      )}
 
     </div>
   );

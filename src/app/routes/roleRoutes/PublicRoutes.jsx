@@ -31,6 +31,8 @@ const PublicRoutes = () => (
     <Route path="/states/:stateSlug/cities/:citySlug" element={<CityDetails />} />
     
     <Route path="/places" element={<Places />} />
+    <Route path="/states/:stateSlug/cities/:citySlug/places/:slug" element={<PlaceDetails />} />
+    {/* Backward compatibility / Fallback */}
     <Route path="/places/:slug" element={<PlaceDetails />} />
     
     <Route path="/festivals" element={<Festivals />} />

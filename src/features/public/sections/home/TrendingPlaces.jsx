@@ -76,7 +76,13 @@ const TrendingPlaces = () => {
         ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {places.slice(0, 4).map((place, index) => (
-            <Link to={`/places/${place.slug}`} key={index}>
+            <Link 
+              to={place.stateId?.slug && place.cityId?.slug 
+                ? `/states/${place.stateId.slug}/cities/${place.cityId.slug}/places/${place.slug}` 
+                : `/places/${place.slug}`
+              } 
+              key={index}
+            >
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -134,5 +140,6 @@ const TrendingPlaces = () => {
 };
 
 export default TrendingPlaces;
+
 
 
