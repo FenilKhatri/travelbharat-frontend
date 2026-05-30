@@ -22,7 +22,7 @@ const categoryMap = {
 const TravelCategories = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['categories'],
-    queryFn: categoryService.getAllCategories
+    queryFn: () => categoryService.getAllCategories()
   });
 
   const displayCategories = data?.data?.categories || [];

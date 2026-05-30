@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { FiBookOpen, FiPlus, FiTrash2, FiX, FiUpload, FiImage, FiChevronLeft, FiChevronRight, FiChevronDown, FiEye, FiEyeOff } from "react-icons/fi";
+import { FiBookOpen, FiPlus, FiTrash2, FiX, FiUpload, FiImage, FiChevronLeft, FiChevronRight, FiChevronDown, FiEye, FiEyeOff, FiList, FiGrid } from "react-icons/fi";
 import { FaPencilAlt } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 import http from "../../../lib/axios";
@@ -20,6 +20,11 @@ const Blogs = () => {
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [viewMode, setViewMode] = useState(() => localStorage.getItem("adminViewMode") || "list");
+
+  useEffect(() => {
+    localStorage.setItem("adminViewMode", viewMode);
+  }, [viewMode]);
 
   const page = parseInt(searchParams.get("page") || "1");
   const search = searchParams.get("search") || "";
@@ -122,12 +127,18 @@ const Blogs = () => {
           <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-1">Blogs</h1>
           <p className="text-slate-500 dark:text-slate-400 text-sm">Create, manage and publish travel blog articles.</p>
         </div>
-        <button
-          onClick={() => { setEditingBlog(null); setForm(initialForm); setIsFormOpen(true); }}
-          className="flex items-center gap-2 px-5 py-2.5 bg-[#E85D04] hover:bg-[#D05203] text-white font-bold rounded-xl text-sm shadow-sm transition cursor-pointer shrink-0"
-        >
-          <FiPlus size={16} /> New Blog Post
-        </button>
+        <div className="flex items-center gap-3">
+          <div className="hidden sm:flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+            <button onClick={() => setViewMode('list')} className={`p-2 rounded-lg transition cursor-pointer ${viewMode === 'list' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}><FiList size={16} /></button>
+            <button onClick={() => setViewMode('grid')} className={`p-2 rounded-lg transition cursor-pointer ${viewMode === 'grid' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}><FiGrid size={16} /></button>
+          </div>
+          <button
+            onClick={() => { setEditingBlog(null); setForm(initialForm); setIsFormOpen(true); }}
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#E85D04] hover:bg-[#D05203] text-white font-bold rounded-xl text-sm shadow-sm transition cursor-pointer shrink-0"
+          >
+            <FiPlus size={16} /> New Blog Post
+          </button>
+        </div>
       </div>
 
       {/* Search */}
@@ -139,9 +150,11 @@ const Blogs = () => {
         className="px-4 py-2.5 border border-slate-200 dark:border-slate-800 rounded-xl text-sm w-full max-w-xs bg-transparent focus:outline-none focus:ring-2 focus:ring-[#E85D04]/20"
       />
 
-      {/* Table */}
-      <div className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
+      {/* Table / Grid */}
+      <div className="bg-transparent">
+        {viewMode === "list" ? (
+          <div className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-100 dark:border-slate-800/60 text-slate-400 text-xs font-extrabold uppercase tracking-wider">
@@ -208,6 +221,57 @@ const Blogs = () => {
             </tbody>
           </table>
         </div>
+        </div>
+        ) : (
+          /* Grid View */
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {isLoading ? (
+              [...Array(8)].map((_, i) => (
+                <div key={i} className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm p-4 animate-pulse h-64" />
+              ))
+            ) : isError ? (
+              <div className="col-span-full text-center py-10 text-red-500 font-bold">Error loading blogs</div>
+            ) : blogs.length === 0 ? (
+              <div className="col-span-full text-center py-12 text-slate-400 font-semibold">No blogs registered.</div>
+            ) : (
+              blogs.map((b) => (
+                <div key={b._id} className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition flex flex-col group">
+                  <div className="h-40 bg-slate-100 dark:bg-slate-800 relative">
+                    {b.images?.thumbnail ? (
+                      <img src={b.images.thumbnail} alt={b.title} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-slate-400">
+                        <FiImage size={32} />
+                      </div>
+                    )}
+                    <div className="absolute top-2 right-2 flex gap-1">
+                       <span className="bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded">
+                         {b.category?.replace(/-/g, " ")}
+                       </span>
+                    </div>
+                  </div>
+                  <div className="p-4 flex flex-col flex-1">
+                    <h4 className="font-black text-lg text-slate-900 dark:text-white mb-1 group-hover:text-[#E85D04] transition line-clamp-2">{b.title}</h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">{b.excerpt}</p>
+                    
+                    <div className="mt-auto flex items-center justify-between">
+                      <button
+                        onClick={() => togglePublish.mutate({ id: b._id, val: !b.isPublished })}
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold cursor-pointer transition ${b.isPublished ? "bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20" : "bg-amber-500/10 text-amber-600 hover:bg-amber-500/20"}`}
+                      >
+                        {b.isPublished ? <><FiEye size={12} /> Published</> : <><FiEyeOff size={12} /> Draft</>}
+                      </button>
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => handleEditClick(b)} className="p-2 text-slate-400 hover:text-[#E85D04] bg-slate-50 dark:bg-slate-800 hover:bg-[#E85D04]/10 rounded-lg transition"><FaPencilAlt size={14} /></button>
+                        <button onClick={() => setConfirmDelete(b._id)} className="p-2 text-slate-400 hover:text-red-500 bg-slate-50 dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition"><FiTrash2 size={14} /></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
         {!isLoading && !isError && pagination.pages > 1 && (
           <div className="flex justify-between items-center px-6 py-4 border-t border-slate-100 dark:border-slate-800/40">
             <span className="text-xs text-slate-400">Page {page} of {pagination.pages} ({pagination.total} total)</span>

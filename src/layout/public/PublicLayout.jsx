@@ -3,12 +3,18 @@ import { AnimatePresence, motion } from "framer-motion";
 import Footer from "../core/Footer";
 import Navbar from "../core/Navbar";
 
-const PublicLayout = ({ theme, toggleTheme }) => {
+import { useEffect } from "react";
+
+const PublicLayout = () => {
   const location = useLocation();
 
+  useEffect(() => {
+    document.documentElement.classList.add("dark");
+  }, []);
+
   return (
-    <div className="flex flex-col min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-white transition-colors duration-300">
-      <Navbar theme={theme} toggleTheme={toggleTheme} />
+    <div className="dark flex flex-col min-h-screen bg-slate-950 text-white transition-colors duration-300">
+      <Navbar />
       <main className="flex-1">
         <AnimatePresence mode="wait">
           <motion.div

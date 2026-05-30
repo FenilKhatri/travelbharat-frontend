@@ -5,6 +5,8 @@ import { FiMapPin, FiStar, FiClock, FiHeart, FiShare2, FiChevronLeft, FiInfo, Fi
 import { FaRupeeSign } from "react-icons/fa";
 import { placeService } from "../../../services/placeService";
 import Button from "../../../components/ui/Button";
+import ReviewSection from "../components/ReviewSection";
+import { toast } from "react-toastify";
 
 const PlaceDetails = () => {
   const { slug } = useParams();
@@ -17,6 +19,19 @@ const PlaceDetails = () => {
   });
 
   const place = data?.data?.place;
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: place?.name,
+        text: `Check out ${place?.name} on TravelBharat!`,
+        url: window.location.href,
+      }).catch((error) => console.log('Error sharing', error));
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      toast.success("Link copied to clipboard!");
+    }
+  };
 
   // Scroll to top on mount
   useEffect(() => {
@@ -91,7 +106,7 @@ const PlaceDetails = () => {
               >
                 <FiHeart size={20} className={isWishlisted ? "fill-red-500 text-red-500" : ""} />
               </button>
-              <button className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all">
+              <button onClick={handleShare} className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all cursor-pointer">
                 <FiShare2 size={20} />
               </button>
             </div>
@@ -124,7 +139,7 @@ const PlaceDetails = () => {
                 </div>
                 <div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Entry Fee</p>
-                  <p className="font-semibold text-slate-800 dark:text-white text-sm">{place.entryFee || "Free"}</p>
+                  <p className="font-semibold text-slate-800 dark:text-white text-sm">{typeof place.entryFee === "object" ? (place.entryFee?.indian || "Free") : (place.entryFee || "Free")}</p>
                 </div>
               </div>
               
@@ -217,13 +232,7 @@ const PlaceDetails = () => {
               )}
 
               {activeTab === 'reviews' && (
-                <div>
-                  <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-6">Traveler Reviews</h3>
-                  <div className="bg-slate-50 dark:bg-slate-900 p-6 rounded-xl text-center">
-                    <p className="text-slate-500 mb-4">Reviews will be integrated shortly.</p>
-                    <Button variant="outline">Write a Review</Button>
-                  </div>
-                </div>
+                <ReviewSection placeId={place._id} />
               )}
 
             </div>

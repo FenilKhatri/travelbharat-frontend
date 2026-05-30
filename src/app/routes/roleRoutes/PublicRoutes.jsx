@@ -6,6 +6,7 @@ import { ROLES } from "../../../utils/constants";
 // Lazy load all public pages
 const Home = lazy(() => import("../../../features/public/pages/Home"));
 const States = lazy(() => import("../../../features/public/pages/States"));
+const Cities = lazy(() => import("../../../features/public/pages/Cities"));
 const StateDetails = lazy(() => import("../../../features/public/pages/StateDetails"));
 const Places = lazy(() => import("../../../features/public/pages/Places"));
 const PlaceDetails = lazy(() => import("../../../features/public/pages/PlaceDetails"));
@@ -25,6 +26,7 @@ const PublicRoutes = () => (
     <Route path="/" element={<Home />} />
     
     <Route path="/states" element={<States />} />
+    <Route path="/cities" element={<Cities />} />
     <Route path="/states/:slug" element={<StateDetails />} />
     <Route path="/states/:stateSlug/cities/:citySlug" element={<CityDetails />} />
     

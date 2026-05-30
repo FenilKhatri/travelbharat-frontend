@@ -1,393 +1,413 @@
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { FiMapPin, FiArrowLeft, FiImage, FiCloud, FiGlobe, FiCalendar, FiStar } from "react-icons/fi";
-import { FaTrain, FaPlane, FaCar, FaBus, FaLightbulb } from "react-icons/fa";
+import { FiMapPin, FiArrowLeft, FiImage, FiCloud, FiGlobe, FiCalendar, FiStar, FiChevronDown } from "react-icons/fi";
+import { FaTrain, FaPlane, FaCar, FaBus, FaLightbulb, FaUtensils, FaMonument } from "react-icons/fa";
 import { stateService } from "../../../services/stateService";
+import { cityService } from "../../../services/cityService";
+import { placeService } from "../../../services/placeService";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
-// ─── Image with placeholder fallback ──────────────────────────────────────────
-const StateImage = ({ src, alt, className }) => {
-  if (!src) {
-    return (
-      <div className={`flex flex-col items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 ${className}`}>
-        <FiImage size={48} className="text-slate-300 dark:text-slate-600 mb-2" />
-        <span className="text-slate-400 text-sm">{alt}</span>
-      </div>
-    );
-  }
-  return (
-    <img
-      src={src}
-      alt={alt}
-      className={className}
-      onError={(e) => {
-        e.currentTarget.style.display = "none";
-        const ph = e.currentTarget.parentElement.querySelector("[data-placeholder]");
-        if (ph) ph.style.display = "flex";
-      }}
-    />
-  );
-};
-
-// ─── Skeleton ──────────────────────────────────────────────────────────────────
+// ─── Utility Components ────────────────────────────────────────────────────────
 const Skeleton = ({ className }) => (
-  <div className={`animate-pulse bg-slate-200 dark:bg-slate-800 rounded-xl ${className}`} />
+  <div className={`animate-pulse bg-slate-800 rounded-xl ${className}`} />
 );
 
 const StateDetailsSkeleton = () => (
-  <div className="min-h-screen bg-slate-50 dark:bg-[#0A1628]">
-    <Skeleton className="h-96 w-full rounded-none" />
-    <div className="max-w-5xl mx-auto px-4 py-12 space-y-6">
-      <Skeleton className="h-10 w-64" />
-      <Skeleton className="h-4 w-full" />
-      <Skeleton className="h-4 w-3/4" />
+  <div className="min-h-screen bg-[#050B14]">
+    <Skeleton className="h-[60vh] w-full rounded-none" />
+    <div className="max-w-6xl mx-auto px-4 py-16 space-y-12">
+      <Skeleton className="h-12 w-64" />
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24" />)}
+        {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-28" />)}
       </div>
+      <Skeleton className="h-40 w-full" />
     </div>
   </div>
 );
 
-// ─── Info Card ────────────────────────────────────────────────────────────────
-const InfoCard = ({ icon: Icon, label, value }) => (
-  <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 flex items-start gap-3">
-    <div className="w-10 h-10 rounded-lg bg-[#E85D04]/10 flex items-center justify-center shrink-0">
-      <Icon size={18} className="text-[#E85D04]" />
-    </div>
-    <div>
-      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-0.5">{label}</p>
-      <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">{value || "—"}</p>
-    </div>
+const SectionHeading = ({ title, subtitle, icon: Icon }) => (
+  <div className="mb-8 flex flex-col items-center text-center">
+    {Icon && (
+      <div className="w-12 h-12 rounded-full bg-[#E85D04]/10 flex items-center justify-center mb-4 border border-[#E85D04]/20">
+        <Icon size={24} className="text-[#E85D04]" />
+      </div>
+    )}
+    <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-2">{title}</h2>
+    {subtitle && <p className="text-slate-400 font-medium max-w-2xl">{subtitle}</p>}
   </div>
-);
-
-// ─── Section ──────────────────────────────────────────────────────────────────
-const Section = ({ title, children }) => (
-  <motion.section
-    initial={{ opacity: 0, y: 16 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.4 }}
-    className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 md:p-8"
-  >
-    <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-5 flex items-center gap-2">
-      <span className="w-1 h-6 bg-[#E85D04] rounded-full inline-block" />
-      {title}
-    </h2>
-    {children}
-  </motion.section>
 );
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 const StateDetails = () => {
   const { slug } = useParams();
 
-  const { data, isLoading, isError } = useQuery({
+  const { data: stateData, isLoading: stateLoading, isError: stateError } = useQuery({
     queryKey: ["stateBySlug", slug],
     queryFn: () => stateService.getStateBySlug(slug),
     enabled: !!slug,
   });
 
-  // stateService uses http interceptor → response = { success, data: { state } }
-  const state = data?.data?.state;
+  const { data: citiesData } = useQuery({
+    queryKey: ["citiesByState", slug],
+    queryFn: () => cityService.getCitiesByState(slug),
+    enabled: !!slug,
+  });
 
-  if (isLoading) return <StateDetailsSkeleton />;
+  const { data: placesData } = useQuery({
+    queryKey: ["placesByState", slug],
+    queryFn: () => placeService.getPlacesByState(slug),
+    enabled: !!slug,
+  });
 
-  if (isError || !state) {
+  const state = stateData?.data?.state;
+  const cities = citiesData?.data?.cities || [];
+  const places = placesData?.data?.places || [];
+  const branding = state?.stateBranding || {};
+
+  const [faqOpen, setFaqOpen] = useState(null);
+
+  if (stateLoading) return <StateDetailsSkeleton />;
+
+  if (stateError || !state) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-[#0A1628] gap-4">
-        <FiMapPin size={56} className="text-slate-300" />
-        <h1 className="text-2xl font-bold text-slate-700 dark:text-white">State Not Found</h1>
-        <p className="text-slate-500">We couldn't find details for "{slug}".</p>
-        <Link
-          to="/states"
-          className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-[#E85D04] text-white rounded-xl font-semibold text-sm hover:bg-[#D05203] transition"
-        >
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#050B14] gap-4">
+        <FiMapPin size={56} className="text-slate-600" />
+        <h1 className="text-2xl font-bold text-white">State Not Found</h1>
+        <p className="text-slate-400">We couldn't find details for "{slug}".</p>
+        <Link to="/states" className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-[#E85D04] text-white rounded-xl font-semibold text-sm hover:bg-[#D05203] transition">
           <FiArrowLeft size={16} /> Back to States
         </Link>
       </div>
     );
   }
 
+  const toggleFaq = (idx) => {
+    setFaqOpen(faqOpen === idx ? null : idx);
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0A1628] pb-20">
-      {/* ── Hero ── */}
-      <div className="relative h-[420px] md:h-[520px] overflow-hidden">
-        {state.images?.hero ? (
-          <img
-            src={state.images.hero}
-            alt={state.name}
-            className="absolute inset-0 w-full h-full object-cover"
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-              const ph = document.getElementById("hero-placeholder");
-              if (ph) ph.style.display = "flex";
-            }}
+    <div className="min-h-screen bg-[#050B14] text-slate-200 relative overflow-x-hidden">
+      
+      {/* ── Background Branding ── */}
+      {branding.patternImage && (
+        <div 
+          className="fixed inset-0 pointer-events-none z-0 opacity-[0.03] mix-blend-overlay"
+          style={{ backgroundImage: `url(${branding.patternImage})`, backgroundSize: '400px' }}
+        />
+      )}
+      {branding.leftBackground && (
+        <img src={branding.leftBackground} className="fixed left-0 top-0 h-screen w-auto object-cover opacity-10 pointer-events-none mix-blend-screen z-0 blur-[2px]" alt="" />
+      )}
+      {branding.rightBackground && (
+        <img src={branding.rightBackground} className="fixed right-0 top-0 h-screen w-auto object-cover opacity-10 pointer-events-none mix-blend-screen z-0 blur-[2px]" alt="" />
+      )}
+
+      {/* ── Hero Section ── */}
+      <div className="relative min-h-[60vh] md:min-h-[80vh] flex flex-col justify-end overflow-hidden">
+        {/* Background Hero */}
+        {state.images?.hero && (
+          <div className="absolute inset-0 w-full h-full">
+            <img
+              src={state.images.hero}
+              alt={state.name}
+              className="w-full h-full object-cover scale-105"
+            />
+          </div>
+        )}
+        
+        {/* Deep Gradients for readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050B14] via-[#050B14]/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#050B14]/80 to-transparent" />
+
+        {/* Floating Overlay Illustration */}
+        {branding.overlayImage && (
+          <motion.img 
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            src={branding.overlayImage} 
+            className="absolute right-[-5%] md:right-10 bottom-[-10%] md:bottom-10 w-[120%] md:w-1/2 max-w-3xl opacity-30 md:opacity-60 object-contain pointer-events-none"
+            alt="Decoration"
           />
-        ) : null}
-        <div
-          id="hero-placeholder"
-          className="absolute inset-0 flex-col items-center justify-center bg-gradient-to-br from-slate-700 to-slate-900"
-          style={{ display: state.images?.hero ? "none" : "flex" }}
-        >
-          <FiImage size={56} className="text-slate-500 mb-3" />
-          <span className="text-slate-300 text-xl font-bold">{state.name}</span>
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+        )}
+
         {/* Back Button */}
         <Link
           to="/states"
-          className="absolute top-6 left-6 z-20 inline-flex items-center gap-2 px-4 py-2 bg-white/15 backdrop-blur-sm text-white rounded-xl border border-white/20 text-sm font-semibold hover:bg-white/25 transition"
+          className="absolute top-24 left-6 z-30 inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md text-white rounded-xl border border-white/10 hover:bg-white/20 transition-all hover:-translate-x-1"
         >
-          <FiArrowLeft size={16} /> All States
+          <FiArrowLeft size={16} /> Explore States
         </Link>
-        {/* Hero Text */}
-        <div className="absolute bottom-8 left-6 right-6 z-10">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs bg-[#E85D04] text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider capitalize">
+
+        {/* Hero Content */}
+        <div className="relative z-20 w-full max-w-6xl mx-auto px-4 md:px-8 pb-16">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="max-w-3xl"
+          >
+            <div className="flex items-center gap-3 mb-4 flex-wrap">
+              <span className="bg-[#E85D04] text-white px-4 py-1.5 rounded-full text-sm font-black uppercase tracking-widest shadow-lg shadow-[#E85D04]/30">
                 {state.region} India
               </span>
               {state.featured && (
-                <span className="text-xs bg-amber-500 text-white px-3 py-1 rounded-full font-bold">
+                <span className="bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest backdrop-blur-sm">
                   Featured
                 </span>
               )}
             </div>
-            <h1 className="text-4xl md:text-6xl font-black text-white mb-2">{state.name}</h1>
+            
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight mb-4 drop-shadow-2xl">
+              {state.name}
+            </h1>
+            
             {state.tagline && (
-              <p className="text-slate-300 text-lg max-w-2xl">{state.tagline}</p>
+              <p className="text-xl md:text-3xl font-light text-slate-300 italic mb-6">
+                "{state.tagline}"
+              </p>
             )}
-          </div>
+          </motion.div>
         </div>
       </div>
 
-      {/* ── Content ── */}
-      <div className="max-w-5xl mx-auto px-4 md:px-6 mt-10 space-y-8">
+      <div className="relative z-20 max-w-6xl mx-auto px-4 md:px-8 pb-24 -mt-8 space-y-24">
+        
+        {/* ── Key Highlights & Quick Facts ── */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-4"
+        >
+          {[
+            { icon: FiMapPin, label: "Capital", value: state.capital },
+            { icon: FiGlobe, label: "Total Area", value: "Varied" }, // Assuming we don't have area, just filler
+            { icon: FiStar, label: "Destinations", value: `${state.totalPlaces || places.length}+ Places` },
+            { icon: FiCalendar, label: "Best Time", value: state.bestTimeToVisit || "Oct - Mar" }
+          ].map((stat, i) => (
+            <div key={i} className="bg-[#0A121F] border border-slate-800 rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-xl hover:-translate-y-1 transition-transform group">
+              <stat.icon size={28} className="text-[#E85D04] mb-3 group-hover:scale-110 transition-transform" />
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">{stat.label}</p>
+              <p className="text-sm md:text-base font-bold text-white">{stat.value}</p>
+            </div>
+          ))}
+        </motion.div>
 
-        {/* Stats Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <InfoCard icon={FiMapPin} label="Capital" value={state.capital} />
-          <InfoCard icon={FiGlobe} label="Region" value={`${state.region} India`} />
-          <InfoCard icon={FiStar} label="Destinations" value={state.totalPlaces} />
-          <InfoCard icon={FiCalendar} label="Best Time" value={state.bestTimeToVisit} />
-        </div>
-
-        {/* Description */}
+        {/* ── Overview & Introduction ── */}
         {state.description && (
-          <Section title="Overview">
-            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{state.description}</p>
-            {state.overview && state.overview !== state.description && (
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed mt-4">{state.overview}</p>
-            )}
-          </Section>
-        )}
-
-        {/* Highlights */}
-        {state.highlights?.length > 0 && (
-          <Section title="Highlights">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {state.highlights.map((h, i) => (
-                <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60">
-                  <div className="w-8 h-8 rounded-lg bg-[#E85D04]/10 flex items-center justify-center shrink-0">
-                    <FiStar size={16} className="text-[#E85D04]" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-slate-800 dark:text-white text-sm">{h.title}</p>
-                    {h.description && (
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{h.description}</p>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Section>
-        )}
-
-        {/* History & Culture */}
-        {(state.history || state.culture) && (
-          <Section title="History & Culture">
-            <div className="space-y-5">
-              {state.history && (
-                <div>
-                  <h3 className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
-                    History
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{state.history}</p>
-                </div>
-              )}
-              {state.culture && (
-                <div>
-                  <h3 className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
-                    Culture
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{state.culture}</p>
-                </div>
+          <section className="grid md:grid-cols-12 gap-12 items-center">
+            <div className="md:col-span-7 space-y-6">
+              <h2 className="text-3xl md:text-4xl font-black text-white">
+                Welcome to <span className="text-[#E85D04]">{state.name}</span>
+              </h2>
+              <p className="text-lg text-slate-300 leading-relaxed font-light">
+                {state.description}
+              </p>
+              {state.overview && (
+                <p className="text-base text-slate-400 leading-relaxed">
+                  {state.overview}
+                </p>
               )}
             </div>
-          </Section>
-        )}
-
-        {/* Weather */}
-        {state.weather && Object.values(state.weather).some(Boolean) && (
-          <Section title="Weather & Climate">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {state.weather.summer && (
-                <div className="p-4 rounded-xl bg-orange-50 dark:bg-orange-500/10 border border-orange-100 dark:border-orange-500/20">
-                  <p className="text-xs font-bold text-orange-600 dark:text-orange-400 uppercase mb-1">☀️ Summer</p>
-                  <p className="text-sm text-slate-700 dark:text-slate-300">{state.weather.summer}</p>
-                </div>
-              )}
-              {state.weather.monsoon && (
-                <div className="p-4 rounded-xl bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20">
-                  <p className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase mb-1">🌧️ Monsoon</p>
-                  <p className="text-sm text-slate-700 dark:text-slate-300">{state.weather.monsoon}</p>
-                </div>
-              )}
-              {state.weather.winter && (
-                <div className="p-4 rounded-xl bg-cyan-50 dark:bg-cyan-500/10 border border-cyan-100 dark:border-cyan-500/20">
-                  <p className="text-xs font-bold text-cyan-600 dark:text-cyan-400 uppercase mb-1">❄️ Winter</p>
-                  <p className="text-sm text-slate-700 dark:text-slate-300">{state.weather.winter}</p>
-                </div>
-              )}
-              {state.weather.bestSeason && (
-                <div className="p-4 rounded-xl bg-green-50 dark:bg-green-500/10 border border-green-100 dark:border-green-500/20">
-                  <p className="text-xs font-bold text-green-600 dark:text-green-400 uppercase mb-1">✅ Best Season</p>
-                  <p className="text-sm text-slate-700 dark:text-slate-300">{state.weather.bestSeason}</p>
-                </div>
-              )}
+            <div className="md:col-span-5 relative">
+              <div className="aspect-[4/5] rounded-3xl overflow-hidden border border-slate-800 relative z-10 shadow-2xl">
+                {state.images?.thumbnail ? (
+                  <img src={state.images.thumbnail} className="w-full h-full object-cover" alt={state.name} />
+                ) : (
+                  <div className="w-full h-full bg-slate-900 flex items-center justify-center">
+                    <FiImage size={48} className="text-slate-700" />
+                  </div>
+                )}
+              </div>
+              {/* Decorative offset border */}
+              <div className="absolute -inset-4 border border-[#E85D04]/20 rounded-3xl z-0 -rotate-3" />
             </div>
-          </Section>
+          </section>
         )}
 
-        {/* Transport */}
-        {state.transport && Object.values(state.transport).some(Boolean) && (
-          <Section title="How to Reach">
-            <div className="space-y-4">
-              {state.transport.byAir && (
-                <div className="flex items-start gap-3 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
-                  <FaPlane size={20} className="text-[#E85D04] shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-bold text-slate-800 dark:text-white text-sm mb-1">By Air</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">{state.transport.byAir}</p>
-                  </div>
-                </div>
-              )}
-              {state.transport.byTrain && (
-                <div className="flex items-start gap-3 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
-                  <FaTrain size={20} className="text-[#E85D04] shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-bold text-slate-800 dark:text-white text-sm mb-1">By Train</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">{state.transport.byTrain}</p>
-                  </div>
-                </div>
-              )}
-              {state.transport.byRoad && (
-                <div className="flex items-start gap-3 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
-                  <FaCar size={20} className="text-[#E85D04] shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-bold text-slate-800 dark:text-white text-sm mb-1">By Road</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">{state.transport.byRoad}</p>
-                  </div>
-                </div>
-              )}
-              {state.transport.local && (
-                <div className="flex items-start gap-3 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
-                  <FaBus size={20} className="text-[#E85D04] shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-bold text-slate-800 dark:text-white text-sm mb-1">Local Transport</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">{state.transport.local}</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </Section>
-        )}
-
-        {/* Travel Tips */}
-        {state.travelTips?.length > 0 && (
-          <Section title="Travel Tips">
-            <ul className="space-y-3">
-              {state.travelTips.map((tip, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-[#E85D04]/10 flex items-center justify-center shrink-0 mt-0.5">
-                    <FaLightbulb size={12} className="text-[#E85D04]" />
-                  </div>
-                  <span className="text-sm text-slate-600 dark:text-slate-400">{tip}</span>
-                </li>
-              ))}
-            </ul>
-          </Section>
-        )}
-
-        {/* Food */}
-        {state.food?.length > 0 && (
-          <Section title="Must Try Food">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {state.food.map((item, i) => (
-                <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800">
-                  {item.image ? (
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-14 h-14 rounded-lg object-cover shrink-0"
-                      onError={(e) => { e.currentTarget.style.display = "none"; }}
-                    />
+        {/* ── Famous Cities + Cultural Hubs ── */}
+        {cities?.length > 0 && (
+          <section>
+            <SectionHeading title="Cultural Hubs & Cities" subtitle="Explore the major urban centers and traditional towns." icon={FiMapPin} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {cities.slice(0, 6).map((city, index) => (
+                <Link to={`/states/${state.slug}/cities/${city.slug}`} key={city._id || index} className="group relative h-64 rounded-2xl overflow-hidden border border-slate-800 cursor-pointer">
+                  {city.images?.thumbnail ? (
+                    <img src={city.images.thumbnail} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={city.name} />
                   ) : (
-                    <div className="w-14 h-14 rounded-lg bg-slate-200 dark:bg-slate-700 flex items-center justify-center shrink-0">
-                      <FiImage size={18} className="text-slate-400" />
-                    </div>
+                    <div className="absolute inset-0 bg-slate-900" />
                   )}
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <p className="font-bold text-slate-800 dark:text-white text-sm">{item.name}</p>
-                      {item.isVeg !== undefined && (
-                        <span className={`text-xs px-1.5 py-0.5 rounded font-bold ${item.isVeg ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-                          {item.isVeg ? "Veg" : "Non-Veg"}
-                        </span>
-                      )}
-                    </div>
-                    {item.description && (
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{item.description}</p>
-                    )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050B14] via-[#050B14]/40 to-transparent opacity-90" />
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <h3 className="text-2xl font-bold text-white group-hover:text-[#E85D04] transition-colors">{city.name}</h3>
+                    <p className="text-sm text-slate-300 mt-1 flex items-center gap-2">
+                      <span>Explore City</span> <FiArrowLeft className="rotate-180" />
+                    </p>
                   </div>
+                </Link>
+              ))}
+            </div>
+            {cities.length > 6 && (
+              <div className="text-center mt-8">
+                <Link to="/cities" className="inline-block px-8 py-3 rounded-full border border-slate-700 hover:border-[#E85D04] hover:bg-[#E85D04]/10 text-white font-bold transition">
+                  View All Cities
+                </Link>
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* ── Top Destinations ── */}
+        {places?.length > 0 && (
+          <section>
+            <SectionHeading title="Top Destinations" subtitle={`Must-visit places and attractions in ${state.name}.`} icon={FaMonument} />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {places.slice(0, 8).map((place, index) => (
+                <Link to={`/places/${place.slug}`} key={place._id || index} className="bg-[#0A121F] border border-slate-800 rounded-2xl overflow-hidden hover:border-[#E85D04]/50 transition group shadow-lg">
+                  <div className="h-48 relative overflow-hidden">
+                    <img src={place.images?.thumbnail} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={place.name} />
+                    <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">
+                      {place.category}
+                    </div>
+                  </div>
+                  <div className="p-5">
+                    <h3 className="text-lg font-bold text-white mb-1 group-hover:text-[#E85D04] transition-colors line-clamp-1">{place.name}</h3>
+                    <div className="flex items-center gap-1.5 text-sm text-slate-400">
+                      <FiMapPin size={14} className="text-[#E85D04]" />
+                      <span className="truncate">{place.cityId?.name || place.city}</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── Culture + Traditions & Local Food ── */}
+        {(state.culture || state.food?.length > 0) && (
+          <section className="grid lg:grid-cols-2 gap-12">
+            {/* Culture */}
+            {state.culture && (
+              <div className="bg-[#0A121F] border border-slate-800 rounded-3xl p-8 md:p-10 relative overflow-hidden">
+                <FaMonument size={120} className="absolute -right-10 -bottom-10 text-slate-800 opacity-20 pointer-events-none" />
+                <h3 className="text-2xl font-black text-white mb-6 flex items-center gap-3">
+                  <span className="w-8 h-8 rounded-full bg-[#E85D04] flex items-center justify-center"><FaMonument size={14} className="text-white" /></span>
+                  Culture & Traditions
+                </h3>
+                <p className="text-slate-300 leading-relaxed font-light">{state.culture}</p>
+                
+                {state.history && (
+                  <div className="mt-8 pt-8 border-t border-slate-800">
+                    <h4 className="text-lg font-bold text-white mb-3">Historical Significance</h4>
+                    <p className="text-slate-400 leading-relaxed text-sm font-light">{state.history}</p>
+                  </div>
+                )}
+              </div>
+            )}
+            
+            {/* Food */}
+            {state.food?.length > 0 && (
+              <div className="bg-[#0A121F] border border-slate-800 rounded-3xl p-8 md:p-10 relative overflow-hidden">
+                <FaUtensils size={120} className="absolute -right-10 -bottom-10 text-slate-800 opacity-20 pointer-events-none" />
+                <h3 className="text-2xl font-black text-white mb-6 flex items-center gap-3">
+                  <span className="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center"><FaUtensils size={14} className="text-black" /></span>
+                  Culinary Delights
+                </h3>
+                <div className="space-y-4">
+                  {state.food.map((item, i) => (
+                    <div key={i} className="flex gap-4 p-4 rounded-2xl bg-white/5 hover:bg-white/10 transition border border-white/5">
+                      {item.image ? (
+                        <img src={item.image} alt={item.name} className="w-16 h-16 rounded-xl object-cover shrink-0" />
+                      ) : (
+                        <div className="w-16 h-16 rounded-xl bg-slate-800 flex items-center justify-center shrink-0">
+                          <FaUtensils size={20} className="text-slate-600" />
+                        </div>
+                      )}
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-bold text-white">{item.name}</h4>
+                          <span className={`w-2 h-2 rounded-full ${item.isVeg ? "bg-green-500" : "bg-red-500"}`} title={item.isVeg ? "Vegetarian" : "Non-Vegetarian"} />
+                        </div>
+                        <p className="text-sm text-slate-400 line-clamp-2">{item.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* ── Best Seasons & Weather ── */}
+        {state.weather && Object.values(state.weather).some(Boolean) && (
+          <section>
+            <SectionHeading title="Travel Planning & Weather" subtitle="When to pack your bags and what to expect." icon={FiCloud} />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                { label: "Summer", icon: "☀️", value: state.weather.summer, color: "text-amber-500", bg: "bg-amber-500/10" },
+                { label: "Monsoon", icon: "🌧️", value: state.weather.monsoon, color: "text-blue-400", bg: "bg-blue-500/10" },
+                { label: "Winter", icon: "❄️", value: state.weather.winter, color: "text-cyan-400", bg: "bg-cyan-500/10" },
+              ].filter(w => w.value).map((weather, idx) => (
+                <div key={idx} className={`p-6 rounded-3xl border border-slate-800 bg-[#0A121F] text-center`}>
+                  <div className={`w-16 h-16 mx-auto rounded-2xl ${weather.bg} flex items-center justify-center text-3xl mb-4`}>
+                    {weather.icon}
+                  </div>
+                  <h4 className={`text-xl font-bold ${weather.color} mb-2`}>{weather.label}</h4>
+                  <p className="text-slate-300">{weather.value}</p>
                 </div>
               ))}
             </div>
-          </Section>
+          </section>
         )}
 
-        {/* Gallery */}
-        {state.images?.gallery?.length > 0 && (
-          <Section title="Gallery">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {state.images.gallery.map((url, i) => (
-                <div key={i} className="relative aspect-video overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800">
-                  <img
-                    src={url}
-                    alt={`${state.name} ${i + 1}`}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
-                  />
-                </div>
-              ))}
+        {/* ── How to Reach ── */}
+        {state.transport && Object.values(state.transport).some(Boolean) && (
+          <section className="bg-[#E85D04] rounded-[3rem] p-8 md:p-16 relative overflow-hidden text-black">
+            {/* Pattern */}
+            <div className="absolute inset-0 opacity-10 mix-blend-multiply" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '24px 24px' }} />
+            
+            <div className="relative z-10 flex flex-col md:flex-row gap-12">
+              <div className="md:w-1/3">
+                <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">How to Reach</h2>
+                <p className="text-black/80 font-medium text-lg">Seamless connectivity ensures your journey is as smooth as your stay.</p>
+              </div>
+              <div className="md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {[
+                  { icon: FaPlane, label: "By Air", value: state.transport.byAir },
+                  { icon: FaTrain, label: "By Train", value: state.transport.byTrain },
+                  { icon: FaCar, label: "By Road", value: state.transport.byRoad },
+                  { icon: FaBus, label: "Local Transit", value: state.transport.local }
+                ].filter(t => t.value).map((trans, idx) => (
+                  <div key={idx} className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-3xl hover:bg-white/20 transition">
+                    <trans.icon size={24} className="mb-3" />
+                    <h4 className="font-bold text-xl mb-2">{trans.label}</h4>
+                    <p className="text-black/70 text-sm font-medium leading-relaxed">{trans.value}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </Section>
+          </section>
         )}
 
-        {/* Languages */}
-        {state.languages?.length > 0 && (
-          <Section title="Languages">
-            <div className="flex flex-wrap gap-2">
-              {state.languages.map((lang, i) => (
-                <span key={i} className="px-3 py-1.5 rounded-full bg-[#E85D04]/10 text-[#E85D04] text-sm font-semibold border border-[#E85D04]/20">
-                  {lang}
-                </span>
-              ))}
+        {/* ── Essential Information & Travel Tips ── */}
+        {state.travelTips?.length > 0 && (
+          <section>
+            <SectionHeading title="Essential Travel Tips" icon={FaLightbulb} />
+            <div className="max-w-4xl mx-auto bg-[#0A121F] border border-slate-800 p-8 md:p-12 rounded-3xl shadow-xl">
+              <ul className="space-y-4">
+                {state.travelTips.map((tip, i) => (
+                  <li key={i} className="flex items-start gap-4 p-4 rounded-xl hover:bg-white/5 transition">
+                    <div className="w-8 h-8 rounded-full bg-[#E85D04]/20 flex items-center justify-center shrink-0 mt-0.5 border border-[#E85D04]/30">
+                      <FaLightbulb size={12} className="text-[#E85D04]" />
+                    </div>
+                    <span className="text-base text-slate-300 leading-relaxed">{tip}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </Section>
+          </section>
         )}
 
       </div>

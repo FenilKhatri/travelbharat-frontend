@@ -32,7 +32,7 @@ const Reviews = () => {
     keepPreviousData: true
   });
 
-  const responseData = data?.data || {};
+  const responseData = data || {};
   const reviews = responseData.reviews || [];
   const pagination = responseData.pagination || { total: 0, pages: 1 };
 

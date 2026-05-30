@@ -8,7 +8,7 @@ import Button from "../../../../components/ui/Button";
 const BlogsSection = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['blogs'],
-    queryFn: blogService.getAllBlogs
+    queryFn: () => blogService.getAllBlogs()
   });
 
   const blogs = data?.data?.blogs || [];
@@ -73,7 +73,7 @@ const BlogsSection = () => {
               </Link>
               <div className="p-6">
                 <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mb-4">
-                  <span className="flex items-center gap-1"><FiUser size={14} /> {blog.author || 'Admin'}</span>
+                  <span className="flex items-center gap-1"><FiUser size={14} /> {blog.author?.name || (typeof blog.author === 'string' ? blog.author : 'Admin')}</span>
                   <span className="flex items-center gap-1"><FiClock size={14} /> {new Date(blog.createdAt).toLocaleDateString()}</span>
                 </div>
                 <Link to={`/blogs/${blog.slug}`}>

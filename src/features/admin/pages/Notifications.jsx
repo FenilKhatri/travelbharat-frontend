@@ -11,7 +11,7 @@ const Notifications = () => {
     queryKey: ["adminNotifications"],
     queryFn: async () => {
       const res = await http.get("/notifications/admin");
-      return res.data.data;
+      return res.data;
     }
   });
 

@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { FaCalendarCheck, FaPencilAlt } from "react-icons/fa";
-import { FiPlus, FiTrash2, FiX, FiUpload, FiImage, FiChevronLeft, FiChevronRight, FiStar, FiChevronDown } from "react-icons/fi";
+import { FiPlus, FiTrash2, FiX, FiUpload, FiImage, FiChevronLeft, FiChevronRight, FiStar, FiChevronDown, FiList, FiGrid } from "react-icons/fi";
 import http from "../../../lib/axios";
 import { toast } from "react-toastify";
 
@@ -23,6 +23,11 @@ const Festivals = () => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isMonthOpen, setIsMonthOpen] = useState(false);
   const [isStateOpen, setIsStateOpen] = useState(false);
+  const [viewMode, setViewMode] = useState(() => localStorage.getItem("adminViewMode") || "list");
+
+  useEffect(() => {
+    localStorage.setItem("adminViewMode", viewMode);
+  }, [viewMode]);
 
   const page = parseInt(searchParams.get("page") || "1");
   const search = searchParams.get("search") || "";
@@ -121,12 +126,18 @@ const Festivals = () => {
           <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-1">Festivals</h1>
           <p className="text-slate-500 dark:text-slate-400 text-sm">Manage Indian festivals and cultural celebrations.</p>
         </div>
-        <button
-          onClick={() => { setEditingFestival(null); setForm(initialForm); setIsFormOpen(true); }}
-          className="flex items-center gap-2 px-5 py-2.5 bg-[#E85D04] hover:bg-[#D05203] text-white font-bold rounded-xl text-sm shadow-sm transition cursor-pointer shrink-0"
-        >
-          <FiPlus size={16} /> Add Festival
-        </button>
+        <div className="flex items-center gap-3">
+          <div className="hidden sm:flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+            <button onClick={() => setViewMode('list')} className={`p-2 rounded-lg transition cursor-pointer ${viewMode === 'list' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}><FiList size={16} /></button>
+            <button onClick={() => setViewMode('grid')} className={`p-2 rounded-lg transition cursor-pointer ${viewMode === 'grid' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}><FiGrid size={16} /></button>
+          </div>
+          <button
+            onClick={() => { setEditingFestival(null); setForm(initialForm); setIsFormOpen(true); }}
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#E85D04] hover:bg-[#D05203] text-white font-bold rounded-xl text-sm shadow-sm transition cursor-pointer shrink-0"
+          >
+            <FiPlus size={16} /> Add Festival
+          </button>
+        </div>
       </div>
 
       {/* Search */}
@@ -140,9 +151,11 @@ const Festivals = () => {
         />
       </div>
 
-      {/* Table */}
-      <div className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
+      {/* Table / Grid */}
+      <div className="bg-transparent">
+        {viewMode === "list" ? (
+          <div className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-100 dark:border-slate-800/60 text-slate-400 text-xs font-extrabold uppercase tracking-wider">
@@ -208,6 +221,55 @@ const Festivals = () => {
             </tbody>
           </table>
         </div>
+        </div>
+        ) : (
+          /* Grid View */
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {isLoading ? (
+              [...Array(8)].map((_, i) => (
+                <div key={i} className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm p-4 animate-pulse h-64" />
+              ))
+            ) : isError ? (
+              <div className="col-span-full text-center py-10 text-red-500 font-bold">Error loading festivals</div>
+            ) : festivals.length === 0 ? (
+              <div className="col-span-full text-center py-12 text-slate-400 font-semibold">No festivals registered.</div>
+            ) : (
+              festivals.map((f) => (
+                <div key={f._id} className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition flex flex-col group">
+                  <div className="h-40 bg-slate-100 dark:bg-slate-800 relative">
+                    {f.images?.thumbnail ? (
+                      <img src={f.images.thumbnail} alt={f.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-slate-400">
+                        <FiImage size={32} />
+                      </div>
+                    )}
+                    <div className="absolute top-2 right-2 flex gap-1">
+                       <span className="bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded">
+                         {f.month || "Unknown"}
+                       </span>
+                    </div>
+                  </div>
+                  <div className="p-4 flex flex-col flex-1">
+                    <h4 className="font-black text-lg text-slate-900 dark:text-white mb-1 group-hover:text-[#E85D04] transition line-clamp-1">{f.name}</h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 truncate">{f.stateId?.name || "—"}</p>
+                    <p className="text-[10px] text-slate-400 mb-4 truncate">{f.category} • {f.duration}</p>
+                    
+                    <div className="mt-auto flex items-center justify-between">
+                       <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${f.isActive ? "bg-emerald-500/10 text-emerald-600" : "bg-red-500/10 text-red-500"}`}>
+                        {f.isActive ? "Active" : "Hidden"}
+                      </span>
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => handleEditClick(f)} className="p-2 text-slate-400 hover:text-[#E85D04] bg-slate-50 dark:bg-slate-800 hover:bg-[#E85D04]/10 rounded-lg transition"><FaPencilAlt size={14} /></button>
+                        <button onClick={() => setConfirmDelete(f._id)} className="p-2 text-slate-400 hover:text-red-500 bg-slate-50 dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition"><FiTrash2 size={14} /></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
         {/* Pagination */}
         {!isLoading && !isError && pagination.pages > 1 && (
           <div className="flex justify-between items-center px-6 py-4 border-t border-slate-100 dark:border-slate-800/40">

@@ -7,7 +7,7 @@ import { festivalService } from "../../../../services/festivalService";
 const FestivalsSection = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['festivals'],
-    queryFn: festivalService.getAllFestivals
+    queryFn: () => festivalService.getAllFestivals()
   });
 
   const festivals = data?.data?.festivals || [];

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { FiMap, FiPlus, FiTrash2, FiCheck, FiX, FiUpload, FiImage, FiGlobe, FiChevronLeft, FiChevronRight, FiChevronDown, FiStar, FiGrid, FiList } from "react-icons/fi";
@@ -15,7 +15,11 @@ const States = () => {
 
   // Dialog / Edit states
   const [confirmDelete, setConfirmDelete] = useState(null);
-  const [viewMode, setViewMode] = useState("list");
+  const [viewMode, setViewMode] = useState(() => localStorage.getItem("adminViewMode") || "list");
+
+  useEffect(() => {
+    localStorage.setItem("adminViewMode", viewMode);
+  }, [viewMode]);
 
   // URL queries
   const page = parseInt(searchParams.get("page") || "1");
@@ -145,9 +149,11 @@ const States = () => {
         filters={filters}
       />
 
-      {/* List Table Card */}
-      <div className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
+      {/* List / Grid Toggle View */}
+      <div className="bg-transparent">
+        {viewMode === "list" ? (
+          <div className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-100 dark:border-slate-800/60 bg-slate-55/40 dark:bg-slate-900/10 text-slate-400 text-xs font-extrabold uppercase tracking-wider">
@@ -267,6 +273,52 @@ const States = () => {
             </tbody>
           </table>
         </div>
+        </div>
+        ) : (
+          /* Grid View */
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {isLoading ? (
+              [...Array(8)].map((_, i) => (
+                <div key={i} className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm p-4 animate-pulse h-64" />
+              ))
+            ) : isError ? (
+              <div className="col-span-full text-center py-10 text-red-500 font-bold">Error loading states</div>
+            ) : states.length === 0 ? (
+              <div className="col-span-full text-center py-12 text-slate-400 font-semibold">No states registered.</div>
+            ) : (
+              states.map((stateItem) => (
+                <div key={stateItem._id} className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition flex flex-col group">
+                  <div className="h-40 bg-slate-100 dark:bg-slate-800 relative">
+                    {stateItem.images?.thumbnail ? (
+                      <img src={stateItem.images.thumbnail} alt={stateItem.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-slate-400">
+                        <FiImage size={32} />
+                      </div>
+                    )}
+                    <div className="absolute top-2 right-2 flex gap-1">
+                       {stateItem.featured && <span className="bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded-lg shadow"><FiStar size={12} className="inline mr-1" />Featured</span>}
+                    </div>
+                  </div>
+                  <div className="p-4 flex flex-col flex-1">
+                    <h4 className="font-black text-lg text-slate-900 dark:text-white mb-1 group-hover:text-[#E85D04] transition">{stateItem.name}</h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">{stateItem.tagline || "No tagline provided"}</p>
+                    
+                    <div className="mt-auto flex items-center justify-between">
+                       <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${stateItem.isActive ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-450" : "bg-red-500/10 text-red-650 dark:text-red-400"}`}>
+                        {stateItem.isActive ? "Active" : "Hidden"}
+                      </span>
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => handleEditClick(stateItem)} className="p-2 text-slate-400 hover:text-[#E85D04] bg-slate-50 dark:bg-slate-800 hover:bg-[#E85D04]/10 rounded-lg transition"><FaPencilAlt size={14} /></button>
+                        <button onClick={() => setConfirmDelete(stateItem._id)} className="p-2 text-slate-400 hover:text-red-500 bg-slate-50 dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition"><FiTrash2 size={14} /></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
 
         {/* Pagination */}
         {!isLoading && !isError && pagination.pages > 1 && (

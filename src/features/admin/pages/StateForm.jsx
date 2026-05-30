@@ -25,6 +25,7 @@ const INITIAL_FORM = {
   capital: "",
   languages: [],
   images: { hero: "", thumbnail: "", gallery: [] },
+  stateBranding: { leftBackground: "", rightBackground: "", patternImage: "", overlayImage: "" },
   highlights: [],
   food: [],
   history: "",
@@ -150,6 +151,12 @@ const StateForm = () => {
           hero:      s.images?.hero      ?? "",
           thumbnail: s.images?.thumbnail ?? "",
           gallery:   s.images?.gallery   ?? [],
+        },
+        stateBranding: {
+          leftBackground: s.stateBranding?.leftBackground ?? "",
+          rightBackground: s.stateBranding?.rightBackground ?? "",
+          patternImage: s.stateBranding?.patternImage ?? "",
+          overlayImage: s.stateBranding?.overlayImage ?? "",
         },
         highlights:     s.highlights    ?? [],
         food:           s.food          ?? [],
@@ -539,6 +546,40 @@ const StateForm = () => {
                 </div>
               )}
             </div>
+          </div>
+        </Card>
+
+        {/* ══════════════ CARD 3B: STATE BRANDING ══════════════ */}
+        <Card title="State Branding Imagery" icon={FiImage}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <ImageTile
+              src={form.stateBranding.leftBackground}
+              label="Left Background"
+              aspect="aspect-[3/4]"
+              uploading={uploadingImage === "stateBranding.leftBackground"}
+              onUpload={(e) => handleImageUpload(e, "stateBranding.leftBackground")}
+            />
+            <ImageTile
+              src={form.stateBranding.rightBackground}
+              label="Right Background"
+              aspect="aspect-[3/4]"
+              uploading={uploadingImage === "stateBranding.rightBackground"}
+              onUpload={(e) => handleImageUpload(e, "stateBranding.rightBackground")}
+            />
+            <ImageTile
+              src={form.stateBranding.patternImage}
+              label="Decorative Pattern"
+              aspect="aspect-square"
+              uploading={uploadingImage === "stateBranding.patternImage"}
+              onUpload={(e) => handleImageUpload(e, "stateBranding.patternImage")}
+            />
+            <ImageTile
+              src={form.stateBranding.overlayImage}
+              label="Illustration Overlay"
+              aspect="aspect-video"
+              uploading={uploadingImage === "stateBranding.overlayImage"}
+              onUpload={(e) => handleImageUpload(e, "stateBranding.overlayImage")}
+            />
           </div>
         </Card>
 

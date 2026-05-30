@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { FiSearch, FiMapPin, FiLoader, FiStar, FiFilter } from "react-icons/fi";
+import { FiSearch, FiMapPin, FiLoader, FiStar, FiFilter, FiArrowRight } from "react-icons/fi";
 import { FaSlidersH } from "react-icons/fa";
 import { placeService } from "../../../services/placeService";
 import { stateService } from "../../../services/stateService";
@@ -215,7 +215,7 @@ const Places = () => {
                             {place.budget || "Moderate"}
                           </span>
                           <span className="text-[#E85D04] font-medium text-sm flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                            View Details <ArrowRight size={14} />
+                            View Details <FiArrowRight size={14} />
                           </span>
                         </div>
                       </div>

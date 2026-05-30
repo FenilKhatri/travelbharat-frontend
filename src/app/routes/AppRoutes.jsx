@@ -19,7 +19,7 @@ const AppRoutes = ({ theme, toggleTheme }) => {
       <Routes>
 
         <Route
-          element={<PublicLayout theme={theme} toggleTheme={toggleTheme} />}
+          element={<PublicLayout />}
         >
           {/* Public */}
           {PublicRoutes()}

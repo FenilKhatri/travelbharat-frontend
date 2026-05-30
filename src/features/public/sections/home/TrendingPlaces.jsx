@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 const TrendingPlaces = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['trendingPlaces'],
-    queryFn: placeService.getTrendingPlaces
+    queryFn: () => placeService.getTrendingPlaces()
   });
 
   const [places, setPlaces] = useState([]);

@@ -1,9 +1,10 @@
 import { Outlet, useLocation, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FiSun, FiMoon, FiChevronRight, FiChevronLeft, FiMenu, FiBell } from "react-icons/fi";
 
 import Sidebar from "./Sidebar";
+import NotificationBell from "./NotificationBell";
 import { sidebarConfig } from "./sidebar.config";
 import { useAuth } from "../../context/AuthContext";
 
@@ -16,6 +17,15 @@ const DashboardLayout = ({ theme, toggleTheme }) => {
   const roleConfig = sidebarConfig[user?.role] || {};
   const fallbackTitle = roleConfig.title || "Admin Panel";
 
+  // Sync theme to document.documentElement so tailwind dark mode works globally for admin
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
+
   // Build breadcrumbs dynamically from URL pathname
   const pathSegments = location.pathname.split("/").filter(Boolean);
 
@@ -27,7 +37,7 @@ const DashboardLayout = ({ theme, toggleTheme }) => {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-50 dark:bg-[#03060E] transition-colors duration-300">
+    <div className={`flex min-h-screen transition-colors duration-300 ${theme === "dark" ? "dark bg-[#03060E]" : "bg-slate-50"}`}>
       
       {/* Sidebar Navigation */}
       <Sidebar
@@ -95,18 +105,15 @@ const DashboardLayout = ({ theme, toggleTheme }) => {
           <div className="flex items-center gap-3">
             
             {/* Quick Notification Bell */}
-            <Link to="/admin/notifications" className="relative w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-900 transition cursor-pointer">
-              <FiBell size={18} />
-              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#E85D04]" />
-            </Link>
+            <NotificationBell />
 
             {/* Dark / Light Theme Toggle */}
             <button
               onClick={toggleTheme}
-              title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
-              className="w-9 h-9 rounded-xl flex items-center justify-center border border-slate-200 dark:border-slate-850 hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-500 dark:text-slate-400 dark:hover:text-white transition duration-200 cursor-pointer"
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition"
+              title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
             >
-              {theme === "dark" ? <FiSun size={18} /> : <FiMoon size={18} />}
+              {theme === "light" ? <FiMoon size={18} /> : <FiSun size={18} />}
             </button>
 
             {/* Separator */}

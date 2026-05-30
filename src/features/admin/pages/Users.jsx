@@ -34,7 +34,7 @@ const Users = () => {
     keepPreviousData: true
   });
 
-  const responseData = data?.data || {};
+  const responseData = data || {};
   const users = responseData.users || [];
   const pagination = responseData.pagination || { total: 0, pages: 1 };
 

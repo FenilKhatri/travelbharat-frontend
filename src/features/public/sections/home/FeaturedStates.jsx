@@ -10,7 +10,7 @@ const FeaturedStates = () => {
   // Using react-query to fetch featured states
   const { data, isLoading } = useQuery({
     queryKey: ['featuredStates'],
-    queryFn: stateService.getFeaturedStates
+    queryFn: () => stateService.getFeaturedStates()
   });
 
   const [states, setStates] = useState([]);

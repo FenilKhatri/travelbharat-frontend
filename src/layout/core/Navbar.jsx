@@ -12,7 +12,7 @@ import LogoutButton from "../../components/ui/LogoutButton";
 import logoDark from "../../assets/logo_dark.png";
 import logoLight from "../../assets/logo_light.png";
 
-const Navbar = ({ theme, toggleTheme }) => {
+const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -160,32 +160,14 @@ const Navbar = ({ theme, toggleTheme }) => {
 
           {/* RIGHT ACTIONS */}
           <div className="hidden md:flex items-center gap-4">
-            {/* THEME TOGGLE */}
-            <button
-              onClick={toggleTheme}
-              title="Toggle Theme"
-              className={`p-2 rounded-full transition-colors ${isHome && !scrolled
-                  ? 'bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200'
-                  : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200'
-                }`}
-            >
-              {theme === "dark" ? <FiSun size={18} /> : <FiMoon size={18} />}
-            </button>
+            {/* THEME TOGGLE REMOVED */}
 
             <DesktopAuthButtons />
           </div>
 
           {/* MOBILE BUTTONS */}
           <div className="md:hidden flex items-center gap-3">
-            <button
-              onClick={toggleTheme}
-              className={`p-2 rounded-full transition-colors ${isHome && !scrolled && !menuOpen
-                  ? 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'
-                }`}
-            >
-              {theme === "dark" ? <FiSun size={20} /> : <FiMoon size={20} />}
-            </button>
+            {/* THEME TOGGLE REMOVED */}
 
             <button
               onClick={() => setMenuOpen(true)}
