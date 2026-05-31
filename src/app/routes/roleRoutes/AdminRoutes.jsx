@@ -1,4 +1,4 @@
-import { Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { ROLES } from "../../../utils/constants";
 import ProtectedRoute from "../ProtectedRoute";
 import RoleRoute from "../RoleRoutes";
@@ -13,6 +13,8 @@ import Reviews from "../../../features/admin/pages/Reviews";
 import Settings from "../../../features/admin/pages/Settings";
 import Trips from "../../../features/admin/pages/Trips";
 import Notifications from "../../../features/admin/pages/Notifications";
+import AdminModeration from "../../../features/admin/pages/AdminModeration";
+import ContactDetails from "../../../features/admin/pages/ContactDetails";
 import Festivals from "../../../features/admin/pages/Festivals";
 import Blogs from "../../../features/admin/pages/Blogs";
 import BlogForm from "../../../features/admin/pages/BlogForm";
@@ -44,8 +46,10 @@ const AdminRoutes = ({ theme, toggleTheme }) => (
         <Route path="/admin/reviews" element={<Reviews />} />
         <Route path="/admin/settings" element={<Settings />} />
         <Route path="/admin/trips" element={<Trips />} />
+        <Route path="/admin/moderation" element={<AdminModeration />} />
+        <Route path="/admin/contact/:id" element={<ContactDetails />} />
         <Route path="/admin/notifications" element={<Notifications />} />
-        <Route path="*" element={<AdminPageNotFound />} />
+        <Route path="/admin/*" element={<AdminPageNotFound />} />
       </Route>
     </Route>
   </Route>

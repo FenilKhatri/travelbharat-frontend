@@ -71,5 +71,3 @@ export const loginFields = [
 // Register
 export const registerFields = [...basicFields, ...passwordFields];
 
-// Caregiver register
-export const caregiverRegisterFields = registerFields;

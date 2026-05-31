@@ -4,29 +4,39 @@ import { Link } from "react-router-dom";
 import { FiArrowRight, FiMapPin } from "react-icons/fi";
 import Button from "../../../../components/ui/Button";
 import { stateService } from "../../../../services/stateService";
-import { useEffect, useState } from "react";
+import { statsService } from "../../../../services/statsService";
+import { useEffect, useState, useMemo } from "react";
+
+const formatDestCount = (count) => {
+  if (!count || count === 0) return "0 Destinations";
+  if (count > 15) return "15+ Destinations";
+  return `${count} ${count === 1 ? "Destination" : "Destinations"}`;
+};
 
 const FeaturedStates = () => {
-  // Using react-query to fetch featured states
   const { data, isLoading } = useQuery({
     queryKey: ['featuredStates'],
     queryFn: () => stateService.getFeaturedStates()
   });
 
-  const [states, setStates] = useState([]);
+  // Fetch real destination counts per state
+  const { data: countsData } = useQuery({
+    queryKey: ['statesDestinationCounts'],
+    queryFn: () => statsService.getStatesDestinationCounts(),
+  });
 
-  useEffect(() => {
-    if (data?.data?.states) {
-      // Logic to prioritize Gujarat: Find Gujarat and put it first
-      const fetchedStates = [...data.data.states];
-      const gujaratIndex = fetchedStates.findIndex(s => s.name.toLowerCase() === 'gujarat');
-      
-      if (gujaratIndex > 0) {
-        const gujarat = fetchedStates.splice(gujaratIndex, 1)[0];
-        fetchedStates.unshift(gujarat);
-      }
-      setStates(fetchedStates);
+  const destCounts = countsData?.data?.counts || {};
+
+  const states = useMemo(() => {
+    if (!data?.data?.states) return [];
+    const fetchedStates = [...data.data.states];
+    const gujaratIndex = fetchedStates.findIndex(s => s.name.toLowerCase() === 'gujarat');
+    
+    if (gujaratIndex > 0) {
+      const gujarat = fetchedStates.splice(gujaratIndex, 1)[0];
+      fetchedStates.unshift(gujarat);
     }
+    return fetchedStates;
   }, [data]);
 
   if (isLoading) {
@@ -68,8 +78,10 @@ const FeaturedStates = () => {
           </div>
         ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {states.map((state, index) => (
-            <Link to={`/states/${state.slug}`} key={index}>
+          {states.map((state, index) => {
+            const realCount = destCounts[state._id] || state.totalPlaces || 0;
+            return (
+            <Link to={`/states/${state.slug}`} key={state._id || index}>
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -116,12 +128,13 @@ const FeaturedStates = () => {
                     {state.tagline}
                   </p>
                   <div className="flex items-center justify-between text-white/80 text-sm">
-                    <span className="flex items-center gap-1"><FiMapPin size={14}/> {state.totalPlaces || 0} Destinations</span>
+                    <span className="flex items-center gap-1"><FiMapPin size={14}/> {formatDestCount(realCount)}</span>
                   </div>
                 </div>
               </motion.div>
             </Link>
-          ))}
+            );
+          })}
         </div>
         )}
         
@@ -138,5 +151,3 @@ const FeaturedStates = () => {
 };
 
 export default FeaturedStates;
-
-

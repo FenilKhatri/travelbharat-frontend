@@ -1,6 +1,6 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FiUser, FiMenu, FiX, FiMoon, FiSun, FiChevronDown, FiMapPin, FiBell } from "react-icons/fi";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 // import Logo from "../../assets/logo.png"; // Using text logo for now until provided
 import { useAuth } from "../../context/AuthContext";
 import { navLinks } from "../../features/public/data/routes/public.routes";
@@ -14,7 +14,7 @@ import logoLight from "../../assets/logo_light.png";
 import { useQuery } from "@tanstack/react-query";
 import http from "../../lib/axios";
 
-const Navbar = () => {
+const Navbar = memo(() => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -260,7 +260,7 @@ const Navbar = () => {
       </div>
     </>
   );
-};
+});
 
 export default Navbar;
 

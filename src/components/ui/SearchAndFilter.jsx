@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FiSearch, FiX } from "react-icons/fi";
 import { FaSlidersH, FaUndo } from "react-icons/fa";
+import CustomDropdown from "./CustomDropdown";
 
 /**
  * Reusable premium Search & Filter component.
@@ -130,18 +131,15 @@ const SearchAndFilter = ({
               <label className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                 {filter.label}
               </label>
-              <select
+              <CustomDropdown
                 value={searchParams.get(filter.key) || ""}
-                onChange={(e) => handleFilterChange(filter.key, e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-lg text-sm text-slate-800 dark:text-slate-200 focus:outline-hidden focus:ring-1 focus:ring-[#E85D04]"
-              >
-                <option value="">All</option>
-                {filter.options.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
+                onChange={(val) => handleFilterChange(filter.key, val)}
+                options={[
+                  { value: "", label: "All" },
+                  ...filter.options
+                ]}
+                placeholder="All"
+              />
             </div>
           ))}
 
@@ -151,18 +149,15 @@ const SearchAndFilter = ({
               <label className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                 Sort By
               </label>
-              <select
+              <CustomDropdown
                 value={searchParams.get("sort") || ""}
-                onChange={(e) => handleFilterChange("sort", e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-lg text-sm text-slate-800 dark:text-slate-200 focus:outline-hidden focus:ring-1 focus:ring-[#E85D04]"
-              >
-                <option value="">Default</option>
-                {sortOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
+                onChange={(val) => handleFilterChange("sort", val)}
+                options={[
+                  { value: "", label: "Default" },
+                  ...sortOptions
+                ]}
+                placeholder="Default"
+              />
             </div>
           )}
 

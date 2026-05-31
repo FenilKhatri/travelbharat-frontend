@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import http from "../../../lib/axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import CustomDropdown from "../../../components/ui/CustomDropdown";
 
 const Trips = () => {
   const queryClient = useQueryClient();
@@ -67,7 +68,7 @@ const Trips = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {trips.map((trip) => {
              const firstPlace = trip.places?.[0]?.placeId;
-             const coverImage = trip.coverImage || firstPlace?.heroImage || firstPlace?.images?.thumbnail || firstPlace?.images?.gallery?.[0] || "https://images.unsplash.com/photo-1506461883276-594a12b11ac3?auto=format&fit=crop&q=80";
+             const coverImage = trip.coverImage || firstPlace?.images?.hero || firstPlace?.images?.thumbnail || firstPlace?.images?.gallery?.[0] || "https://images.unsplash.com/photo-1506461883276-594a12b11ac3?auto=format&fit=crop&q=80";
 
              return (
              <motion.div key={trip._id} layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white dark:bg-[#0A121F] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md transition group overflow-hidden flex flex-col">
@@ -137,9 +138,19 @@ const Trips = () => {
                     <div className="grid grid-cols-2 gap-4">
                        <div>
                          <label className="block text-sm font-semibold text-slate-500 mb-1.5">Trip Type</label>
-                         <select value={newTrip.tripType} onChange={e => setNewTrip({...newTrip, tripType: e.target.value})} className="w-full px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-[#E85D04]/20 capitalize">
-                            {["leisure", "adventure", "business", "family", "spiritual", "road-trip"].map(t => <option key={t} value={t}>{t}</option>)}
-                         </select>
+                         <CustomDropdown
+                           value={newTrip.tripType}
+                           onChange={(val) => setNewTrip({...newTrip, tripType: val})}
+                           options={[
+                             { value: "leisure", label: "Leisure" },
+                             { value: "adventure", label: "Adventure" },
+                             { value: "business", label: "Business" },
+                             { value: "family", label: "Family" },
+                             { value: "spiritual", label: "Spiritual" },
+                             { value: "road-trip", label: "Road Trip" },
+                           ]}
+                           placeholder="Select Type"
+                         />
                        </div>
                        <div>
                          <label className="block text-sm font-semibold text-slate-500 mb-1.5">Budget (₹)</label>

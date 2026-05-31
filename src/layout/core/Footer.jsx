@@ -5,8 +5,9 @@ import { footerLinks } from "../../features/public/data/routes/footer.links";
 import logoDark from "../../assets/logo_dark.png";
 import logoLight from "../../assets/logo_light.png";
 import { FiMail, FiPhone, FiMapPin, FiArrowUpRight } from "react-icons/fi";
+import { memo } from "react";
 
-const Footer = () => {
+const Footer = memo(() => {
   const footerLinksDesign =
     "group inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-[#E85D04] transition-all duration-300 text-[15px]";
 
@@ -210,6 +211,6 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
+});
 
 export default Footer;

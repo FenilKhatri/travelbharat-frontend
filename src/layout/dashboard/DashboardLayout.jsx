@@ -1,5 +1,5 @@
 import { Outlet, useLocation, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense, memo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FiSun, FiMoon, FiChevronRight, FiChevronLeft, FiMenu, FiBell } from "react-icons/fi";
 
@@ -7,8 +7,15 @@ import Sidebar from "./Sidebar";
 import NotificationBell from "./NotificationBell";
 import { sidebarConfig } from "./sidebar.config";
 import { useAuth } from "../../context/AuthContext";
+import GlobalLoader from "../../components/ui/GlobalLoader";
 
-const DashboardLayout = ({ theme, toggleTheme }) => {
+const pageVariants = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
+  exit:    { opacity: 0, transition: { duration: 0.2, ease: "easeIn" } }
+};
+
+const DashboardLayout = memo(({ theme, toggleTheme }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { user } = useAuth();
@@ -138,21 +145,23 @@ const DashboardLayout = ({ theme, toggleTheme }) => {
           {/* Subtle page background details */}
           <div className="absolute top-0 right-10 w-96 h-96 bg-[#E85D04]/2 blur-[100px] rounded-full pointer-events-none -z-10" />
           
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="popLayout">
             <motion.div
               key={location.pathname}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.25, ease: "easeInOut" }}
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
             >
-              <Outlet />
+              <Suspense fallback={<GlobalLoader />}>
+                <Outlet />
+              </Suspense>
             </motion.div>
           </AnimatePresence>
         </main>
       </div>
     </div>
   );
-};
+});
 
 export default DashboardLayout;

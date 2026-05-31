@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import AuthPage from "../../../features/auth/forms/AuthPage";
 import { ROLES } from "../../../utils/constants";
 

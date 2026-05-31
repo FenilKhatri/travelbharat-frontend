@@ -12,7 +12,7 @@ export const counts = [
     {
         icon: MdSecurity,
         number: "500+",
-        description: "Verified Caregivers",
+        description: "Verified Guides",
         theme: "text-emerald-500"
     },
     {
@@ -32,23 +32,23 @@ export const counts = [
 export const services = [
     {
         icon: FaStethoscope,
-        Title: "Nursing Care",
-        Description: "Professional medical assistance including wound care, vital monitoring, and medication management."
+        Title: "Travel Planning",
+        Description: "Professional travel assistance including itinerary planning, booking, and management."
     },
     {
         icon: FaHandshake,
-        Title: "Elderly Assistance",
-        Description: "Cornpassionate daily living support, companionship, and mobility assistance for seniors."
+        Title: "Local Guides",
+        Description: "Compassionate local support, companionship, and cultural assistance for travelers."
     },
     {
         icon: FaMale,
-        Title: "Physiotherapy",
-        Description: "Expert in-home rehabilitation, pain management, and personalized exercise programs."
+        Title: "Adventure Sports",
+        Description: "Expert guided adventure sports, safety management, and personalized experiences."
     },
     {
         icon: FaBed,
-        Title: "Post-Hospital Care",
-        Description: "mooth transition from hospital to home with dedicated recovery and monitoring plans."
+        Title: "Hotel Booking",
+        Description: "Smooth transition from destination to destination with dedicated stay arrangements."
     },
 ]
 
@@ -87,19 +87,19 @@ export const features = [
     {
         icon: MdSecurity,
         theme: "text-red-500 bg-red-100",
-        title: "Verified & Trusted Caregivers",
-        desc: "All caregivers are background-checked and professionally trained to ensure safe and reliable home care.",
+        title: "Verified & Trusted Guides",
+        desc: "All local guides are background-checked and professionally trained to ensure safe and reliable travel experiences.",
     },
     {
         icon: FaHandshake,
         theme: "text-blue-500 bg-blue-100",
-        title: "Compassionate Support",
-        desc: "We prioritize emotional well-being along with physical care for your loved ones.",
+        title: "24/7 Support",
+        desc: "We prioritize your safety and well-being along with unforgettable experiences.",
     },
     {
         icon: FiClock,
         theme: "text-orange-500 bg-orange-100",
-        title: "Flexible Care Plans",
-        desc: "From hourly visits to full-time support, choose services that fit your family’s needs.",
+        title: "Flexible Travel Plans",
+        desc: "From weekend getaways to month-long expeditions, choose plans that fit your needs.",
     },
 ];

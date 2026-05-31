@@ -11,6 +11,9 @@ import {
 } from "react-icons/fa";
 import { MdOutlineWbSunny, MdAcUnit, MdWaterDrop } from "react-icons/md";
 import { stateService } from "../../../services/stateService";
+import http from '../../../lib/axios';
+import { toast } from 'react-toastify';
+import SaveButton from '../../../components/ui/SaveButton';
 import { cityService } from "../../../services/cityService";
 import { placeService } from "../../../services/placeService";
 import { motion, AnimatePresence } from "framer-motion";
@@ -238,6 +241,9 @@ const StateDetails = () => {
                   {state.description}
                 </p>
               )}
+              <div className="flex gap-4">
+                <SaveButton itemId={state._id} itemType="state" initialCount={state.saveCount} className="!px-6 !py-3 !text-sm" />
+              </div>
             </motion.div>
 
             {/* Right Info Card */}
@@ -248,7 +254,7 @@ const StateDetails = () => {
               className="hidden lg:block bg-[#0c1018]/80 backdrop-blur-xl p-6 rounded-2xl w-80 shrink-0 border border-white/10 shadow-2xl"
             >
               {state.images?.thumbnail && (
-                <div className="w-full h-32 rounded-xl overflow-hidden mb-6 border border-white/10">
+                <div className="w-full h-64 rounded-xl overflow-hidden mb-6 border border-white/10">
                   <img src={state.images.thumbnail} alt="Thumbnail" className="w-full h-full object-cover" />
                 </div>
               )}

@@ -1,5 +1,5 @@
 import { MdDashboard } from "react-icons/md";
-import { FiUsers, FiMapPin, FiMap, FiStar, FiSettings, FiUser, FiNavigation, FiBell, FiBookOpen } from "react-icons/fi";
+import { FiUsers, FiMapPin, FiMap, FiStar, FiSettings, FiUser, FiNavigation, FiBell, FiBookOpen, FiShield } from "react-icons/fi";
 import { FaCalendarCheck, FaBuilding } from "react-icons/fa";
 import { FiHome } from "react-icons/fi";
 
@@ -38,6 +38,11 @@ export const adminRoutes = [
     to: "/admin/blogs",
     label: "Blogs",
     icon: FiBookOpen,
+  },
+  {
+    to: "/admin/moderation",
+    label: "Moderation",
+    icon: FiShield,
   },
   {
     to: "/admin/trips",

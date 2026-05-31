@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useMemo, useCallback } from "react";
 import { signOut } from "firebase/auth";
 import { getFirebase } from "../lib/firebase";
 import { authService } from "../services/authService";
@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     try {
       const res = await authService.getMe();
       const loggedUser = res?.data?.user || null;
@@ -22,9 +22,9 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       const { auth } = await getFirebase();
       if (auth.currentUser) {
@@ -35,14 +35,19 @@ export const AuthProvider = ({ children }) => {
       console.log("Logout error:", error);
     }
     setUser(null);
-  };
+  }, []);
 
   useEffect(() => {
     fetchUser();
   }, []);
 
+  const value = useMemo(
+    () => ({ user, setUser, loading, fetchUser, logout }),
+    [user, loading, fetchUser, logout]
+  );
+
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, fetchUser, logout }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

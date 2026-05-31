@@ -18,6 +18,7 @@ import {
 } from "react-icons/fi";
 import http from "../../../lib/axios";
 import SearchAndFilter from "../../../components/ui/SearchAndFilter";
+import CustomDropdown from "../../../components/ui/CustomDropdown";
 import { toast } from "react-toastify";
 
 const Places = () => {
@@ -605,15 +606,12 @@ const Places = () => {
 
                 <div>
                   <label className="block text-sm font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Category</label>
-                  <select
+                  <CustomDropdown
                     value={form.category}
-                    onChange={(e) => setForm({ ...form, category: e.target.value })}
-                    className="w-full px-3 py-2.5 border border-slate-350 dark:border-slate-800 rounded-xl bg-transparent text-sm focus:outline-hidden focus:ring-2 focus:ring-[#E85D04]/20 focus:border-[#E85D04]"
-                  >
-                    {categoriesList.map((c) => (
-                      <option key={c.value} value={c.value}>{c.label}</option>
-                    ))}
-                  </select>
+                    onChange={(val) => setForm({ ...form, category: val })}
+                    options={categoriesList}
+                    placeholder="Select Category"
+                  />
                 </div>
               </div>
 
@@ -621,33 +619,31 @@ const Places = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-sm font-semibold text-slate-500 dark:text-slate-400 mb-1.5">State</label>
-                  <select
-                    required
+                  <CustomDropdown
                     value={form.stateId}
-                    onChange={(e) => setForm({ ...form, stateId: e.target.value, cityId: "" })}
-                    className="w-full px-3 py-2.5 border border-slate-350 dark:border-slate-800 rounded-xl bg-transparent text-sm focus:outline-hidden focus:ring-2 focus:ring-[#E85D04]/20 focus:border-[#E85D04]"
-                  >
-                    <option value="">Select State</option>
-                    {statesList.map((st) => (
-                      <option key={st._id} value={st._id}>{st.name}</option>
-                    ))}
-                  </select>
+                    onChange={(val) => setForm({ ...form, stateId: val, cityId: "" })}
+                    options={[
+                      { value: "", label: "Select State" },
+                      ...statesList.map(st => ({ value: st._id, label: st.name })),
+                    ]}
+                    placeholder="Select State"
+                    searchable
+                  />
                 </div>
 
                 <div>
                   <label className="block text-sm font-semibold text-slate-500 dark:text-slate-400 mb-1.5">City</label>
-                  <select
-                    required
+                  <CustomDropdown
                     value={form.cityId}
+                    onChange={(val) => setForm({ ...form, cityId: val })}
+                    options={[
+                      { value: "", label: "Select City" },
+                      ...citiesList.map(ct => ({ value: ct._id, label: ct.name })),
+                    ]}
+                    placeholder="Select City"
                     disabled={!form.stateId}
-                    onChange={(e) => setForm({ ...form, cityId: e.target.value })}
-                    className="w-full px-3 py-2.5 border border-slate-350 dark:border-slate-800 rounded-xl bg-transparent text-sm focus:outline-hidden focus:ring-2 focus:ring-[#E85D04]/20 focus:border-[#E85D04] disabled:opacity-50"
-                  >
-                    <option value="">Select City</option>
-                    {citiesList.map((ct) => (
-                      <option key={ct._id} value={ct._id}>{ct.name}</option>
-                    ))}
-                  </select>
+                    searchable
+                  />
                 </div>
               </div>
 
@@ -666,15 +662,16 @@ const Places = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <div>
                   <label className="block text-sm font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Budget Class</label>
-                  <select
+                  <CustomDropdown
                     value={form.budget}
-                    onChange={(e) => setForm({ ...form, budget: e.target.value })}
-                    className="w-full px-3 py-2.5 border border-slate-350 dark:border-slate-800 rounded-xl bg-transparent text-sm focus:outline-hidden focus:ring-2 focus:ring-[#E85D04]/20 focus:border-[#E85D04]"
-                  >
-                    <option value="budget">Budget Friendly</option>
-                    <option value="moderate">Moderate</option>
-                    <option value="luxury">Luxury</option>
-                  </select>
+                    onChange={(val) => setForm({ ...form, budget: val })}
+                    options={[
+                      { value: "budget", label: "Budget Friendly" },
+                      { value: "moderate", label: "Moderate" },
+                      { value: "luxury", label: "Luxury" },
+                    ]}
+                    placeholder="Select Budget"
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Timings</label>

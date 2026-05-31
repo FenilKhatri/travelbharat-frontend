@@ -32,7 +32,7 @@ const GoogleAuthButton = ({ role = "user" }) => {
       const res = await googleAuthApi({ token: idToken, role });
 
       // 5. Extract user from response
-      const loggedInUser = res?.data?.user || res?.data?.caregiver || null;
+      const loggedInUser = res?.data?.user || null;
 
       if (!loggedInUser) {
         toast.error("Failed to retrieve user data");

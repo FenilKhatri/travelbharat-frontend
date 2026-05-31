@@ -33,9 +33,9 @@ const CTA = ({ Title, Description, SubDescription }) => {
               variants={fadeUp}
               className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4"
             >
-              <NavLink to="/caregivers-login" className="w-full sm:w-fit">
+              <NavLink to="/destinations" className="w-full sm:w-fit">
                 <Button className="w-full sm:w-auto px-7 py-4 shadow-lg shadow-blue-500/20">
-                  Book a Caregiver
+                  Plan a Trip
                 </Button>
               </NavLink>
 

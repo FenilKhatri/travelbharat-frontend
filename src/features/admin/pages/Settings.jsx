@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { FiSettings, FiImage, FiList, FiPlus, FiSave, FiTrash2, FiX, FiUpload, FiCheck, FiLink } from "react-icons/fi";
 import http from "../../../lib/axios";
+import CustomDropdown from "../../../components/ui/CustomDropdown";
 import { toast } from "react-toastify";
 
 const Settings = () => {
@@ -288,16 +289,17 @@ const Settings = () => {
 
                 <div>
                   <label className="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Category</label>
-                  <select
+                  <CustomDropdown
                     value={newSetting.category}
-                    onChange={(e) => setNewSetting({ ...newSetting, category: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-350 dark:border-slate-800 rounded-xl bg-transparent text-sm focus:outline-hidden focus:ring-2 focus:ring-[#E85D04]/20"
-                  >
-                    <option value="general">General</option>
-                    <option value="social">Social Media</option>
-                    <option value="contact">Contact Details</option>
-                    <option value="seo">SEO Configurations</option>
-                  </select>
+                    onChange={(val) => setNewSetting({ ...newSetting, category: val })}
+                    options={[
+                      { value: "general", label: "General" },
+                      { value: "social", label: "Social Media" },
+                      { value: "contact", label: "Contact Details" },
+                      { value: "seo", label: "SEO Configurations" },
+                    ]}
+                    placeholder="Select Category"
+                  />
                 </div>
 
                 <div>
@@ -444,13 +446,14 @@ const Settings = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Page Location</label>
-                  <select
+                  <CustomDropdown
                     value={bannerForm.page}
-                    onChange={(e) => setBannerForm({ ...bannerForm, page: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-350 dark:border-slate-800 rounded-xl bg-transparent text-sm focus:outline-hidden"
-                  >
-                    <option value="home">Homepage</option>
-                  </select>
+                    onChange={(val) => setBannerForm({ ...bannerForm, page: val })}
+                    options={[
+                      { value: "home", label: "Homepage" }
+                    ]}
+                    placeholder="Select Page"
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Priority Weight</label>

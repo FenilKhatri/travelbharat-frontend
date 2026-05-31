@@ -22,7 +22,7 @@ const categoryMap = {
 const TravelCategories = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['categories'],
-    queryFn: () => categoryService.getAllCategories()
+    queryFn: () => categoryService.getAllCategories({ type: 'place' })
   });
 
   const displayCategories = data?.data?.categories || [];
@@ -31,6 +31,10 @@ const TravelCategories = () => {
     return (
       <section className="py-20 bg-slate-50 dark:bg-[#050B14]">
         <div className="max-w-[1600px] w-full mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="h-10 w-64 bg-slate-200 dark:bg-slate-800 rounded-xl mx-auto mb-4 animate-pulse" />
+            <div className="h-5 w-96 bg-slate-200 dark:bg-slate-800 rounded-lg mx-auto animate-pulse" />
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
               <div key={i} className="h-40 rounded-2xl bg-slate-200 dark:bg-slate-800 animate-pulse"></div>
@@ -39,6 +43,10 @@ const TravelCategories = () => {
         </div>
       </section>
     );
+  }
+
+  if (displayCategories.length === 0) {
+    return null;
   }
 
   return (
@@ -53,44 +61,49 @@ const TravelCategories = () => {
           </p>
         </div>
 
-        {displayCategories.length === 0 ? (
-          <div className="text-center py-10 text-slate-500 dark:text-slate-400">
-            No categories found.
-          </div>
-        ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {displayCategories.map((category, index) => {
-            const mapped = categoryMap[category.name?.toLowerCase()] || categoryMap.default;
+            const mapped = categoryMap[category.slug?.toLowerCase()] || categoryMap[category.name?.toLowerCase()] || categoryMap.default;
             const Icon = mapped.icon;
             return (
-              <Link to={`/places?category=${category.slug}`} key={index}>
+              <Link to={`/places?category=${category.slug}`} key={category._id || index}>
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.05 }}
-                  className="bg-white dark:bg-[#0A121F] p-6 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.3)] border border-slate-100 dark:border-white/5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center group cursor-pointer"
+                  className="bg-white dark:bg-[#0A121F] p-6 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.3)] border border-slate-100 dark:border-white/5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center group cursor-pointer relative overflow-hidden"
                 >
-                  <div className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110 ${mapped.color}`}>
-                    <Icon size={32} strokeWidth={1.5} />
+                  {/* Background image if exists */}
+                  {category.image && (
+                    <>
+                      <div
+                        className="absolute inset-0 bg-cover bg-center opacity-[0.07] group-hover:opacity-[0.12] transition-opacity duration-500"
+                        style={{ backgroundImage: `url(${category.image})` }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-[#0A121F] via-white/60 dark:via-[#0A121F]/60 to-white/30 dark:to-[#0A121F]/30" />
+                    </>
+                  )}
+
+                  <div className="relative z-10">
+                    <div className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110 ${mapped.color}`}>
+                      <Icon size={32} strokeWidth={1.5} />
+                    </div>
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1 group-hover:text-[#E85D04] transition-colors capitalize">
+                      {category.name}
+                    </h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      {category.placeCount > 15 ? "15+" : category.placeCount || 0} Destinations
+                    </p>
                   </div>
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1 group-hover:text-[#E85D04] transition-colors">
-                    {category.name}
-                  </h3>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">
-                    {category.placeCount || 0} Destinations
-                  </p>
                 </motion.div>
               </Link>
             );
           })}
         </div>
-        )}
       </div>
     </section>
   );
 };
 
 export default TravelCategories;
-
-

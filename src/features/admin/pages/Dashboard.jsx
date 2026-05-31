@@ -3,7 +3,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { FiUsers, FiMap, FiMapPin, FiStar, FiMail, FiInbox, FiTrendingUp, FiClock, FiCalendar, FiX, FiSend } from "react-icons/fi";
 import http from "../../../lib/axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 // Animation Variants
@@ -23,6 +23,7 @@ const itemVariants = {
 };
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   // Fetch stats using React Query
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["adminDashboardStats"],
@@ -313,7 +314,7 @@ const Dashboard = () => {
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800/30 text-sm text-slate-650 dark:text-slate-350">
                 {recentInquiries.length > 0 ? (
                   recentInquiries.map((inquiry) => (
-                    <tr key={inquiry._id} className="hover:bg-slate-50/50 dark:hover:bg-slate-850/10 transition">
+                    <tr key={inquiry._id} onClick={() => navigate(`/admin/contact/${inquiry._id}`)} className="hover:bg-slate-50/50 dark:hover:bg-slate-900 transition cursor-pointer">
                       <td className="py-3 pr-4 font-bold text-slate-800 dark:text-slate-200">
                         {inquiry.name}
                         <span className="block text-[10px] font-normal text-slate-400">{inquiry.email}</span>

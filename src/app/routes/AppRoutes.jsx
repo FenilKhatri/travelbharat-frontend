@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
+// Force HMR reload
 import { ROLES } from "../../utils/constants";
 
 import GlobalLoader from "../../components/ui/GlobalLoader";
@@ -18,9 +19,7 @@ const AppRoutes = ({ theme, toggleTheme }) => {
     <Suspense fallback={<GlobalLoader />}>
       <Routes>
 
-        <Route
-          element={<PublicLayout />}
-        >
+        <Route element={<PublicLayout />}>
           {/* Public */}
           {PublicRoutes()}
 

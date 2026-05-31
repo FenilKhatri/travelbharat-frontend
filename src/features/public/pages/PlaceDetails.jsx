@@ -255,6 +255,8 @@ const PlaceDetails = () => {
               >
                 Plan a Trip <FiCalendar />
               </button>
+              
+              <SaveButton itemId={place._id} itemType="place" initialCount={place.saveCount} className="!px-8 !py-4 !text-base" />
             </div>
           </Reveal>
         </div>

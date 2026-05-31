@@ -17,6 +17,7 @@ export const sidebarConfig = {
             { to: "/user/likes", label: "Likes", icon: FiHeart },
             { to: "/user/trips", label: "My Trips", icon: FiNavigation },
             { to: "/user/saved-blogs", label: "Saved Blogs", icon: FiStar },
+            { to: "/user/my-blogs", label: "My Blogs", icon: FiBookmark },
             { to: "/user/write-blog", label: "Write Blog", icon: FiEdit3 },
             { to: "/user/settings", label: "Settings", icon: FiSettings },
         ],

@@ -27,7 +27,7 @@ const FAQ = () => {
 
         <TitleAndDescription
           Description="Frequently Asked Questions"
-          SubDescription="Find answers to common questions about TravelBharat care services, response time, caregiver support, and service availability."
+          SubDescription="Find answers to common questions about TravelBharat travel services, response time, local guide support, and destination availability."
           className="text-left md:text-center mx-auto"
         />
       </motion.div>

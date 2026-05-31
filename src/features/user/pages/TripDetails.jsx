@@ -6,6 +6,7 @@ import { FiCalendar, FiMapPin, FiUsers, FiClock, FiActivity, FiChevronLeft, FiIm
 import { FaRupeeSign } from "react-icons/fa";
 import { motion } from "framer-motion";
 import http from "../../../lib/axios";
+import CustomDropdown from "../../../components/ui/CustomDropdown";
 
 const TripDetails = () => {
   const { tripId } = useParams();
@@ -121,9 +122,6 @@ const TripDetails = () => {
                 } catch (err) {
                   console.error(err);
                 }
-              } else {
-                navigator.clipboard.writeText(window.location.href);
-                toast.success("Trip link copied to clipboard!");
               }
             }}
             className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl text-sm font-bold transition cursor-pointer"
@@ -361,15 +359,16 @@ const TripDetails = () => {
                         value={newItineraryDay.activityDesc} onChange={e => setNewItineraryDay({...newItineraryDay, activityDesc: e.target.value})}
                         className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00] md:col-span-2" required 
                       />
-                      <select 
-                        value={newItineraryDay.activityType} onChange={e => setNewItineraryDay({...newItineraryDay, activityType: e.target.value})}
-                        className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00]"
-                      >
-                        <option value="place">Place to Visit</option>
-                        <option value="food">Food & Dining</option>
-                        <option value="travel">Travel/Transit</option>
-                        <option value="other">Other Activity</option>
-                      </select>
+                      <CustomDropdown
+                        value={newItineraryDay.activityType}
+                        onChange={(val) => setNewItineraryDay({...newItineraryDay, activityType: val})}
+                        options={[
+                          { value: "place", label: "Place to Visit" },
+                          { value: "food", label: "Food & Dining" },
+                          { value: "travel", label: "Travel/Transit" },
+                          { value: "other", label: "Other Activity" },
+                        ]}
+                      />
                     </div>
                     <button type="submit" disabled={addItineraryDayMutation.isPending} className="mt-4 bg-[#FF7A00] hover:bg-[#E85D04] text-white font-bold rounded-xl px-6 py-2.5 transition disabled:opacity-50">
                       {addItineraryDayMutation.isPending ? 'Saving...' : 'Add to Itinerary'}
@@ -450,17 +449,18 @@ const TripDetails = () => {
                         value={newExpense.amount} onChange={e => setNewExpense({...newExpense, amount: Number(e.target.value)})}
                         className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00]" required min="1"
                       />
-                      <select 
-                        value={newExpense.category} onChange={e => setNewExpense({...newExpense, category: e.target.value})}
-                        className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00]"
-                      >
-                        <option value="food">Food</option>
-                        <option value="transport">Transport</option>
-                        <option value="accommodation">Accommodation</option>
-                        <option value="shopping">Shopping</option>
-                        <option value="activities">Activities</option>
-                        <option value="other">Other</option>
-                      </select>
+                      <CustomDropdown
+                        value={newExpense.category}
+                        onChange={(val) => setNewExpense({...newExpense, category: val})}
+                        options={[
+                          { value: "food", label: "Food" },
+                          { value: "transport", label: "Transport" },
+                          { value: "accommodation", label: "Accommodation" },
+                          { value: "shopping", label: "Shopping" },
+                          { value: "activities", label: "Activities" },
+                          { value: "other", label: "Other" },
+                        ]}
+                      />
                       <button type="submit" disabled={addExpenseMutation.isPending} className="bg-[#FF7A00] hover:bg-[#E85D04] text-white font-bold rounded-xl px-4 py-2.5 transition disabled:opacity-50">
                         {addExpenseMutation.isPending ? 'Adding...' : 'Add Expense'}
                       </button>

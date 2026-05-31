@@ -12,14 +12,18 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
 import { cityService } from "../../../services/cityService";
+import http from '../../../lib/axios';
+import { toast } from 'react-toastify';
+import SaveButton from '../../../components/ui/SaveButton';
 
 // Swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, FreeMode, Autoplay } from 'swiper/modules';
+import { Navigation, Pagination, FreeMode, Autoplay, EffectCards } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/free-mode';
+import 'swiper/css/effect-cards';
 
 // ─── Utility Components ────────────────────────────────────────────────────────
 const Skeleton = ({ className }) => (
@@ -294,6 +298,8 @@ const CityDetails = () => {
                    <FiClock className="text-[#E85D04]" size={16} /> <span className="text-white text-sm font-bold tracking-wide">{city.bestTimeToVisit}</span>
                  </motion.div>
               )}
+              
+              <SaveButton itemId={city._id} itemType="city" initialCount={city.saveCount} className="!px-5 !py-2.5 !bg-white/10 !backdrop-blur-xl !rounded-full !border !border-white/20 !shadow-2xl !text-white hover:!bg-[#E85D04]/20 hover:!border-[#E85D04]/50" />
             </div>
           </motion.div>
         </div>

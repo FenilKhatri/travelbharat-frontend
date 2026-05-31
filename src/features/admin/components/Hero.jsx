@@ -35,9 +35,9 @@ const Hero = ({ Slogan, Title, Description }) => {
           </p>
 
           <div className="w-full flex flex-col sm:flex-row items-center justify-start gap-3">
-            <NavLink to="/caregivers-login" className="w-full sm:w-fit">
+            <NavLink to="/destinations" className="w-full sm:w-fit">
               <Button size="lg" className="w-full shadow-lg shadow-blue-500/20">
-                Book Care Service
+                Plan Your Journey
               </Button>
             </NavLink>
 
@@ -61,7 +61,7 @@ const Hero = ({ Slogan, Title, Description }) => {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.2 }}
-            alt="Healthcare service"
+            alt="Travel experience"
             className="relative w-full max-w-xl rounded-4xl shadow-2xl border border-white/40 dark:border-slate-800"
           />
         </motion.div>

@@ -14,8 +14,8 @@ const Process = () => {
         className="max-w-2xl mx-auto flex flex-col space-y-6"
       >
         <TitleAndDescription
-          Description="Seamless Care Process"
-          SubDescription="Our simple process ensures that families can quickly find and book the right caregiver. From registration to receiving care, every step is designed to be smooth, transparent, and efficient. TravelBharat combines technology with human care to deliver the best experience."
+          Description="Seamless Planning Process"
+          SubDescription="Our simple process ensures that travelers can quickly plan and book their trips. From registration to experiencing the journey, every step is designed to be smooth, transparent, and efficient. TravelBharat combines technology with expert local guidance to deliver the best experience."
           className="text-left md:text-center mx-auto"
         />
       </motion.div>

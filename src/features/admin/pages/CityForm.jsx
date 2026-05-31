@@ -5,6 +5,7 @@ import { FiSave, FiArrowLeft, FiUpload, FiPlus, FiTrash2, FiImage, FiMapPin, FiN
 import { FaUtensils, FaBuilding, FaBed } from "react-icons/fa";
 import { toast } from "react-toastify";
 import http from "../../../lib/axios";
+import CustomDropdown from "../../../components/ui/CustomDropdown";
 
 /* ─────────────────── Constants ─────────────────── */
 const INITIAL_FORM = {
@@ -386,16 +387,13 @@ const CityForm = () => {
             </Field>
 
             <Field label="Select State" required>
-              <div className="relative">
-                <select required value={form.stateId} onChange={(e) => set("stateId", e.target.value)}
-                  className={`${inputCls} appearance-none`}>
-                  <option value="" disabled>Select a state...</option>
-                  {statesList.map((s) => (
-                    <option key={s._id} value={s._id}>{s.name}</option>
-                  ))}
-                </select>
-                <FiChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-              </div>
+                <CustomDropdown
+                  value={form.stateId}
+                  onChange={(val) => set("stateId", val)}
+                  options={statesList.map(s => ({ value: s._id, label: s.name }))}
+                  placeholder="Select a state..."
+                  searchable
+                />
             </Field>
 
             <Field label="Slug">

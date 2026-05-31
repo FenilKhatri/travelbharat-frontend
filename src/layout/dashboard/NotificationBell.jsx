@@ -10,7 +10,7 @@ const NotificationBell = () => {
     refetchInterval: 60000, // Refetch every 60 seconds
   });
 
-  const unreadCount = data?.data?.unreadCount || 0;
+  const unreadCount = data?.data?.data?.unreadCount || 0;
 
   return (
     <Link 

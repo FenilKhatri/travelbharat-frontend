@@ -126,16 +126,8 @@ const BlogDetails = () => {
     const url = window.location.href;
     const title = blog?.title;
     
-    if (platform === 'native' && navigator.share) {
+    if (navigator.share) {
       navigator.share({ title, url }).catch(console.error);
-      return;
-    }
-    
-    if (platform === 'copy') {
-      navigator.clipboard.writeText(url);
-      toast.success("Link copied to clipboard!");
-    } else {
-      toast.info(`Sharing via ${platform} (Simulated)`);
     }
   };
 

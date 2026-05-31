@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useSearchParams } from "react-router-dom";
 import { FiSearch, FiMapPin, FiLoader, FiStar, FiFilter, FiArrowRight } from "react-icons/fi";
@@ -6,6 +6,7 @@ import { FaSlidersH } from "react-icons/fa";
 import { placeService } from "../../../services/placeService";
 import { stateService } from "../../../services/stateService";
 import Button from "../../../components/ui/Button";
+import CustomDropdown from "../../../components/ui/CustomDropdown";
 import { motion } from "framer-motion";
 
 const categories = [
@@ -99,47 +100,49 @@ const Places = () => {
               {/* Sort FiFilter */}
               <div className="mb-6">
                 <h3 className="font-semibold text-slate-700 dark:text-slate-300 mb-3 text-sm uppercase tracking-wider">Sort By</h3>
-                <select 
-                  className="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-1 focus:ring-[#E85D04]"
+                <CustomDropdown
                   value={selectedSort}
-                  onChange={(e) => updateFilters("sort", e.target.value)}
-                >
-                  <option value="-priority">Featured First</option>
-                  <option value="-createdAt">Newest First</option>
-                  <option value="createdAt">Oldest First</option>
-                  <option value="-rating">Highest Rated</option>
-                  <option value="name">A-Z</option>
-                </select>
+                  onChange={(val) => updateFilters("sort", val)}
+                  options={[
+                    { value: "-priority", label: "Featured First" },
+                    { value: "-createdAt", label: "Newest First" },
+                    { value: "createdAt", label: "Oldest First" },
+                    { value: "-rating", label: "Highest Rated" },
+                    { value: "name", label: "A-Z" },
+                  ]}
+                  placeholder="Sort by"
+                />
               </div>
 
               {/* State FiFilter */}
               <div className="mb-6">
                 <h3 className="font-semibold text-slate-700 dark:text-slate-300 mb-3 text-sm uppercase tracking-wider">State</h3>
-                <select 
-                  className="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-1 focus:ring-[#E85D04]"
+                <CustomDropdown
                   value={selectedState}
-                  onChange={(e) => updateFilters("stateId", e.target.value)}
-                >
-                  <option value="">All States</option>
-                  {statesData?.data?.states?.map(s => (
-                    <option key={s._id} value={s._id}>{s.name}</option>
-                  ))}
-                </select>
+                  onChange={(val) => updateFilters("stateId", val)}
+                  options={[
+                    { value: "", label: "All States" },
+                    ...(statesData?.data?.states?.map(s => ({ value: s._id, label: s.name })) || []),
+                  ]}
+                  placeholder="All States"
+                  searchable
+                />
               </div>
 
               {/* Budget FiFilter */}
               <div className="mb-6">
                 <h3 className="font-semibold text-slate-700 dark:text-slate-300 mb-3 text-sm uppercase tracking-wider">Budget</h3>
-                <select 
-                  className="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-1 focus:ring-[#E85D04] capitalize"
+                <CustomDropdown
                   value={selectedBudget}
-                  onChange={(e) => updateFilters("budget", e.target.value)}
-                >
-                  <option value="">Any Budget</option>
-                  <option value="budget">Budget</option>
-                  <option value="moderate">Moderate</option>
-                  <option value="luxury">Luxury</option>
-                </select>
+                  onChange={(val) => updateFilters("budget", val)}
+                  options={[
+                    { value: "", label: "Any Budget" },
+                    { value: "budget", label: "Budget" },
+                    { value: "moderate", label: "Moderate" },
+                    { value: "luxury", label: "Luxury" },
+                  ]}
+                  placeholder="Any Budget"
+                />
               </div>
 
               {/* Category FiFilter */}

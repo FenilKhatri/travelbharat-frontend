@@ -6,7 +6,7 @@ export const features = [
     {
         logo: MdSecurity,
         theme: "text-emerald-500",
-        text: "Verified Caregivers",
+        text: "Verified Guides",
     },
     {
         logo: FiClock,

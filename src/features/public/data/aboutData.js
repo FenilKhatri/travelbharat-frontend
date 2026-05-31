@@ -1,169 +1,141 @@
-import { FiShield, FiActivity, FiCpu, FiUserCheck } from "react-icons/fi";
-import { MdVerified, MdAccessibility, MdSecurity } from "react-icons/md";
-import { FaStopwatch, FaFileMedical, FaHandshake, FaHeartbeat, FaStethoscope, FaHandHoldingHeart, FaDumbbell, FaClipboardCheck, FaBrain } from "react-icons/fa";
+import { FiCompass, FiMap, FiHeart, FiBookOpen, FiCamera, FiGlobe, FiTarget, FiEye, FiStar } from "react-icons/fi";
+import { FaMountain, FaLandmark } from "react-icons/fa";
 
 export const missionData = [
     {
-        icon: MdSecurity,
-        Title: "Safety",
-        Theme: "bg-blue-500"
+        icon: FiTarget,
+        Title: "Authentic Travel",
+        Theme: "bg-[#E85D04]"
     },
     {
-        icon: FaHandshake,
-        Title: "Compassion",
-        Theme: "bg-red-500"
-    }, 
-    {
-        icon: FaStethoscope,
-        Title: "Professional Care",
+        icon: FiHeart,
+        Title: "Local Experiences",
         Theme: "bg-emerald-500"
+    },
+    {
+        icon: FiGlobe,
+        Title: "Discover India",
+        Theme: "bg-blue-500"
     }
-]
+];
 
 export const cardData = [
     {
-        name: "Verified Caregivers",
+        name: "Hidden Gems",
         description:
-            "Every caregiver on our platform goes through a rigorous identity and qualification verification process.",
-        icon: FiShield,
+            "Discover lesser-known destinations that most tourists miss — from secluded valleys to forgotten temples.",
+        icon: FiCompass,
     },
     {
-        name: "Medical Training",
+        name: "Cultural Heritage",
         description:
-            "Our network includes certified nurses, trained attendants, and licensed physiotherapists.",
-        icon: FiActivity,
+            "Explore India's rich cultural tapestry — ancient traditions, art forms, and centuries-old customs.",
+        icon: FaLandmark,
     },
     {
-        name: "Background Checks",
+        name: "State Guides",
         description:
-            "Comprehensive criminal and reference checks are mandatory for all care professionals.",
-        icon: MdVerified,
+            "Comprehensive state-by-state travel guides with local insights, itineraries, and practical tips.",
+        icon: FiMap,
     },
     {
-        name: "24/7 Supports",
+        name: "Local Experiences",
         description:
-            "Our dedicated care coordination team is available round the clock for any emergencies or assistance.",
-        icon: FaStopwatch,
+            "Immerse yourself in authentic local experiences — from street food walks to village homestays.",
+        icon: FiHeart,
     },
     {
-        name: "Personalized Plans",
+        name: "Authentic Information",
         description:
-            "Care Plans tailored specifically to the unique medical and personal needs of your elderly family members.",
-        icon: FaFileMedical,
+            "Every piece of content is researched and verified to ensure you get reliable, authentic travel information.",
+        icon: FiBookOpen,
     },
     {
-        name: "Trusted by Families",
+        name: "Visual Stories",
         description:
-            "Thousands of families rely on us daily for consistent, high-quality home healthcare.",
-        icon: FaHandshake,
+            "Beautiful photography and immersive visual storytelling that brings every destination to life.",
+        icon: FiCamera,
     },
 ];
 
 export const stats = [
-    { value: "10k+", label: "Families Served" },
-    { value: "2k+", label: "Verified Caregivers" },
-    { value: "50+", label: "Cities Covered" },
-    { value: "98%", label: "Satisfaction Rate" },
+    { value: "36+", label: "States & UTs" },
+    { value: "500+", label: "Cities Covered" },
+    { value: "1000+", label: "Destinations" },
+    { value: "100%", label: "Authentic" },
 ];
 
 export const visionItems = [
     {
-        title: "Accessibility",
-        icon: MdAccessibility,
+        title: "Explore",
+        icon: FiCompass,
         iconClass:
-            "bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400",
+            "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400",
     },
     {
-        title: "Trust",
-        icon: FaHandshake,
+        title: "Heritage",
+        icon: FaLandmark,
+        iconClass:
+            "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400",
+    },
+    {
+        title: "Nature",
+        icon: FaMountain,
+        iconClass:
+            "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400",
+    },
+    {
+        title: "Culture",
+        icon: FiGlobe,
         iconClass:
             "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400",
-    },
-    {
-        title: "Technology",
-        icon: FiCpu,
-        iconClass:
-            "bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400",
-    },
-    {
-        title: "Care",
-        icon: FaHeartbeat,
-        iconClass:
-            "bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400",
     },
 ];
 
 export const processSteps = [
     {
         number: "01",
-        title: "Register",
-        description: "Create an account and set up a patient profile in minutes.",
-        icon: MdVerified,
+        title: "Explore States",
+        description: "Browse through India's diverse states and union territories.",
+        icon: FiMap,
     },
     {
         number: "02",
-        title: "Choose Service",
-        description: "Select the healthcare service that best fits your needs.",
-        icon: FaStethoscope,
+        title: "Discover Cities",
+        description: "Find amazing cities within each state to plan your journey.",
+        icon: FiGlobe,
     },
     {
         number: "03",
-        title: "Select Caregiver",
-        description: "Browse verified professionals and choose with confidence.",
-        icon: FiUserCheck,
+        title: "Find Destinations",
+        description: "Explore curated destinations with detailed travel information.",
+        icon: FiCompass,
     },
     {
         number: "04",
-        title: "Receive Care",
-        description: "Get compassionate care delivered safely at home.",
-        icon: FaHandshake,
+        title: "Plan & Travel",
+        description: "Use our guides and tips to plan the perfect trip.",
+        icon: FiStar,
     },
-];
-
-export const serviceItems = [
-    {
-        name: "Home Nursing Care",
-        icon: FaStethoscope
-    },
-    {
-        name: "Elderly Daily Assistance",
-        icon: FaHandHoldingHeart
-    }, 
-    {
-        name: "Physiotherapy at Home",
-        icon: FaDumbbell
-    },
-    {
-        name: "Post-Hospitalization Care",
-        icon: FaClipboardCheck
-    },
-    {
-        name: "Medical Attendants",
-        icon: FiUserCheck
-    },
-    {
-        name: "Dementia & Memory Support",
-        icon: FaBrain
-    }
 ];
 
 export const testimonials = [
     {
-        name: "Ritika Shah",
-        role: "Daughter of a patient",
+        name: "Priya Sharma",
+        role: "Travel Enthusiast",
         review:
-            "The caregiver was patient, skilled, and incredibly kind. We finally felt at peace knowing my mother was in safe hands.",
+            "TravelBharat helped me discover hidden gems in Rajasthan I never knew existed. The detailed guides made my trip unforgettable!",
     },
     {
-        name: "Amit Verma",
-        role: "Family caregiver",
+        name: "Amit Patel",
+        role: "Solo Traveler",
         review:
-            "The process was simple, transparent, and fast. We found the right professional much quicker than expected.",
+            "The state-by-state guides are incredibly detailed. I planned my entire Northeast India trip using TravelBharat.",
     },
     {
-        name: "Neha Mehta",
-        role: "Working professional",
+        name: "Neha Gupta",
+        role: "Family Traveler",
         review:
-            "Reliable support, professional communication, and genuine care. It felt like a modern healthcare service we could trust.",
+            "Authentic information and beautiful photography. TravelBharat made planning our family vacation across Gujarat so easy.",
     },
 ];

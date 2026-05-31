@@ -1,11 +1,17 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { Suspense, useEffect, memo } from "react";
 import Footer from "../core/Footer";
 import Navbar from "../core/Navbar";
+import GlobalLoader from "../../components/ui/GlobalLoader";
 
-import { useEffect } from "react";
+const pageVariants = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
+  exit:    { opacity: 0, transition: { duration: 0.2, ease: "easeIn" } }
+};
 
-const PublicLayout = () => {
+const PublicLayout = memo(() => {
   const location = useLocation();
 
   useEffect(() => {
@@ -16,21 +22,23 @@ const PublicLayout = () => {
     <div className="dark flex flex-col min-h-screen bg-slate-950 text-white transition-colors duration-300">
       <Navbar />
       <main className="flex-1">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="popLayout">
           <motion.div
             key={location.pathname}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            variants={pageVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
           >
-            <Outlet />
+            <Suspense fallback={<GlobalLoader />}>
+              <Outlet />
+            </Suspense>
           </motion.div>
         </AnimatePresence>
       </main>
       <Footer />
     </div>
   );
-};
+});
 
 export default PublicLayout;

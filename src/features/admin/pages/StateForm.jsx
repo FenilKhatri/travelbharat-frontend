@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { FiSave, FiArrowLeft, FiUpload, FiPlus, FiTrash2, FiImage, FiMapPin, FiCloud, FiNavigation, FiBook, FiSearch, FiChevronDown } from "react-icons/fi";
 import { FaUtensils, FaSlidersH } from "react-icons/fa";
+import CustomDropdown from "../../../components/ui/CustomDropdown";
 import { toast } from "react-toastify";
 import http from "../../../lib/axios";
 
@@ -410,15 +411,12 @@ const StateForm = () => {
             </Field>
 
             <Field label="Region">
-              <div className="relative">
-                <select value={form.region} onChange={(e) => set("region", e.target.value)}
-                  className={`${inputCls} appearance-none`}>
-                  {REGIONS.map((r) => (
-                    <option key={r.value} value={r.value}>{r.label}</option>
-                  ))}
-                </select>
-                <FiChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-              </div>
+                <CustomDropdown
+                  value={form.region}
+                  onChange={(val) => set("region", val)}
+                  options={REGIONS}
+                  placeholder="Select Region"
+                />
             </Field>
 
             <Field label="Tagline" span2>

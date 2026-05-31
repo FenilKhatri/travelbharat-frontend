@@ -5,6 +5,7 @@ import { FiUsers, FiTrash2, FiXCircle, FiChevronLeft, FiChevronRight, FiMail } f
 import { MdSecurity, MdVerified } from "react-icons/md";
 import http from "../../../lib/axios";
 import SearchAndFilter from "../../../components/ui/SearchAndFilter";
+import CustomDropdown from "../../../components/ui/CustomDropdown";
 import { toast } from "react-toastify";
 
 const Users = () => {
@@ -204,18 +205,15 @@ const Users = () => {
                     </td>
 
                     {/* Role Privilege */}
-                    <td className="py-4 px-6">
-                      <select
+                    <td className="py-4 px-6 w-36">
+                      <CustomDropdown
                         value={userItem.role}
-                        onChange={(e) => handleRoleChange(userItem, e.target.value)}
-                        className={`text-xs font-bold rounded-lg border border-slate-200 dark:border-slate-800/80 px-2.5 py-1.5 focus:outline-hidden ${userItem.role === "admin"
-                          ? "bg-purple-500/10 text-purple-650 dark:text-purple-400"
-                          : "bg-blue-500/10 text-blue-650 dark:text-blue-400"
-                          }`}
-                      >
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                      </select>
+                        onChange={(val) => handleRoleChange(userItem, val)}
+                        options={[
+                          { value: "user", label: "User" },
+                          { value: "admin", label: "Admin" },
+                        ]}
+                      />
                     </td>
 
                     {/* Provider */}
