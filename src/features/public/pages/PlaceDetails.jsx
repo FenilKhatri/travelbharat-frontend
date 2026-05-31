@@ -16,7 +16,8 @@ import {
 import { FaHistory, FaQuoteLeft, FaPlane, FaTrain, FaCar, FaBus } from "react-icons/fa";
 import { placeService } from "../../../services/placeService";
 import ReviewSection from "../components/ReviewSection";
-
+import PlanTripModal from "../components/PlanTripModal";
+import { useAuth } from "../../../context/AuthContext";
 // --- Subcomponents ---
 
 const PhotoModal = ({ isOpen, onClose, photos, initialIndex = 0 }) => {
@@ -124,8 +125,10 @@ const Reveal = ({ children, delay = 0, y = 30 }) => {
 const PlaceDetails = () => {
   const { slug } = useParams();
   const [modalOpen, setModalOpen] = useState(false);
+  const [tripModalOpen, setTripModalOpen] = useState(false);
   const [activePhoto, setActivePhoto] = useState(0);
   const heroRef = useRef(null);
+  const { user } = useAuth();
   
   const { scrollY } = useScroll();
   const yHero = useTransform(scrollY, [0, 1000], [0, 300]);
@@ -235,11 +238,23 @@ const PlaceDetails = () => {
               {validGallery.length > 0 && (
                 <button 
                   onClick={() => { setActivePhoto(0); setModalOpen(true); }}
-                  className="bg-white text-[#050505] px-8 py-4 rounded-full font-black flex items-center gap-2 hover:bg-gray-200 hover:scale-105 transition-all duration-300"
+                  className="bg-white text-[#050505] px-8 py-4 rounded-full font-black flex items-center gap-2 hover:bg-gray-200 hover:scale-105 transition-all duration-300 shadow-[0_10px_20px_rgba(255,255,255,0.2)]"
                 >
                   Explore Photos <FiArrowRight />
                 </button>
               )}
+              <button 
+                onClick={() => {
+                  if (!user) {
+                    toast.error("Please login to plan a trip");
+                  } else {
+                    setTripModalOpen(true);
+                  }
+                }}
+                className="bg-[#E85D04] text-white px-8 py-4 rounded-full font-black flex items-center gap-2 hover:bg-[#D05203] hover:scale-105 transition-all duration-300 shadow-[0_10px_20px_rgba(232,93,4,0.4)]"
+              >
+                Plan a Trip <FiCalendar />
+              </button>
             </div>
           </Reveal>
         </div>
@@ -792,6 +807,13 @@ const PlaceDetails = () => {
         onClose={() => setModalOpen(false)} 
         photos={validGallery} 
         initialIndex={activePhoto} 
+      />
+
+      <PlanTripModal 
+        isOpen={tripModalOpen} 
+        onClose={() => setTripModalOpen(false)} 
+        placeId={place._id} 
+        placeName={place.name} 
       />
 
     </div>

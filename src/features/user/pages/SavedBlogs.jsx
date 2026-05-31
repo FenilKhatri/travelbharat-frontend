@@ -2,15 +2,16 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { FiClock, FiHeart, FiEye, FiLoader, FiBookmark } from "react-icons/fi";
-import { blogService } from "../../../services/blogService"; // Ensure blogService has getSavedBlogs
+import http from "../../../lib/axios";
 
 const SavedBlogs = () => {
-  const { data: savedData, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['savedBlogs'],
-    queryFn: () => blogService.getSavedBlogs() // We need to add this
+    queryFn: () => http.get("/blogs/user/saved")
   });
 
-  const blogs = savedData?.data?.blogs || [];
+  // Since http.get returns { success, message, data }, data is { blogs: [...] }
+  const blogs = (data?.blogs || data?.data?.blogs || data?.data?.data?.blogs || []).filter(Boolean);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#050B14] pb-24 pt-24 font-sans text-slate-800 dark:text-slate-200">

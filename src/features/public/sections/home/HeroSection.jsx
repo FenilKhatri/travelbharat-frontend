@@ -146,7 +146,7 @@ const HeroSection = () => {
     >
 
       <div
-        className="absolute inset-0 z-0 opacity-[0.5] dark:opacity-[0.5] bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 z-0 opacity-[0.5] dark:opacity-[1] bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage:
             "url('https://images.unsplash.com/photo-1713729991304-d0b6c328560e?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cmVkJTIwZm9ydHxlbnwwfHwwfHx8MA%3D%3D')",
@@ -159,7 +159,7 @@ const HeroSection = () => {
       {/* GLOW EFFECTS */}
       <div className="absolute top-20 left-20 w-80 h-80 bg-[#FF8F00]/15 rounded-full blur-[120px] z-0"></div>
 
-      <div className="absolute bottom-10 right-10 w-[420px] h-[420px] bg-[#E85D04]/10 rounded-full blur-[150px] z-0"></div>
+      <div className="absolute bottom-10 right-0 w-[420px] h-[420px] bg-[#E85D04]/10 rounded-full blur-[150px] z-0"></div>
 
       {/* MAIN CONTENT */}
       <div className="relative z-10 w-full max-w-[1700px] mx-auto px-6 lg:px-12 pt-28 pb-16">
@@ -199,48 +199,6 @@ const HeroSection = () => {
               </AnimatePresence>
             </div>
 
-            {/* SEARCH BAR */}
-            <div className="mt-10 max-w-3xl">
-              <div className="flex flex-col sm:flex-row gap-3 bg-white/75 dark:bg-white/5 backdrop-blur-2xl p-3 rounded-2xl border border-white/30 dark:border-white/10 shadow-xl">
-
-                <div className="flex-1 flex items-center px-4 py-3 rounded-xl bg-white/90 dark:bg-black/20 border border-slate-100 dark:border-white/5">
-                  <FiMapPin
-                    className="text-[#E85D04] mr-3 shrink-0"
-                    size={20}
-                  />
-
-                  <input
-                    type="text"
-                    placeholder="Explore Rajasthan, Kerala, Gujarat..."
-                    className="w-full bg-transparent outline-none text-slate-800 dark:text-white placeholder:text-slate-400 text-sm md:text-base font-semibold"
-                  />
-                </div>
-
-                <Button
-                  size="lg"
-                  className="h-14 px-8 rounded-xl text-sm md:text-base font-bold bg-gradient-to-r from-[#E85D04] to-[#FF8F00] hover:from-[#DC2F02] hover:to-[#E85D04] text-white shadow-lg transition-all duration-300 flex items-center gap-2"
-                >
-                  <FiSearch size={18} />
-                  <span>Search</span>
-                </Button>
-              </div>
-
-              {/* CTA BUTTON */}
-              <div className="mt-6">
-                <Button
-                  onClick={handleCTAClick}
-                  size="lg"
-                  className="h-14 px-10 rounded-xl text-sm md:text-base font-extrabold bg-[#0B1528] hover:bg-[#14233D] dark:bg-[#E85D04] dark:hover:bg-[#C94F02] text-white shadow-xl transition-all duration-300 flex items-center gap-2.5"
-                >
-                  <FiCompass size={18} />
-
-                  <span>
-                    {currentBanner.buttonText || "Explore Now"}
-                  </span>
-                </Button>
-              </div>
-            </div>
-
             {/* STATS */}
             <div className="flex flex-wrap gap-8 mt-12 border-t border-slate-200/50 dark:border-white/5 pt-8">
               {[
@@ -272,7 +230,7 @@ const HeroSection = () => {
             <motion.div
               animate={{ y: [-8, 8, -8] }}
               transition={{
-                duration: 4.5,
+                duration: 5,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
@@ -297,11 +255,11 @@ const HeroSection = () => {
             <motion.div
               animate={{ y: [8, -8, 8] }}
               transition={{
-                duration: 5.5,
+                duration: 5,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="absolute bottom-6 -right-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-2xl px-5 py-4 shadow-xl z-20 flex items-center gap-3"
+              className="absolute -bottom-5 -right-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-2xl px-5 py-4 shadow-xl z-20 flex items-center gap-3"
             >
               <div className="p-2 bg-[#E85D04]/10 rounded-lg text-[#E85D04]">
                 <FiCamera size={16} />

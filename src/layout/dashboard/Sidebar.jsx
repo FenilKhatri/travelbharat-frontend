@@ -149,7 +149,7 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
                     {!collapsed && <span className="flex-1">{label}</span>}
                     {!collapsed && to === "/admin/notifications" && unreadCount > 0 && (
                       <span className="bg-[#E85D04] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                        {unreadCount}
+                        {unreadCount > 99 ? '99+' : unreadCount}
                       </span>
                     )}
                     {collapsed && to === "/admin/notifications" && unreadCount > 0 && (
@@ -162,11 +162,11 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
           ))}
         </nav>
 
-        {/* ADMIN PROFILE FOOTER SECTION */}
+        {/* PROFILE FOOTER SECTION */}
         <div className="p-3 border-t border-slate-100 dark:border-slate-800/40 bg-slate-50/50 dark:bg-[#070D1F]/30">
           {collapsed ? (
             <div className="flex flex-col items-center gap-3 py-1">
-              <Link to="/admin/profile">
+              <Link to={user?.role === 'admin' ? "/admin/profile" : "/user/profile"}>
                 {user?.profileImage ? (
                   <img
                     src={user.profileImage}
@@ -192,7 +192,7 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
           ) : (
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <Link to="/admin/profile" className="shrink-0">
+                <Link to={user?.role === 'admin' ? "/admin/profile" : "/user/profile"} className="shrink-0">
                   {user?.profileImage ? (
                     <img
                       src={user.profileImage}
@@ -219,7 +219,7 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
               {/* Action Buttons */}
               <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-100 dark:border-slate-800/40">
                 <Link
-                  to="/admin/profile"
+                  to={user?.role === 'admin' ? "/admin/profile" : "/user/profile"}
                   className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:text-[#E85D04] dark:text-slate-400 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
                 >
                   <FiSettings size={14} />

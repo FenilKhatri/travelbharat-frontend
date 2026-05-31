@@ -50,7 +50,7 @@ const AuthPage = ({ role = "user" }) => {
       </div>
 
       {/* Right Side - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative overflow-hidden">
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-10 md:py-15 lg:py-30 relative overflow-hidden">
         {/* Decorative elements for right side */}
         <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-[#E85D04]/10 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen pointer-events-none z-0"></div>
 

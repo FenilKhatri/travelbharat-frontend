@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { FiSearch, FiMapPin, FiLoader, FiStar, FiFilter, FiArrowRight } from "react-icons/fi";
 import { FaSlidersH } from "react-icons/fa";
 import { placeService } from "../../../services/placeService";
@@ -8,13 +8,32 @@ import { stateService } from "../../../services/stateService";
 import Button from "../../../components/ui/Button";
 import { motion } from "framer-motion";
 
-const categories = ["Heritage", "Nature", "Adventure", "Beaches", "Mountains", "Spiritual"];
+const categories = [
+  { label: "Heritage", value: "heritage" },
+  { label: "Nature", value: "nature" },
+  { label: "Adventure", value: "adventure" },
+  { label: "Beaches", value: "beach" },
+  { label: "Mountains", value: "hill-station" },
+  { label: "Spiritual", value: "religious" }
+];
 
 const Places = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedState, setSelectedState] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  const searchTerm = searchParams.get("search") || "";
+  const selectedCategory = searchParams.get("category") || "";
+  const selectedState = searchParams.get("stateId") || "";
+  const selectedBudget = searchParams.get("budget") || "";
+  const selectedSort = searchParams.get("sort") || "-priority";
+
+  const updateFilters = (key, value) => {
+    const newParams = new URLSearchParams(searchParams);
+    if (value) newParams.set(key, value);
+    else newParams.delete(key);
+    // Reset page to 1 when filters change (if pagination is added later)
+    setSearchParams(newParams);
+  };
 
   // Fetch states for filter dropdown
   const { data: statesData } = useQuery({
@@ -22,33 +41,19 @@ const Places = () => {
     queryFn: () => stateService.getAllStates({})
   });
 
-  // Fetch places
+  // Fetch places with backend filters
   const { data: placesData, isLoading, isError } = useQuery({
-    queryKey: ['allPlaces', selectedCategory, selectedState],
+    queryKey: ['allPlaces', selectedCategory, selectedState, searchTerm, selectedBudget, selectedSort],
     queryFn: () => placeService.getAllPlaces({
       category: selectedCategory || undefined,
       stateId: selectedState || undefined,
+      search: searchTerm || undefined,
+      budget: selectedBudget || undefined,
+      sort: selectedSort || undefined,
     })
   });
 
-  // Local search filter
-  const filteredPlaces = placesData?.data?.places?.filter(place => 
-    place.name.toLowerCase().includes(searchTerm.toLowerCase())
-  ) || [];
-
-  // Surat/Gujarat priority logic
-  const displayPlaces = [...filteredPlaces].sort((a, b) => {
-    const isASurat = a.cityId?.name?.toLowerCase() === 'surat';
-    const isBSurat = b.cityId?.name?.toLowerCase() === 'surat';
-    const isAGujarat = a.stateId?.name?.toLowerCase() === 'gujarat';
-    const isBGujarat = b.stateId?.name?.toLowerCase() === 'gujarat';
-
-    if (isASurat && !isBSurat) return -1;
-    if (!isASurat && isBSurat) return 1;
-    if (isAGujarat && !isBGujarat) return -1;
-    if (!isAGujarat && isBGujarat) return 1;
-    return 0;
-  });
+  const displayPlaces = placesData?.data?.places || [];
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0A1628] pb-24 pt-24">
@@ -70,7 +75,7 @@ const Places = () => {
                 type="text" 
                 placeholder="Search destinations..." 
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => updateFilters("search", e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white dark:bg-[#060D18] border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-[#E85D04] text-slate-900 dark:text-white"
               />
             </div>
@@ -91,18 +96,49 @@ const Places = () => {
                 <FiFilter size={18} className="text-[#E85D04]" /> Filters
               </div>
 
+              {/* Sort FiFilter */}
+              <div className="mb-6">
+                <h3 className="font-semibold text-slate-700 dark:text-slate-300 mb-3 text-sm uppercase tracking-wider">Sort By</h3>
+                <select 
+                  className="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-1 focus:ring-[#E85D04]"
+                  value={selectedSort}
+                  onChange={(e) => updateFilters("sort", e.target.value)}
+                >
+                  <option value="-priority">Featured First</option>
+                  <option value="-createdAt">Newest First</option>
+                  <option value="createdAt">Oldest First</option>
+                  <option value="-rating">Highest Rated</option>
+                  <option value="name">A-Z</option>
+                </select>
+              </div>
+
               {/* State FiFilter */}
               <div className="mb-6">
                 <h3 className="font-semibold text-slate-700 dark:text-slate-300 mb-3 text-sm uppercase tracking-wider">State</h3>
                 <select 
                   className="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-1 focus:ring-[#E85D04]"
                   value={selectedState}
-                  onChange={(e) => setSelectedState(e.target.value)}
+                  onChange={(e) => updateFilters("stateId", e.target.value)}
                 >
                   <option value="">All States</option>
                   {statesData?.data?.states?.map(s => (
                     <option key={s._id} value={s._id}>{s.name}</option>
                   ))}
+                </select>
+              </div>
+
+              {/* Budget FiFilter */}
+              <div className="mb-6">
+                <h3 className="font-semibold text-slate-700 dark:text-slate-300 mb-3 text-sm uppercase tracking-wider">Budget</h3>
+                <select 
+                  className="w-full p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-1 focus:ring-[#E85D04] capitalize"
+                  value={selectedBudget}
+                  onChange={(e) => updateFilters("budget", e.target.value)}
+                >
+                  <option value="">Any Budget</option>
+                  <option value="budget">Budget</option>
+                  <option value="moderate">Moderate</option>
+                  <option value="luxury">Luxury</option>
                 </select>
               </div>
 
@@ -116,22 +152,22 @@ const Places = () => {
                       name="category" 
                       value=""
                       checked={selectedCategory === ""}
-                      onChange={() => setSelectedCategory("")}
+                      onChange={() => updateFilters("category", "")}
                       className="accent-[#E85D04] w-4 h-4" 
                     />
                     <span className={`text-sm group-hover:text-[#E85D04] transition-colors ${selectedCategory === "" ? "text-[#E85D04] font-medium" : "text-slate-600 dark:text-slate-400"}`}>All Categories</span>
                   </label>
                   {categories.map(cat => (
-                    <label key={cat} className="flex items-center gap-3 cursor-pointer group">
+                    <label key={cat.value} className="flex items-center gap-3 cursor-pointer group">
                       <input 
                         type="radio" 
                         name="category" 
-                        value={cat}
-                        checked={selectedCategory === cat}
-                        onChange={() => setSelectedCategory(cat)}
+                        value={cat.value}
+                        checked={selectedCategory === cat.value}
+                        onChange={() => updateFilters("category", cat.value)}
                         className="accent-[#E85D04] w-4 h-4" 
                       />
-                      <span className={`text-sm group-hover:text-[#E85D04] transition-colors ${selectedCategory === cat ? "text-[#E85D04] font-medium" : "text-slate-600 dark:text-slate-400"}`}>{cat}</span>
+                      <span className={`text-sm group-hover:text-[#E85D04] transition-colors ${selectedCategory === cat.value ? "text-[#E85D04] font-medium" : "text-slate-600 dark:text-slate-400"}`}>{cat.label}</span>
                     </label>
                   ))}
                 </div>
@@ -140,7 +176,7 @@ const Places = () => {
               <Button 
                 variant="outline" 
                 className="w-full text-sm"
-                onClick={() => { setSelectedCategory(""); setSelectedState(""); setSearchTerm(""); }}
+                onClick={() => setSearchParams({})}
               >
                 Reset Filters
               </Button>

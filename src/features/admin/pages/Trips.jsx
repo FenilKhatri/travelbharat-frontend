@@ -32,9 +32,9 @@ const Trips = () => {
     keepPreviousData: true
   });
 
-  const responseData = data?.data || {};
-  const trips = responseData.trips || [];
-  const pagination = responseData.pagination || { total: 0, pages: 1 };
+  const responseData = data || {};
+  const trips = responseData.trips || data?.data?.trips || [];
+  const pagination = responseData.pagination || data?.data?.pagination || { total: 0, pages: 1 };
 
   // Delete trip mutation
   const deleteMutation = useMutation({
@@ -136,7 +136,7 @@ const Trips = () => {
                 </tr>
               ) : (
                 trips.map((trip) => (
-                  <tr key={trip._id} className="hover:bg-slate-50/50 dark:hover:bg-slate-850/5 transition">
+                  <tr key={trip._id} className="hover:bg-slate-50/50 dark:hover:bg-slate-900 transition">
                     {/* Cover image & Title */}
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-4">
@@ -210,7 +210,7 @@ const Trips = () => {
                       <div className="flex items-center justify-end gap-2">
                         {trip.isPublic && (
                           <Link
-                            to={`/trips/${trip._id}`}
+                            to={`/user/trips/${trip._id}`}
                             target="_blank"
                             title="Preview public itinerary"
                             className="p-2 text-slate-400 hover:text-slate-850 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition cursor-pointer"

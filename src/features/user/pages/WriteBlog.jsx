@@ -63,7 +63,7 @@ const WriteBlog = () => {
   const isSubmitting = createMutation.isLoading;
 
   return (
-    <div className="space-y-6 pb-12 max-w-4xl mx-auto">
+    <div className="space-y-6 pt-30 pb-12 max-w-4xl mx-auto px-4">
       <div>
         <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-1">Write a Blog</h1>
         <p className="text-slate-500 dark:text-slate-400 text-sm">Share your travel experiences with the community.</p>

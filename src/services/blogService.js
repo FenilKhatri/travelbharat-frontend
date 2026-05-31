@@ -25,7 +25,7 @@ export const blogService = {
   // Interactions
   getSavedBlogs: () => http.get(`${PREFIX}/user/saved`),
   toggleSaveBlog: (blogId) => http.post(`${PREFIX}/${blogId}/save`),
-  toggleLike: (id, referenceType) => http.post(`${PREFIX}/${id}/like`, { referenceType }),
+  toggleLike: (entityId, entityType) => http.post(`/likes/toggle`, { entityId, entityType: entityType.toLowerCase() }),
   addComment: (blogId, text) => http.post(`${PREFIX}/${blogId}/comments`, { text }),
   getComments: (blogId, params) => http.get(`${PREFIX}/${blogId}/comments`, { params }),
   deleteComment: (id) => http.delete(`${PREFIX}/comments/${id}`),

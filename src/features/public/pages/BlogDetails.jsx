@@ -25,6 +25,19 @@ const BlogDetails = () => {
 
   const blog = data?.data?.data?.blog || data?.data?.blog;
 
+  const { data: savedData } = useQuery({
+    queryKey: ['savedBlogs'],
+    queryFn: () => blogService.getSavedBlogs(),
+    enabled: !!user
+  });
+
+  useEffect(() => {
+    if (blog && savedData) {
+      const savedList = savedData?.data?.data?.blogs || savedData?.data?.blogs || savedData?.blogs || [];
+      setIsBookmarked(savedList.some(b => b._id === blog._id));
+    }
+  }, [blog, savedData]);
+
   const { data: commentsData } = useQuery({
     queryKey: ['blogComments', blog?._id],
     queryFn: () => blogService.getComments(blog._id),
@@ -42,10 +55,13 @@ const BlogDetails = () => {
 
   const saveMutation = useMutation({
     mutationFn: () => blogService.toggleSaveBlog(blog._id),
-    onSuccess: () => {
-      setIsBookmarked(!isBookmarked);
+    onSuccess: (response) => {
+      const isSaved = response?.data?.isSaved;
+      if (isSaved !== undefined) setIsBookmarked(isSaved);
+      else setIsBookmarked(!isBookmarked);
+      
       queryClient.invalidateQueries(['savedBlogs']);
-      toast.success(isBookmarked ? "Removed from saved articles" : "Saved article!");
+      toast.success(isSaved ? "Saved article!" : "Removed from saved articles");
     },
     onError: () => toast.error("Failed to save. Please log in.")
   });

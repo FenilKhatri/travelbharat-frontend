@@ -21,7 +21,7 @@ const NotificationBell = () => {
       <FiBell size={18} />
       {unreadCount > 0 && (
         <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#E85D04] text-white text-[9px] font-bold flex items-center justify-center shadow-sm">
-          {unreadCount > 9 ? '9+' : unreadCount}
+          {unreadCount > 99 ? '99+' : unreadCount}
         </span>
       )}
     </Link>

@@ -130,7 +130,7 @@ const Blogs = () => {
                     </div>
                   </td>
                   <td className="py-4 px-6">
-                    <span className="px-2 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 capitalize">{b.category?.replace(/-/g, " ")}</span>
+                    <span className="inline-block whitespace-nowrap px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 capitalize">{b.category?.replace(/-/g, " ")}</span>
                   </td>
                   <td className="py-4 px-6 text-slate-500">{b.readTime || "—"} min</td>
                   <td className="py-4 px-6">

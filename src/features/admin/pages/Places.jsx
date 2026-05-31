@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import {
   FiMapPin,
   FiPlus,
@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 const Places = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   // Modal Control States
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -79,7 +80,7 @@ const Places = () => {
     keepPreviousData: true
   });
 
-  const responseData = data?.data || {};
+  const responseData = data || {};
   const places = responseData.places || [];
   const pagination = responseData.pagination || { total: 0, pages: 1 };
 
@@ -88,7 +89,7 @@ const Places = () => {
     queryKey: ["statesListForSelect"],
     queryFn: async () => {
       const res = await http.get("/states?limit=100");
-      let states = res.data.data.states || [];
+      let states = res?.data?.states || [];
       // Make Gujarat appear first
       const gujaratIdx = states.findIndex(s => s.name.toLowerCase() === "gujarat");
       if (gujaratIdx !== -1) {
@@ -106,7 +107,7 @@ const Places = () => {
     queryFn: async () => {
       if (!selectedStateSlug) return [];
       const res = await http.get(`/cities/state/${selectedStateSlug}`);
-      let cities = res.data.data.cities || [];
+      let cities = res?.data?.cities || [];
       // Make Surat appear first if state is Gujarat
       if (selectedStateSlug.toLowerCase() === "gujarat") {
         const suratIdx = cities.findIndex(c => c.name.toLowerCase() === "surat");
@@ -383,7 +384,13 @@ const Places = () => {
                     </tr>
                   ) : (
                     places.map((place) => (
-                      <tr key={place._id} className="hover:bg-slate-50/50 dark:hover:bg-slate-850/5 transition">
+                      <tr 
+                        key={place._id} 
+                        onClick={(e) => {
+                          if (!e.target.closest('button')) navigate(`/places/${place.slug}`);
+                        }}
+                        className="hover:bg-slate-50/50 dark:hover:bg-[#1e293b] transition cursor-pointer"
+                      >
                         <td className="py-4 px-6">
                           <div className="flex items-center gap-4">
                             {place.images?.thumbnail ? (

@@ -1,5 +1,5 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { FiUser, FiMenu, FiX, FiMoon, FiSun, FiChevronDown, FiMapPin } from "react-icons/fi";
+import { FiUser, FiMenu, FiX, FiMoon, FiSun, FiChevronDown, FiMapPin, FiBell } from "react-icons/fi";
 import { useState, useEffect } from "react";
 // import Logo from "../../assets/logo.png"; // Using text logo for now until provided
 import { useAuth } from "../../context/AuthContext";
@@ -11,6 +11,8 @@ import MobileAuthSkeleton from "../../components/feedback/skeleton/MobileAuthSke
 import LogoutButton from "../../components/ui/LogoutButton";
 import logoDark from "../../assets/logo_dark.png";
 import logoLight from "../../assets/logo_light.png";
+import { useQuery } from "@tanstack/react-query";
+import http from "../../lib/axios";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,6 +20,17 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const { user, loading } = useAuth();
   const location = useLocation();
+
+  const { data: notifData } = useQuery({
+    queryKey: ["userNotifications"],
+    queryFn: async () => {
+      const res = await http.get("/notifications/user");
+      return res.data?.data || res.data;
+    },
+    enabled: !!user && user.role === "user"
+  });
+
+  const unreadCount = notifData?.unreadCount || 0;
 
   const isHome = location.pathname === "/";
 
@@ -66,18 +79,28 @@ const Navbar = () => {
         )}
 
         {user?.role === "user" && (
-          <div className="relative">
-            <button
-              onClick={() => setUserOpen((prev) => !prev)}
-              className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-slate-100/50 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
-            >
-              <div className="w-8 h-8 rounded-full bg-[#E85D04] text-white flex items-center justify-center font-bold text-sm">
-                {user.name.charAt(0).toUpperCase()}
-              </div>
-              <span className="font-medium hidden lg:block">{user.name}</span>
-              <FiChevronDown size={16} />
-            </button>
-            <UserDropdown open={userOpen} setOpen={setUserOpen} />
+          <div className="flex items-center gap-4">
+            <NavLink to="/user/notifications" className="relative p-2 text-slate-600 dark:text-slate-300 hover:text-[#E85D04] transition-colors rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+              <FiBell size={22} />
+              {unreadCount > 0 && (
+                <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full border border-white dark:border-[#0A1628]">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              )}
+            </NavLink>
+            <div className="relative">
+              <button
+                onClick={() => setUserOpen((prev) => !prev)}
+                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-slate-100/50 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+              >
+                <div className="w-8 h-8 rounded-full bg-[#E85D04] text-white flex items-center justify-center font-bold text-sm">
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+                <span className="font-medium hidden lg:block">{user.name}</span>
+                <FiChevronDown size={16} />
+              </button>
+              <UserDropdown open={userOpen} setOpen={setUserOpen} />
+            </div>
           </div>
         )}
 
@@ -119,14 +142,18 @@ const Navbar = () => {
 
         {user?.role === "user" && (
           <>
+            <NavLink to="/user/notifications">
+              <Button variant="ghost" className="w-full justify-between items-center text-left">
+                <span className="flex items-center gap-2">Notifications</span>
+                {unreadCount > 0 && (
+                  <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                    {unreadCount > 9 ? "9+" : unreadCount}
+                  </span>
+                )}
+              </Button>
+            </NavLink>
             <NavLink to="/user/profile">
               <Button variant="ghost" className="w-full justify-start">My Profile</Button>
-            </NavLink>
-            <NavLink to="/user/trips">
-              <Button variant="ghost" className="w-full justify-start">My Trips</Button>
-            </NavLink>
-            <NavLink to="/user/wishlist">
-              <Button variant="ghost" className="w-full justify-start">Wishlist</Button>
             </NavLink>
           </>
         )}
