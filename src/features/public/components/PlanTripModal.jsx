@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FiX, FiPlus, FiCheck } from "react-icons/fi";
 import { toast } from "react-toastify";
 import http from "../../../lib/axios";
+import PageLoader from "../../../components/ui/PageLoader";
 
 const PlanTripModal = ({ isOpen, onClose, placeId, placeName }) => {
   const queryClient = useQueryClient();
@@ -80,7 +81,7 @@ const PlanTripModal = ({ isOpen, onClose, placeId, placeName }) => {
             <p className="text-sm text-slate-500 mb-6">Add <strong className="text-slate-900 dark:text-white">{placeName}</strong> to your itinerary.</p>
             
             {isLoading ? (
-              <div className="flex justify-center py-8"><div className="animate-spin w-8 h-8 border-4 border-[#E85D04] border-t-transparent rounded-full" /></div>
+              <PageLoader fullScreen={false} message="Loading trips..." size="sm" />
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 

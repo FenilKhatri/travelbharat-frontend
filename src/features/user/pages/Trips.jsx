@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { FiCalendar, FiMapPin, FiLoader, FiTrash2, FiPlus, FiNavigation, FiX } from "react-icons/fi";
+import { FiCalendar, FiMapPin, FiTrash2, FiPlus, FiNavigation, FiX } from "react-icons/fi";
+import PageLoader from "../../../components/ui/PageLoader";
 import { toast } from "react-toastify";
 import http from "../../../lib/axios";
 import { motion, AnimatePresence } from "framer-motion";
@@ -56,7 +57,7 @@ const Trips = () => {
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center py-20"><FiLoader className="animate-spin text-[#E85D04]" size={40} /></div>
+        <PageLoader fullScreen={false} message="Loading trips..." size="md" />
       ) : trips.length === 0 ? (
         <div className="text-center py-20 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm max-w-2xl mx-auto">
           <FiNavigation className="mx-auto text-slate-400 mb-4" size={48} />

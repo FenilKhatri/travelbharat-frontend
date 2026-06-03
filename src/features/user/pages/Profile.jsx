@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import http from '../../../lib/axios';
 import CustomDropdown from '../../../components/ui/CustomDropdown';
+import PageLoader from '../../../components/ui/PageLoader';
 
 const Reveal = ({ children, delay = 0, y = 20 }) => (
   <motion.div
@@ -100,7 +101,7 @@ const Profile = () => {
     updateMutation.mutate(form);
   };
 
-  if (authLoading) return <div className="min-h-screen bg-[#07090f] flex justify-center items-center"><div className="animate-spin w-12 h-12 border-4 border-[#E85D04] border-t-transparent rounded-full" /></div>;
+  if (authLoading) return <div className="min-h-screen bg-[#07090f]"><PageLoader fullScreen={false} message="Loading profile..." size="md" /></div>;
 
   const upcomingTrips = trips.filter(t => t.status === 'upcoming' || t.status === 'draft');
   const ongoingTrips = trips.filter(t => t.status === 'ongoing');

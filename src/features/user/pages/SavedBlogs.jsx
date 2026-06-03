@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { FiClock, FiHeart, FiEye, FiLoader, FiBookmark } from "react-icons/fi";
+import { FiClock, FiHeart, FiEye, FiBookmark } from "react-icons/fi";
+import PageLoader from "../../../components/ui/PageLoader";
 import http from "../../../lib/axios";
 
 const SavedBlogs = () => {
@@ -25,7 +26,7 @@ const SavedBlogs = () => {
         </div>
 
         {isLoading ? (
-          <div className="flex justify-center py-20"><FiLoader className="animate-spin text-[#E85D04]" size={40} /></div>
+          <PageLoader fullScreen={false} message="Loading saved blogs..." size="md" />
         ) : blogs.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogs.map((blog) => (

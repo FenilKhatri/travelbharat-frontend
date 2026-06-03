@@ -11,28 +11,19 @@ import {
 } from "react-icons/fa";
 import { MdOutlineWbSunny, MdAcUnit, MdWaterDrop } from "react-icons/md";
 import { stateService } from "../../../services/stateService";
-import http from '../../../lib/axios';
-import { toast } from 'react-toastify';
 import SaveButton from '../../../components/ui/SaveButton';
 import { cityService } from "../../../services/cityService";
-import { placeService } from "../../../services/placeService";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
+import CardSkeleton from "../../../components/ui/CardSkeleton";
+import CityCard from "../../../components/cards/CityCard";
 
 // ─── Utility Components ────────────────────────────────────────────────────────
-const Skeleton = ({ className }) => (
-  <div className={`animate-pulse bg-[#1a2338] rounded-xl ${className}`} />
-);
-
 const StateDetailsSkeleton = () => (
   <div className="min-h-screen bg-[#07090f]">
-    <Skeleton className="h-[60vh] w-full rounded-none" />
-    <div className="max-w-7xl mx-auto px-4 py-16 space-y-12">
-      <Skeleton className="h-12 w-64" />
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-28" />)}
-      </div>
-      <Skeleton className="h-40 w-full" />
+    <div className="animate-pulse bg-[#1a2338] h-[60vh] w-full rounded-none" />
+    <div className="max-w-7xl mx-auto px-4 py-16">
+      <CardSkeleton count={4} columns="grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" />
     </div>
   </div>
 );
@@ -162,7 +153,14 @@ const StateDetails = () => {
     enabled: !!slug,
   });
 
+  const { data: citiesData, isLoading: citiesLoading } = useQuery({
+    queryKey: ["citiesByState", slug],
+    queryFn: () => cityService.getCitiesByState(slug),
+    enabled: !!slug,
+  });
+
   const state = stateData?.data?.state;
+  const cities = citiesData?.data?.cities || [];
 
   if (stateLoading) return <StateDetailsSkeleton />;
 
@@ -632,6 +630,38 @@ const StateDetails = () => {
           </div>
         </section>
       )}
+
+      {/* ── Explore Cities ── */}
+      <section className="py-24 bg-[#0c1018] border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-4">
+          <SectionLabel icon={FiMapPin} text="Urban Destinations" />
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
+            <h2 className="text-4xl font-black text-[#edf2ff]">
+              Explore Cities in <span className="text-[#E85D04]">{state.name}</span>
+            </h2>
+            {cities.length > 0 && (
+              <p className="text-[#8fa3cc] text-sm font-medium">
+                {cities.length} {cities.length === 1 ? "city" : "cities"} to discover
+              </p>
+            )}
+          </div>
+
+          {citiesLoading ? (
+            <CardSkeleton count={8} columns="grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" />
+          ) : cities.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {cities.map((city, index) => (
+                <CityCard key={city._id} city={city} stateSlug={slug} index={index} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16 rounded-3xl border border-white/10 bg-[#111827]/50">
+              <FiMapPin className="mx-auto text-[#E85D04]/50 mb-4" size={40} />
+              <p className="text-[#8fa3cc] font-medium">Cities for this state are coming soon.</p>
+            </div>
+          )}
+        </div>
+      </section>
 
       {/* ── Ready to Discover Banner ── */}
       <section className="max-w-7xl mx-auto px-4 pb-24">

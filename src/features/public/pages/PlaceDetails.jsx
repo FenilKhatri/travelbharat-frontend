@@ -17,6 +17,7 @@ import { FaHistory, FaQuoteLeft, FaPlane, FaTrain, FaCar, FaBus } from "react-ic
 import { placeService } from "../../../services/placeService";
 import ReviewSection from "../components/ReviewSection";
 import PlanTripModal from "../components/PlanTripModal";
+import PageLoader from "../../../components/ui/PageLoader";
 import { useAuth } from "../../../context/AuthContext";
 // --- Subcomponents ---
 
@@ -147,8 +148,8 @@ const PlaceDetails = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#050505] flex justify-center items-center">
-        <div className="w-16 h-16 border-4 border-[#E85D04]/30 border-t-[#E85D04] rounded-full animate-spin" />
+      <div className="min-h-screen bg-[#050505]">
+        <PageLoader fullScreen={false} message="Loading destination..." size="md" />
       </div>
     );
   }

@@ -6,6 +6,7 @@ import { FaUtensils, FaSlidersH } from "react-icons/fa";
 import CustomDropdown from "../../../components/ui/CustomDropdown";
 import { toast } from "react-toastify";
 import http from "../../../lib/axios";
+import PageLoader from "../../../components/ui/PageLoader";
 
 /* ─────────────────── Constants ─────────────────── */
 const REGIONS = [
@@ -340,10 +341,7 @@ const StateForm = () => {
   if (isFetching) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-[#E85D04] border-t-transparent rounded-full animate-spin" />
-          <span className="text-sm text-slate-500 font-medium">Loading state data…</span>
-        </div>
+        <PageLoader fullScreen={false} message="Loading state data..." size="md" />
       </div>
     );
   }

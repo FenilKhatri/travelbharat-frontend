@@ -4,6 +4,7 @@ import { FiEdit2, FiTrash2, FiEye, FiClock, FiAlertCircle } from 'react-icons/fi
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import http from '../../../lib/axios';
+import PageLoader from '../../../components/ui/PageLoader';
 
 const MyBlogs = () => {
   const [activeTab, setActiveTab] = useState('published');
@@ -27,7 +28,11 @@ const MyBlogs = () => {
   });
 
   if (isLoading) {
-    return <div className="min-h-screen pt-24 bg-[#050B14] flex justify-center items-center text-[#E85D04]">Loading...</div>;
+    return (
+      <div className="min-h-screen pt-24 bg-[#050B14]">
+        <PageLoader fullScreen={false} message="Loading blogs..." size="md" />
+      </div>
+    );
   }
 
   const blogs = data?.data?.blogs || [];

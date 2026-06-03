@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { FiStar, FiUser, FiLoader } from "react-icons/fi";
+import { FiStar, FiUser } from "react-icons/fi";
+import PageLoader from "../../../components/ui/PageLoader";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { reviewService } from "../../../services/reviewService";
@@ -109,9 +110,7 @@ const ReviewSection = ({ placeId }) => {
       {/* Reviews List */}
       <div className="space-y-6">
         {isLoading ? (
-          <div className="flex justify-center py-10">
-            <FiLoader className="animate-spin text-[#E85D04]" size={32} />
-          </div>
+          <PageLoader fullScreen={false} message="Loading reviews..." size="sm" />
         ) : reviews.length === 0 ? (
           <p className="text-center text-slate-500 py-6">No reviews yet. Be the first to review this place!</p>
         ) : (

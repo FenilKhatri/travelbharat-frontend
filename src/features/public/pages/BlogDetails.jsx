@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { FiArrowLeft, FiCalendar, FiUser, FiLoader, FiShare2, FiHeart, FiMessageSquare, FiBookmark, FiEye, FiMapPin, FiInfo, FiImage, FiHelpCircle } from "react-icons/fi";
+import { FiArrowLeft, FiCalendar, FiUser, FiShare2, FiHeart, FiMessageSquare, FiBookmark, FiEye, FiMapPin, FiInfo, FiImage, FiHelpCircle } from "react-icons/fi";
+import PageLoader from "../../../components/ui/PageLoader";
 import { blogService } from "../../../services/blogService";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
@@ -133,8 +134,8 @@ const BlogDetails = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-[#050B14] pt-24 flex items-center justify-center">
-        <FiLoader className="animate-spin text-[#E85D04]" size={48} />
+      <div className="min-h-screen bg-slate-50 dark:bg-[#050B14] pt-24">
+        <PageLoader fullScreen={false} message="Loading story..." size="md" />
       </div>
     );
   }

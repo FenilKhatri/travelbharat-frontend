@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useSearchParams } from "react-router-dom";
-import { FiSearch, FiMapPin, FiLoader, FiStar, FiFilter, FiArrowRight } from "react-icons/fi";
+import { FiSearch, FiMapPin, FiStar, FiFilter, FiArrowRight } from "react-icons/fi";
+import PageLoader from "../../../components/ui/PageLoader";
 import { FaSlidersH } from "react-icons/fa";
 import { placeService } from "../../../services/placeService";
 import { stateService } from "../../../services/stateService";
@@ -189,9 +190,7 @@ const Places = () => {
           {/* Places Grid */}
           <div className="flex-1">
             {isLoading ? (
-              <div className="flex justify-center items-center py-20 h-full">
-                <FiLoader className="animate-spin text-[#E85D04]" size={48} />
-              </div>
+              <PageLoader fullScreen={false} message="Loading destinations..." size="md" />
             ) : isError ? (
               <div className="bg-red-50 text-red-500 p-4 rounded-xl text-center">
                 Failed to load destinations. Please try again.

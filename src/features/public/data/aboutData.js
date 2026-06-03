@@ -118,24 +118,3 @@ export const processSteps = [
         icon: FiStar,
     },
 ];
-
-export const testimonials = [
-    {
-        name: "Priya Sharma",
-        role: "Travel Enthusiast",
-        review:
-            "TravelBharat helped me discover hidden gems in Rajasthan I never knew existed. The detailed guides made my trip unforgettable!",
-    },
-    {
-        name: "Amit Patel",
-        role: "Solo Traveler",
-        review:
-            "The state-by-state guides are incredibly detailed. I planned my entire Northeast India trip using TravelBharat.",
-    },
-    {
-        name: "Neha Gupta",
-        role: "Family Traveler",
-        review:
-            "Authentic information and beautiful photography. TravelBharat made planning our family vacation across Gujarat so easy.",
-    },
-];

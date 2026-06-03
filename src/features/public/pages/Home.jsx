@@ -5,7 +5,6 @@ import TravelCategories from "../sections/home/TravelCategories";
 import Newsletter from "../sections/home/Newsletter";
 import FestivalsSection from "../sections/home/FestivalsSection";
 import BlogsSection from "../sections/home/BlogsSection";
-import TestimonialsSection from "../sections/home/TestimonialsSection";
 
 const Home = () => {
   return (
@@ -16,7 +15,6 @@ const Home = () => {
       <TravelCategories />
       <FestivalsSection />
       <BlogsSection />
-      <TestimonialsSection />
       <Newsletter />
     </div>
   );

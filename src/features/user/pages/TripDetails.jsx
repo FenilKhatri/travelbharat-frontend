@@ -6,6 +6,7 @@ import { FiCalendar, FiMapPin, FiUsers, FiClock, FiActivity, FiChevronLeft, FiIm
 import { FaRupeeSign } from "react-icons/fa";
 import { motion } from "framer-motion";
 import http from "../../../lib/axios";
+import PageLoader from "../../../components/ui/PageLoader";
 import CustomDropdown from "../../../components/ui/CustomDropdown";
 
 const TripDetails = () => {
@@ -74,8 +75,8 @@ const TripDetails = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen pt-24 flex items-center justify-center text-slate-400">
-        <div className="animate-spin w-8 h-8 border-4 border-[#E85D04] border-t-transparent rounded-full" />
+      <div className="min-h-screen pt-24">
+        <PageLoader fullScreen={false} message="Loading trip..." size="md" />
       </div>
     );
   }

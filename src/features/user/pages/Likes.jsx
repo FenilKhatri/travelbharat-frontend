@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { FiHeart, FiLoader, FiStar, FiImage } from "react-icons/fi";
+import { FiHeart, FiStar, FiImage } from "react-icons/fi";
+import PageLoader from "../../../components/ui/PageLoader";
 import { toast } from "react-toastify";
 import http from "../../../lib/axios";
 import { motion } from "framer-motion";
@@ -86,7 +87,7 @@ const Likes = () => {
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center py-20"><FiLoader className="animate-spin text-[#E85D04]" size={40} /></div>
+        <PageLoader fullScreen={false} message="Loading likes..." size="md" />
       ) : likesData.length === 0 ? (
         <div className="text-center py-20 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm max-w-2xl mx-auto">
           <FiHeart className="mx-auto text-slate-400 mb-4" size={48} />
