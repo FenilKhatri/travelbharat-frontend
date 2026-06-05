@@ -28,9 +28,9 @@ const PlaceDetails = () => {
     if (typeof fee === "string" || typeof fee === "number") return fee;
     if (typeof fee === "object") {
       const parts = [];
-      if (fee.indian) parts.push(`Indian: ₹${fee.indian}`);
-      if (fee.foreigner) parts.push(`Foreigner: ₹${fee.foreigner}`);
-      if (fee.camera) parts.push(`Camera: ₹${fee.camera}`);
+      if (fee.indian) parts.push(`Indian: ${fee.indian}`);
+      if (fee.foreigner) parts.push(`Foreigner: ${fee.foreigner}`);
+      if (fee.camera) parts.push(`Camera: ${fee.camera}`);
       return parts.length > 0 ? parts.join(" | ") : "Free";
     }
     return "Free";
@@ -164,7 +164,7 @@ const PlaceDetails = () => {
                <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/60">
                  <p className="text-xs text-slate-400 uppercase font-semibold mb-1">Created At</p>
                  <p className="text-sm font-bold text-slate-700 dark:text-slate-300">
-                   {placeData.createdAt ? new Date(placeData.createdAt).toLocaleString() : "N/A"}
+                   {new Date(placeData.createdAt || placeData.updatedAt).toLocaleString()}
                  </p>
                </div>
                <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/60">
@@ -176,7 +176,7 @@ const PlaceDetails = () => {
                <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/60">
                  <p className="text-xs text-slate-400 uppercase font-semibold mb-1">Likes Count</p>
                  <p className="text-sm font-bold text-slate-700 dark:text-slate-300">
-                   {placeData.likeCount || 0}
+                   {placeData.likeCount ?? 0}
                  </p>
                </div>
                <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/60">

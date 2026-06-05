@@ -414,15 +414,15 @@ const PlaceForm = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             <Field label="Indian Visitors">
               <input value={form.entryFee.indian} onChange={(e) => set("entryFee.indian", e.target.value)}
-                placeholder="e.g. Free or ₹50" className={inputCls} />
+                placeholder="e.g. Free or 50" className={inputCls} />
             </Field>
             <Field label="Foreign Tourists">
               <input value={form.entryFee.foreigner} onChange={(e) => set("entryFee.foreigner", e.target.value)}
-                placeholder="e.g. ₹500" className={inputCls} />
+                placeholder="e.g. 500" className={inputCls} />
             </Field>
             <Field label="Camera / Video">
               <input value={form.entryFee.camera} onChange={(e) => set("entryFee.camera", e.target.value)}
-                placeholder="e.g. ₹100" className={inputCls} />
+                placeholder="e.g. 100" className={inputCls} />
             </Field>
           </div>
         </Card>

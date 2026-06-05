@@ -14,6 +14,9 @@ const CityDetails = lazy(() => import("../../../features/public/pages/CityDetail
 const Festivals = lazy(() => import("../../../features/public/pages/Festivals"));
 const FestivalDetails = lazy(() => import("../../../features/public/pages/FestivalDetails"));
 
+const ManualPlanner = lazy(() => import("../../../features/plan-trip/pages/ManualPlanner"));
+const GeneratedItinerary = lazy(() => import("../../../features/public/pages/GeneratedItinerary"));
+
 const Blogs = lazy(() => import("../../../features/public/pages/Blogs"));
 const BlogDetails = lazy(() => import("../../../features/public/pages/BlogDetails"));
 const About = lazy(() => import("../../../features/public/pages/About"));
@@ -40,7 +43,10 @@ const PublicRoutes = () => (
     <Route path="/festivals" element={<Festivals />} />
     <Route path="/festivals/:slug" element={<FestivalDetails />} />
     
-
+    {/* Trip Planner */}
+    <Route path="/plan" element={<ManualPlanner />} />
+    <Route path="/plan/:slug" element={<ManualPlanner />} />
+    <Route path="/trip-result" element={<GeneratedItinerary />} />
     
     <Route path="/blogs" element={<Blogs />} />
     <Route path="/blogs/:slug" element={<BlogDetails />} />

@@ -11,13 +11,13 @@ import {
   FiUpload,
   FiStar,
   FiTrendingUp,
-  FiChevronLeft,
-  FiChevronRight,
   FiGrid,
   FiList,
 } from "react-icons/fi";
 import http from "../../../lib/axios";
 import SearchAndFilter from "../../../components/ui/SearchAndFilter";
+import AdminPageLayout from "../components/ui/AdminPageLayout";
+import AdminPagination from "../components/ui/AdminPagination";
 import { toast } from "react-toastify";
 
 const Places = () => {
@@ -157,14 +157,11 @@ const Places = () => {
   ];
 
   return (
-    <div className="space-y-6 pb-12">
-      {/* Title */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-2">Destinations</h1>
-          <p className="text-slate-500 dark:text-slate-400 text-sm">Review, create, and manage registered tourist places across states.</p>
-        </div>
-        <div className="flex items-center gap-3">
+    <AdminPageLayout
+      title="Destinations"
+      subtitle="Review, create, and manage registered tourist places across states."
+      actions={
+        <>
           <div className="hidden sm:flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
             <button onClick={() => setViewMode('list')} className={`p-2 rounded-lg transition cursor-pointer ${viewMode === 'list' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}><FiList size={16} /></button>
             <button onClick={() => setViewMode('grid')} className={`p-2 rounded-lg transition cursor-pointer ${viewMode === 'grid' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}><FiGrid size={16} /></button>
@@ -176,9 +173,9 @@ const Places = () => {
             <FiPlus size={16} />
             <span>Add Destination</span>
           </button>
-        </div>
-      </div>
-
+        </>
+      }
+    >
       {/* Filter toolbar */}
       <SearchAndFilter
         searchPlaceholder="Search destinations..."
@@ -405,32 +402,7 @@ const Places = () => {
           </div>
         )}
 
-        {/* Pagination */}
-        {!isLoading && !isError && pagination.pages > 1 && (
-          <div className="flex justify-between items-center px-6 py-4 border-t border-slate-100 dark:border-slate-800/40">
-            <span className="text-xs font-semibold text-slate-400">
-              Showing page {page} of {pagination.pages} ({pagination.total} total)
-            </span>
-            <div className="flex gap-2">
-              <button
-                disabled={page <= 1}
-                onClick={() => handlePageChange(page - 1)}
-                className="flex items-center gap-1 px-3 py-1.5 border border-slate-200 dark:border-slate-800/80 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-300 disabled:opacity-40 disabled:pointer-events-none hover:bg-slate-50 dark:hover:bg-slate-900 transition"
-              >
-                <FiChevronLeft size={14} />
-                <span>Prev</span>
-              </button>
-              <button
-                disabled={page >= pagination.pages}
-                onClick={() => handlePageChange(page + 1)}
-                className="flex items-center gap-1 px-3 py-1.5 border border-slate-200 dark:border-slate-800/80 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-300 disabled:opacity-40 disabled:pointer-events-none hover:bg-slate-50 dark:hover:bg-slate-900 transition"
-              >
-                <span>Next</span>
-                <FiChevronRight size={14} />
-              </button>
-            </div>
-          </div>
-        )}
+        <AdminPagination isLoading={isLoading} isError={isError} pagination={pagination} />
       </div>
 
 
@@ -460,7 +432,7 @@ const Places = () => {
           </div>
         </div>
       )}
-    </div>
+    </AdminPageLayout>
   );
 };
 
