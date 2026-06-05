@@ -8,7 +8,7 @@ import http from "../../../lib/axios";
 import CustomDropdown from "../../../components/ui/CustomDropdown";
 import PageLoader from "../../../components/ui/PageLoader";
 
-/* ─────────────────── Constants ─────────────────── */
+/*  Constants  */
 const INITIAL_FORM = {
   name: "",
   slug: "",
@@ -35,7 +35,7 @@ const INITIAL_FORM = {
   seo: { metaTitle: "", metaDescription: "", keywords: [] },
 };
 
-/* ─────────────────── Sub-components ─────────────────── */
+/*  Sub-components  */
 const Section = ({ icon: Icon, title, action, children }) => (
   <div className="space-y-5">
     <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
@@ -98,7 +98,7 @@ const ImageTile = ({ src, label, aspect, onUpload, uploading }) => (
   </div>
 );
 
-/* ─────────────────── Main Component ─────────────────── */
+/*  Main Component  */
 const CityForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -108,7 +108,7 @@ const CityForm = () => {
   const [form, setForm] = useState(INITIAL_FORM);
   const [uploadingImage, setUploadingImage] = useState(null);
 
-  /* ── Fetch States for Dropdown ── */
+  /*  Fetch States for Dropdown  */
   const { data: statesData } = useQuery({
     queryKey: ["adminStatesList"],
     queryFn: async () => {
@@ -118,7 +118,7 @@ const CityForm = () => {
   });
   const statesList = statesData?.data?.states || statesData?.states || [];
 
-  /* ── Fetch existing city ── */
+  /*  Fetch existing city  */
   const {
     data: queryData,
     isLoading: isFetching,
@@ -137,50 +137,50 @@ const CityForm = () => {
     if (queryData?.data?.city || queryData?.city) {
       const c = queryData?.data?.city || queryData?.city;
       setForm({
-        name:            c.name            ?? "",
-        slug:            c.slug            ?? "",
-        stateId:         c.stateId         ?? "",
-        description:     c.description     ?? "",
-        overview:        c.overview        ?? "",
-        tagline:         c.tagline         ?? "",
+        name: c.name ?? "",
+        slug: c.slug ?? "",
+        stateId: c.stateId ?? "",
+        description: c.description ?? "",
+        overview: c.overview ?? "",
+        tagline: c.tagline ?? "",
         images: {
-          hero:      c.images?.hero      ?? "",
+          hero: c.images?.hero ?? "",
           thumbnail: c.images?.thumbnail ?? "",
-          gallery:   c.images?.gallery   ?? [],
+          gallery: c.images?.gallery ?? [],
         },
-        attractions:     c.attractions     ?? [],
-        hotels:          c.hotels          ?? [],
-        restaurants:     c.restaurants     ?? [],
-        shopping:        c.shopping        ?? [],
+        attractions: c.attractions ?? [],
+        hotels: c.hotels ?? [],
+        restaurants: c.restaurants ?? [],
+        shopping: c.shopping ?? [],
         transport: {
-          local:       c.transport?.local       ?? "",
+          local: c.transport?.local ?? "",
           fromAirport: c.transport?.fromAirport ?? "",
           fromStation: c.transport?.fromStation ?? "",
-          busStation:  c.transport?.busStation  ?? "",
+          busStation: c.transport?.busStation ?? "",
         },
         emergencyInfo: {
-          police:          c.emergencyInfo?.police          ?? "100",
-          ambulance:       c.emergencyInfo?.ambulance       ?? "108",
-          hospital:        c.emergencyInfo?.hospital        ?? "",
-          fireBrigade:     c.emergencyInfo?.fireBrigade     ?? "101",
+          police: c.emergencyInfo?.police ?? "100",
+          ambulance: c.emergencyInfo?.ambulance ?? "108",
+          hospital: c.emergencyInfo?.hospital ?? "",
+          fireBrigade: c.emergencyInfo?.fireBrigade ?? "101",
           touristHelpline: c.emergencyInfo?.touristHelpline ?? "1363",
         },
-        nearbyPlaces:    c.nearbyPlaces    ?? [],
+        nearbyPlaces: c.nearbyPlaces ?? [],
         mapCoordinates: {
           lat: c.mapCoordinates?.lat ?? 0,
           lng: c.mapCoordinates?.lng ?? 0,
         },
         bestTimeToVisit: c.bestTimeToVisit ?? "",
-        population:      c.population      ?? "",
-        pincode:         c.pincode         ?? "",
-        priority:        c.priority        ?? 0,
-        featured:        c.featured        ?? false,
-        isActive:        c.isActive        ?? true,
-        totalPlaces:     c.totalPlaces     ?? 0,
+        population: c.population ?? "",
+        pincode: c.pincode ?? "",
+        priority: c.priority ?? 0,
+        featured: c.featured ?? false,
+        isActive: c.isActive ?? true,
+        totalPlaces: c.totalPlaces ?? 0,
         seo: {
-          metaTitle:       c.seo?.metaTitle       ?? "",
+          metaTitle: c.seo?.metaTitle ?? "",
           metaDescription: c.seo?.metaDescription ?? "",
-          keywords:        c.seo?.keywords        ?? [],
+          keywords: c.seo?.keywords ?? [],
         },
       });
     }
@@ -193,7 +193,7 @@ const CityForm = () => {
     }
   }, [isError, navigate]);
 
-  /* ── Mutations ── */
+  /*  Mutations  */
   const createMutation = useMutation({
     mutationFn: (payload) => http.post("/cities/admin/create", payload),
     onSuccess: () => {
@@ -219,8 +219,8 @@ const CityForm = () => {
 
   const handleSave = (e, asDraft = false) => {
     if (e) e.preventDefault();
-    if (!form.name.trim())        return toast.error("City name is required");
-    if (!form.stateId)            return toast.error("State selection is required");
+    if (!form.name.trim()) return toast.error("City name is required");
+    if (!form.stateId) return toast.error("State selection is required");
     if (!form.description.trim()) return toast.error("Description is required");
     const payload = { ...form, isActive: !asDraft };
     isEditing ? updateMutation.mutate(payload) : createMutation.mutate(payload);
@@ -228,7 +228,7 @@ const CityForm = () => {
 
   const handleSubmit = (e) => handleSave(e, false);
 
-  /* ── Image upload ── */
+  /*  Image upload  */
   const handleImageUpload = async (e, fieldPath, isGallery = false) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -272,20 +272,24 @@ const CityForm = () => {
       const res = await http.post("/upload/multiple", fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      const urls = res.images.map(img => img.url);
-      setForm((prev) => ({
-        ...prev,
-        images: { ...prev.images, gallery: [...prev.images.gallery, ...urls] }
-      }));
-      toast.success("Gallery images uploaded!");
+      const urls = res.data?.data?.images?.map(img => img.url) || res.data?.images?.map(img => img.url);
+      if (urls && urls.length > 0) {
+        setForm((prev) => ({
+          ...prev,
+          images: { ...prev.images, gallery: [...prev.images.gallery, ...urls] }
+        }));
+        toast.success("Gallery images uploaded!");
+      } else {
+        throw new Error("No image URLs returned from server");
+      }
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Upload failed");
+      toast.error(err?.response?.data?.message || err.message || "Upload failed");
     } finally {
       setUploadingImage(null);
     }
   };
 
-  /* ── Helpers ── */
+  /*  Helpers  */
   const set = (path, value) => {
     const keys = path.split(".");
     if (keys.length === 1) {
@@ -325,7 +329,7 @@ const CityForm = () => {
       images: { ...prev.images, gallery: prev.images.gallery.filter((_, i) => i !== idx) },
     }));
 
-  /* ── Loading ── */
+  /*  Loading  */
   if (isFetching) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
@@ -334,11 +338,11 @@ const CityForm = () => {
     );
   }
 
-  /* ─────────────────────────── RENDER ─────────────────────────── */
+  /*  RENDER  */
   return (
     <div className="max-w-6xl mx-auto space-y-5 pb-16 px-4 sm:px-0">
-      {/* ── Sticky Header ── */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-[#0A121F] p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm sticky top-24 z-10">
+      {/*  Sticky Header  */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-[#0A121F] p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm z-10">
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -376,7 +380,7 @@ const CityForm = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
-        {/* ══════════════ CARD 1: GENERAL ══════════════ */}
+        {/*  CARD 1: GENERAL  */}
         <Card title="General Details" icon={FaBuilding}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <Field label="City Name" required>
@@ -385,13 +389,13 @@ const CityForm = () => {
             </Field>
 
             <Field label="Select State" required>
-                <CustomDropdown
-                  value={form.stateId}
-                  onChange={(val) => set("stateId", val)}
-                  options={statesList.map(s => ({ value: s._id, label: s.name }))}
-                  placeholder="Select a state..."
-                  searchable
-                />
+              <CustomDropdown
+                value={form.stateId}
+                onChange={(val) => set("stateId", val)}
+                options={statesList.map(s => ({ value: s._id, label: s.name }))}
+                placeholder="Select a state..."
+                searchable
+              />
             </Field>
 
             <Field label="Slug">
@@ -420,7 +424,7 @@ const CityForm = () => {
           </div>
         </Card>
 
-        {/* ══════════════ CARD 2: LOCATION & SETTINGS ══════════════ */}
+        {/*  CARD 2: LOCATION & SETTINGS  */}
         <Card title="Location & Settings" icon={FiMapPin}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <Field label="Map Latitude">
@@ -442,7 +446,7 @@ const CityForm = () => {
               <input value={form.population} onChange={(e) => set("population", e.target.value)}
                 placeholder="e.g. 5.5 Million" className={inputCls} />
             </Field>
-            
+
             <Field label="Pincode">
               <input value={form.pincode} onChange={(e) => set("pincode", e.target.value)}
                 placeholder="e.g. 380001" className={inputCls} />
@@ -462,7 +466,7 @@ const CityForm = () => {
           </div>
         </Card>
 
-        {/* ══════════════ CARD 3: MEDIA ══════════════ */}
+        {/*  CARD 3: MEDIA  */}
         <Card title="City Imagery" icon={FiImage}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <ImageTile src={form.images.hero} label="Hero Banner (Landscape)" aspect="aspect-video"
@@ -494,7 +498,7 @@ const CityForm = () => {
           </div>
         </Card>
 
-        {/* ══════════════ CARD 4: ATTRACTIONS ══════════════ */}
+        {/*  CARD 4: ATTRACTIONS  */}
         <Card title="Top Attractions" icon={FiMap} action={<AddBtn onClick={() => addItem("attractions", { name: "", description: "", image: "", entryFee: "Free", timings: "" })} label="Add Attraction" />}>
           <div className="space-y-3">
             {form.attractions.map((a, i) => (
@@ -522,7 +526,7 @@ const CityForm = () => {
                   </div>
                   <div className="sm:col-span-2">
                     <label className="block text-xs font-semibold text-slate-500 mb-1">Description</label>
-                    <textarea rows={15} value={a.description} onChange={(e) => changeItem("attractions", i, "description", e.target.value)} className={inputCls + " resize-none"} />
+                    <textarea rows={10} value={a.description} onChange={(e) => changeItem("attractions", i, "description", e.target.value)} className={inputCls + " resize-none"} />
                   </div>
                 </div>
               </div>
@@ -531,7 +535,7 @@ const CityForm = () => {
           </div>
         </Card>
 
-        {/* ══════════════ CARD 5: HOTELS ══════════════ */}
+        {/*  CARD 5: HOTELS  */}
         <Card title="Hotels" icon={FaBed} action={<AddBtn onClick={() => addItem("hotels", { name: "", description: "", rating: 0, priceRange: "", image: "", address: "" })} label="Add Hotel" />}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {form.hotels.map((h, i) => (
@@ -541,7 +545,7 @@ const CityForm = () => {
                   <input value={h.name} onChange={(e) => changeItem("hotels", i, "name", e.target.value)} placeholder="Hotel Name" className={inputCls} />
                   <input value={h.address} onChange={(e) => changeItem("hotels", i, "address", e.target.value)} placeholder="Address" className={inputCls} />
                   <div className="grid grid-cols-2 gap-3">
-                    <input type="number" step="0.1" max="5" value={h.rating} onChange={(e) => changeItem("hotels", i, "rating", parseFloat(e.target.value)||0)} placeholder="Rating (0-5)" className={inputCls} />
+                    <input type="number" step="0.1" max="5" value={h.rating} onChange={(e) => changeItem("hotels", i, "rating", parseFloat(e.target.value) || 0)} placeholder="Rating (0-5)" className={inputCls} />
                     <input value={h.priceRange} onChange={(e) => changeItem("hotels", i, "priceRange", e.target.value)} placeholder="Price e.g. ₹2000 - ₹5000" className={inputCls} />
                   </div>
                   <input value={h.image} onChange={(e) => changeItem("hotels", i, "image", e.target.value)} placeholder="Image URL" className={inputCls} />
@@ -553,9 +557,9 @@ const CityForm = () => {
           </div>
         </Card>
 
-        {/* ══════════════ CARD 6: RESTAURANTS ══════════════ */}
+        {/*  CARD 6: RESTAURANTS  */}
         <Card title="Restaurants" icon={FaUtensils} action={<AddBtn onClick={() => addItem("restaurants", { name: "", cuisine: "", description: "", priceRange: "", image: "", rating: 0 })} label="Add Restaurant" />}>
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {form.restaurants.map((r, i) => (
               <div key={i} className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 relative">
                 <button type="button" onClick={() => removeItem("restaurants", i)} className="absolute top-3 right-3 p-1.5 text-slate-400 hover:text-red-500 transition"><FiTrash2 size={14} /></button>
@@ -563,7 +567,7 @@ const CityForm = () => {
                   <input value={r.name} onChange={(e) => changeItem("restaurants", i, "name", e.target.value)} placeholder="Restaurant Name" className={inputCls} />
                   <input value={r.cuisine} onChange={(e) => changeItem("restaurants", i, "cuisine", e.target.value)} placeholder="Cuisine e.g. Gujarati Thali" className={inputCls} />
                   <div className="grid grid-cols-2 gap-3">
-                    <input type="number" step="0.1" max="5" value={r.rating} onChange={(e) => changeItem("restaurants", i, "rating", parseFloat(e.target.value)||0)} placeholder="Rating" className={inputCls} />
+                    <input type="number" step="0.1" max="5" value={r.rating} onChange={(e) => changeItem("restaurants", i, "rating", parseFloat(e.target.value) || 0)} placeholder="Rating" className={inputCls} />
                     <input value={r.priceRange} onChange={(e) => changeItem("restaurants", i, "priceRange", e.target.value)} placeholder="Price Range" className={inputCls} />
                   </div>
                   <input value={r.image} onChange={(e) => changeItem("restaurants", i, "image", e.target.value)} placeholder="Image URL" className={inputCls} />
@@ -575,9 +579,9 @@ const CityForm = () => {
           </div>
         </Card>
 
-        {/* ══════════════ CARD 7: SHOPPING ══════════════ */}
+        {/*  CARD 7: SHOPPING  */}
         <Card title="Shopping" icon={FiShoppingBag} action={<AddBtn onClick={() => addItem("shopping", { name: "", description: "", image: "", speciality: "" })} label="Add Shopping" />}>
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {form.shopping.map((s, i) => (
               <div key={i} className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 relative">
                 <button type="button" onClick={() => removeItem("shopping", i)} className="absolute top-3 right-3 p-1.5 text-slate-400 hover:text-red-500 transition"><FiTrash2 size={14} /></button>
@@ -593,9 +597,9 @@ const CityForm = () => {
           </div>
         </Card>
 
-        {/* ══════════════ CARD 8: NEARBY PLACES ══════════════ */}
+        {/*  CARD 8: NEARBY PLACES  */}
         <Card title="Nearby Places" icon={FiMapPin} action={<AddBtn onClick={() => addItem("nearbyPlaces", { name: "", distance: "", image: "" })} label="Add Place" />}>
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {form.nearbyPlaces.map((n, i) => (
               <div key={i} className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 relative">
                 <button type="button" onClick={() => removeItem("nearbyPlaces", i)} className="absolute top-3 right-3 p-1.5 text-slate-400 hover:text-red-500 transition"><FiTrash2 size={14} /></button>
@@ -612,14 +616,14 @@ const CityForm = () => {
           </div>
         </Card>
 
-        {/* ══════════════ CARD 9: TRANSPORT ══════════════ */}
+        {/*  CARD 9: TRANSPORT  */}
         <Card title="Transportation Options" icon={FiNavigation}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {[
-              { key: "local",       label: "Local Transport" },
+              { key: "local", label: "Local Transport" },
               { key: "fromAirport", label: "From Airport" },
               { key: "fromStation", label: "From Railway Station" },
-              { key: "busStation",  label: "From Bus Station" },
+              { key: "busStation", label: "From Bus Station" },
             ].map(({ key, label }) => (
               <Field key={key} label={label}>
                 <textarea rows={1} value={form.transport[key]} onChange={(e) => set(`transport.${key}`, e.target.value)} className={inputCls + " resize-none"} />
@@ -628,7 +632,7 @@ const CityForm = () => {
           </div>
         </Card>
 
-        {/* ══════════════ CARD 10: EMERGENCY INFO ══════════════ */}
+        {/*  CARD 10: EMERGENCY INFO  */}
         <Card title="Emergency Info" icon={FiPhone}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             <Field label="Police"><input value={form.emergencyInfo.police} onChange={(e) => set("emergencyInfo.police", e.target.value)} className={inputCls} /></Field>
@@ -639,7 +643,7 @@ const CityForm = () => {
           </div>
         </Card>
 
-        {/* ══════════════ CARD 11: SEO ══════════════ */}
+        {/*  CARD 11: SEO  */}
         <Card title="SEO Configuration" icon={FiSearch}>
           <div className="space-y-5">
             <Field label="Meta Title">
@@ -654,7 +658,7 @@ const CityForm = () => {
           </div>
         </Card>
 
-        {/* ── Bottom Submit ── */}
+        {/*  Bottom Submit  */}
         <div className="flex justify-end">
           <button type="submit" disabled={isSaving} className="flex items-center gap-2 px-8 py-3 bg-[#E85D04] hover:bg-[#D05203] disabled:opacity-60 text-white font-bold rounded-xl text-sm shadow-md transition cursor-pointer">
             <FiSave size={16} />
@@ -666,9 +670,9 @@ const CityForm = () => {
   );
 };
 
-/* ─────────────────── Utility sub-components ─────────────────── */
+/*  Utility sub-components  */
 const Card = ({ title, icon: Icon, action, children }) => (
-  <div className="bg-white dark:bg-[#0A121F] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+  <div className="bg-white dark:bg-[#0A121F] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-visible">
     <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
       <h3 className="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-base">
         {Icon && <Icon size={16} className="text-[#E85D04]" />}
@@ -683,7 +687,7 @@ const Card = ({ title, icon: Icon, action, children }) => (
 const Toggle = ({ checked, onChange, label, accent }) => (
   <label className="flex items-center gap-2.5 cursor-pointer select-none">
     <button type="button" role="switch" aria-checked={checked} onClick={() => onChange(!checked)}
-      className={`relative w-10 h-5 rounded-full transition-colors duration-200 ${checked ? "bg-[--accent]" : "bg-slate-300 dark:bg-slate-700"}`} style={{ "--accent": accent }}>
+      className={`relative w-10 h-5 rounded-full transition-colors duration-200 ${checked ? "" : "bg-slate-300 dark:bg-slate-700"}`} style={{ backgroundColor: checked ? accent : undefined }}>
       <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${checked ? "translate-x-5" : "translate-x-0"}`} />
     </button>
     <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">{label}</span>

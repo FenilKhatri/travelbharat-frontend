@@ -56,7 +56,7 @@ const MyBlogs = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#050B14] pt-24 pb-12 px-4 text-white">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1600px] w-full mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-black">My Blogs</h1>
           <Link to="/user/write-blog" className="bg-[#E85D04] px-6 py-2 rounded-xl font-bold hover:bg-[#D05203] transition">Write a Blog</Link>

@@ -65,7 +65,7 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0A1628]">
-      {/* ── Hero Section ── */}
+      {/*  Hero Section  */}
       <section className="relative pt-28 pb-24 md:pt-40 md:pb-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628] via-[#0E1E36] to-[#162544]" />
         <div className="absolute inset-0 opacity-20">
@@ -92,7 +92,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* ── Mission & Vision ── */}
+      {/*  Mission & Vision  */}
       <section className="py-20 bg-white dark:bg-[#0D1526]">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
@@ -139,7 +139,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* ── Why TravelBharat ── */}
+      {/*  Why TravelBharat  */}
       <section className="py-20 bg-slate-50 dark:bg-[#0A1628]">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div {...fadeUp} className="text-center mb-16">
@@ -179,7 +179,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* ── Journey Statistics ── */}
+      {/*  Journey Statistics  */}
       <section className="py-20 bg-gradient-to-r from-[#E85D04] to-[#FFA647] relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-1/4 w-64 h-64 bg-white rounded-full blur-3xl" />
@@ -223,7 +223,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* ── Team / Founder ── */}
+      {/*  Team / Founder  */}
       <section className="py-20 bg-white dark:bg-[#0D1526]">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <motion.div {...fadeUp}>
@@ -250,7 +250,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      {/*  CTA  */}
       <section className="py-20 bg-slate-50 dark:bg-[#0A1628]">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <motion.div {...fadeUp}>

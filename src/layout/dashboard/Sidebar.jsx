@@ -1,4 +1,4 @@
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import { FiX, FiSettings, FiLogOut, FiUser, FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { useQuery } from "@tanstack/react-query";
 import http from "../../lib/axios";
@@ -28,6 +28,7 @@ const SidebarTooltip = ({ label, y }) =>
 const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [loggingOut, setLoggingOut] = useState(false);
   const [tooltip, setTooltip] = useState({ show: false, label: "", y: 0 });
 
@@ -35,7 +36,7 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
     queryKey: ["adminNotifications"],
     queryFn: async () => {
       const res = await http.get("/notifications/admin");
-      return res.data.data;
+      return res.data;
     },
     enabled: user?.role === "admin"
   });
@@ -117,49 +118,50 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
 
         {/* NAVIGATION LINKS */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto scrollbar-none">
-          {navLinks.map(({ to, label, icon: Icon }) => (
-            <div
-              key={to}
-              onMouseEnter={(e) => handleMouseEnter(e, label)}
-              onMouseLeave={handleMouseLeave}
-            >
-              <NavLink
-                to={to}
-                onClick={() => setMobileOpen(false)}
-                className={({ isActive }) =>
-                  `relative flex items-center rounded-xl transition duration-200 group
-                  ${collapsed ? "justify-center px-0" : "gap-3.5 px-4"}
-                  py-3 text-sm font-semibold
-                  ${isActive
-                    ? "bg-[#E85D04]/10 text-[#E85D04] dark:text-[#FFA034] shadow-xs"
-                    : "text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white"
-                  }`
-                }
+          {navLinks.map(({ to, label, icon: Icon }) => {
+            const isActive = to === '/' 
+              ? location.pathname === '/' 
+              : to === '/admin' || to === '/user' 
+                ? location.pathname === to 
+                : location.pathname.startsWith(to);
+            return (
+              <div
+                key={to}
+                onMouseEnter={(e) => handleMouseEnter(e, label)}
+                onMouseLeave={handleMouseLeave}
               >
-                {({ isActive }) => (
-                  <>
-                    {isActive && (
-                      <span className="absolute left-0 top-3 bottom-3 w-1 bg-[#E85D04] rounded-r-full" />
-                    )}
-                    <Icon
-                      size={20}
-                      className={`shrink-0 transition-transform group-hover:scale-105 ${isActive ? "text-[#E85D04]" : "text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-350"
-                        }`}
-                    />
-                    {!collapsed && <span className="flex-1">{label}</span>}
-                    {!collapsed && to === "/admin/notifications" && unreadCount > 0 && (
-                      <span className="bg-[#E85D04] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                        {unreadCount > 99 ? '99+' : unreadCount}
-                      </span>
-                    )}
-                    {collapsed && to === "/admin/notifications" && unreadCount > 0 && (
-                      <span className="absolute top-2 right-2 w-2 h-2 bg-[#E85D04] rounded-full" />
-                    )}
-                  </>
-                )}
-              </NavLink>
-            </div>
-          ))}
+                <Link
+                  to={to}
+                  onClick={() => setMobileOpen(false)}
+                  className={`relative flex items-center rounded-xl transition duration-200 group
+                    ${collapsed ? "justify-center px-0" : "gap-3.5 px-4"}
+                    py-3 text-sm font-semibold
+                    ${isActive
+                      ? "bg-[#E85D04]/10 text-[#E85D04] dark:text-[#FFA034] shadow-xs"
+                      : "text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white"
+                    }`}
+                >
+                  {isActive && (
+                    <span className="absolute left-0 top-3 bottom-3 w-1 bg-[#E85D04] rounded-r-full" />
+                  )}
+                  <Icon
+                    size={20}
+                    className={`shrink-0 transition-transform group-hover:scale-105 ${isActive ? "text-[#E85D04]" : "text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-350"
+                      }`}
+                  />
+                  {!collapsed && <span className="flex-1">{label}</span>}
+                  {!collapsed && to === "/admin/notifications" && unreadCount > 0 && (
+                    <span className="bg-[#E85D04] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                      {unreadCount > 99 ? '99+' : unreadCount}
+                    </span>
+                  )}
+                  {collapsed && to === "/admin/notifications" && unreadCount > 0 && (
+                    <span className="absolute top-2 right-2 w-2 h-2 bg-[#E85D04] rounded-full" />
+                  )}
+                </Link>
+              </div>
+            );
+          })}
         </nav>
 
         {/* PROFILE FOOTER SECTION */}

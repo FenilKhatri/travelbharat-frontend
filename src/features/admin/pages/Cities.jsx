@@ -194,7 +194,11 @@ const Cities = () => {
                 </tr>
               ) : (
                 cities.map((cityItem) => (
-                  <tr key={cityItem._id} className="hover:bg-slate-50/50 dark:hover:bg-slate-900/70 transition">
+                  <tr 
+                    key={cityItem._id} 
+                    onClick={() => navigate(`/admin/cities/${cityItem._id}`)}
+                    className="hover:bg-slate-50/50 dark:hover:bg-slate-900/70 transition cursor-pointer"
+                  >
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-4">
                         {cityItem.images?.thumbnail ? (
@@ -224,7 +228,7 @@ const Cities = () => {
 
                     <td className="py-4 px-6">
                       <button
-                        onClick={() => handleToggleFeatured(cityItem)}
+                        onClick={(e) => { e.stopPropagation(); handleToggleFeatured(cityItem); }}
                         className={`p-1.5 rounded-lg border transition duration-200 cursor-pointer ${cityItem.featured
                             ? "bg-amber-500/10 border-amber-500/20 text-amber-500"
                             : "border-slate-200 dark:border-slate-800 text-slate-300 hover:text-slate-500"
@@ -236,7 +240,7 @@ const Cities = () => {
 
                     <td className="py-4 px-6">
                       <button
-                        onClick={() => handleToggleActive(cityItem)}
+                        onClick={(e) => { e.stopPropagation(); handleToggleActive(cityItem); }}
                         className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold transition cursor-pointer ${cityItem.isActive
                             ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20"
                             : "bg-red-500/10 text-red-500 dark:text-red-400 hover:bg-red-500/20"
@@ -249,13 +253,13 @@ const Cities = () => {
                     <td className="py-4 px-6 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button
-                          onClick={() => handleEditClick(cityItem)}
+                          onClick={(e) => { e.stopPropagation(); handleEditClick(cityItem); }}
                           className="p-2 text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition cursor-pointer"
                         >
                           <FiEdit size={16} />
                         </button>
                         <button
-                          onClick={() => setConfirmDelete(cityItem._id)}
+                          onClick={(e) => { e.stopPropagation(); setConfirmDelete(cityItem._id); }}
                           className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition cursor-pointer"
                         >
                           <FiTrash2 size={16} />
@@ -282,7 +286,11 @@ const Cities = () => {
               <div className="col-span-full text-center py-12 text-slate-400 font-semibold">No cities registered.</div>
             ) : (
               cities.map((cityItem) => (
-                <div key={cityItem._id} className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition flex flex-col group">
+                <div 
+                  key={cityItem._id} 
+                  onClick={() => navigate(`/admin/cities/${cityItem._id}`)}
+                  className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition flex flex-col group cursor-pointer"
+                >
                   <div className="h-40 bg-slate-100 dark:bg-slate-800 relative">
                     {cityItem.images?.thumbnail ? (
                       <img src={cityItem.images.thumbnail} alt={cityItem.name} className="w-full h-full object-cover" />
@@ -305,8 +313,8 @@ const Cities = () => {
                         {cityItem.isActive ? "Active" : "Hidden"}
                       </span>
                       <div className="flex items-center gap-1">
-                        <button onClick={() => handleEditClick(cityItem)} className="p-2 text-slate-400 hover:text-[#E85D04] bg-slate-50 dark:bg-slate-800 hover:bg-[#E85D04]/10 rounded-lg transition"><FiEdit size={14} /></button>
-                        <button onClick={() => setConfirmDelete(cityItem._id)} className="p-2 text-slate-400 hover:text-red-500 bg-slate-50 dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition"><FiTrash2 size={14} /></button>
+                        <button onClick={(e) => { e.stopPropagation(); handleEditClick(cityItem); }} className="p-2 text-slate-400 hover:text-[#E85D04] bg-slate-50 dark:bg-slate-800 hover:bg-[#E85D04]/10 rounded-lg transition"><FiEdit size={14} /></button>
+                        <button onClick={(e) => { e.stopPropagation(); setConfirmDelete(cityItem._id); }} className="p-2 text-slate-400 hover:text-red-500 bg-slate-50 dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition"><FiTrash2 size={14} /></button>
                       </div>
                     </div>
                   </div>

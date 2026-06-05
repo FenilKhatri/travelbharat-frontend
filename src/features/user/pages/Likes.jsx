@@ -33,6 +33,7 @@ const Likes = () => {
           case 'city': return 'cities';
           case 'destination': return 'places';
           case 'blog': return 'blogs';
+          case 'festival': return 'festivals';
           default: return '';
       }
   };
@@ -80,7 +81,7 @@ const Likes = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 pt-30 pb-24 min-h-[80vh]">
+    <div className="max-w-[1600px] w-full mx-auto px-4 pt-30 pb-24 min-h-[80vh]">
       <div className="flex items-center gap-3 mb-10">
         <FiHeart className="text-red-500 fill-red-500" size={32} />
         <h1 className="text-4xl font-black text-slate-900 dark:text-white">Liked Content</h1>

@@ -86,7 +86,7 @@ const ContactUs = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0A1628]">
-      {/* ── Hero ── */}
+      {/*  Hero  */}
       <section className="relative pt-28 pb-16 md:pt-40 md:pb-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628] via-[#0E1E36] to-[#162544]" />
         <div className="absolute inset-0 opacity-15">
@@ -113,7 +113,7 @@ const ContactUs = () => {
         </div>
       </section>
 
-      {/* ── Contact Info Cards ── */}
+      {/*  Contact Info Cards  */}
       <section className="max-w-6xl mx-auto px-4 -mt-12 relative z-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {contactInfo.map((item, index) => (
@@ -149,7 +149,7 @@ const ContactUs = () => {
         </div>
       </section>
 
-      {/* ── Contact Form ── */}
+      {/*  Contact Form  */}
       <section className="py-20">
         <div className="max-w-3xl mx-auto px-4">
           <motion.div {...fadeUp}>

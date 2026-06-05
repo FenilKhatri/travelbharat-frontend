@@ -48,7 +48,7 @@ const Trips = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 pt-30 pb-24 min-h-[80vh]">
+    <div className="max-w-[1600px] w-full mx-auto px-4 pt-30 pb-24 min-h-[80vh]">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
         <div className="flex items-center gap-3">
           <FiNavigation className="text-[#E85D04]" size={32} />

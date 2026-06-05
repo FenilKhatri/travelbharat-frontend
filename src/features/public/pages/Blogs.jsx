@@ -67,7 +67,7 @@ const Blogs = () => {
           <div className="absolute bottom-0 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 py-16 md:py-24">
+        <div className="relative z-10 max-w-[1600px] w-full mx-auto px-4 py-16 md:py-24">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -99,7 +99,7 @@ const Blogs = () => {
       </section>
 
       {/* Category Filters */}
-      <section className="max-w-7xl mx-auto px-4 -mt-6 relative z-20 mb-12">
+      <section className="max-w-[1600px] w-full mx-auto px-4 -mt-6 relative z-20 mb-12">
         <div className="glass rounded-2xl p-3 overflow-x-auto">
           <div className="flex flex-nowrap md:flex-wrap items-center gap-2 min-w-max md:min-w-0">
             <button
@@ -123,7 +123,7 @@ const Blogs = () => {
 
       {/* Featured Blog Banner */}
       {!isLoading && featuredBlog && !hasFilters && (
-        <section className="max-w-7xl mx-auto px-4 mb-16">
+        <section className="max-w-[1600px] w-full mx-auto px-4 mb-16">
           <div className="flex items-center gap-2 mb-6">
             <span className="w-2 h-2 rounded-full bg-[#E85D04] animate-pulse" />
             <h2 className="text-sm font-black uppercase tracking-[0.2em] text-[#E85D04]">Featured Story</h2>
@@ -166,7 +166,7 @@ const Blogs = () => {
       )}
 
       {/* Main Layout */}
-      <section className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <section className="max-w-[1600px] w-full mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-12">
 
         {/* Blog Grid */}
         <div className="lg:col-span-8">

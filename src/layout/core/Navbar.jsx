@@ -103,8 +103,6 @@ const Navbar = memo(() => {
             </div>
           </div>
         )}
-
-        {/* <LogoutButton /> is handled inside UserDropdown now for cleaner UI */}
       </div>
     );
   };
@@ -176,26 +174,25 @@ const Navbar = memo(() => {
 
           {/* DESKTOP LINKS */}
           <ul className="hidden md:flex items-center gap-6 lg:gap-8">
-            {navLinks?.map((link) => (
+            {navLinks?.map((link) => {
+              const isEnd = link.path === '/';
+              return (
               <li key={link.path}>
-                <NavLink to={link.path} className={activeLinks}>
+                <NavLink to={link.path} className={activeLinks} end={isEnd}>
                   {link.name}
                 </NavLink>
               </li>
-            ))}
+              );
+            })}
           </ul>
 
           {/* RIGHT ACTIONS */}
           <div className="hidden md:flex items-center gap-4">
-            {/* THEME TOGGLE REMOVED */}
-
             <DesktopAuthButtons />
           </div>
 
           {/* MOBILE BUTTONS */}
           <div className="md:hidden flex items-center gap-3">
-            {/* THEME TOGGLE REMOVED */}
-
             <button
               onClick={() => setMenuOpen(true)}
               className={isHome && !scrolled && !menuOpen ? 'text-slate-800 dark:text-white' : 'text-slate-800 dark:text-white'}
@@ -237,10 +234,13 @@ const Navbar = memo(() => {
         </div>
 
         <div className="p-5 flex-1 overflow-y-auto flex flex-col gap-2">
-          {navLinks?.map((link) => (
+          {navLinks?.map((link) => {
+            const isEnd = link.path === '/';
+            return (
             <NavLink
               key={link.path}
               to={link.path}
+              end={isEnd}
               className={({ isActive }) =>
                 `px-4 py-3 rounded-lg text-lg font-medium transition-colors ${isActive
                   ? "bg-[#E85D04]/10 text-[#E85D04] dark:bg-[#E85D04]/20"
@@ -251,7 +251,8 @@ const Navbar = memo(() => {
             >
               {link.name}
             </NavLink>
-          ))}
+            );
+          })}
 
           <div className="mt-auto">
             <MobileAuthButtons />

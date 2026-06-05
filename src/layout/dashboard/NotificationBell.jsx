@@ -6,11 +6,14 @@ import { notificationService } from "../../services/notificationService";
 const NotificationBell = () => {
   const { data } = useQuery({
     queryKey: ['adminNotifications'],
-    queryFn: () => notificationService.getAdminNotifications(),
+    queryFn: async () => {
+      const res = await notificationService.getAdminNotifications();
+      return res.data;
+    },
     refetchInterval: 60000, // Refetch every 60 seconds
   });
 
-  const unreadCount = data?.data?.data?.unreadCount || 0;
+  const unreadCount = data?.unreadCount || 0;
 
   return (
     <Link 

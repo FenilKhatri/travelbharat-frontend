@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import http from "../../../lib/axios";
 import PageLoader from "../../../components/ui/PageLoader";
 
-/* ─────────────────── Constants ─────────────────── */
+/*  Constants  */
 const REGIONS = [
   { value: "north",     label: "North India"     },
   { value: "south",     label: "South India"     },
@@ -46,7 +46,7 @@ const INITIAL_FORM = {
   seo: { metaTitle: "", metaDescription: "", keywords: [] },
 };
 
-/* ─────────────────── Sub-components ─────────────────── */
+/*  Sub-components  */
 
 /** Styled section wrapper */
 const Section = ({ icon: Icon, title, action, children }) => (
@@ -113,7 +113,7 @@ const ImageTile = ({ src, label, aspect, onUpload, uploading }) => (
   </div>
 );
 
-/* ─────────────────── Main Component ─────────────────── */
+/*  Main Component  */
 const StateForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -123,7 +123,7 @@ const StateForm = () => {
   const [form, setForm] = useState(INITIAL_FORM);
   const [uploadingImage, setUploadingImage] = useState(null);
 
-  /* ── Fetch existing state ── */
+  /*  Fetch existing state  */
   const {
     data: queryData,
     isLoading: isFetching,
@@ -204,7 +204,7 @@ const StateForm = () => {
     }
   }, [isError, navigate]);
 
-  /* ── Mutations ── */
+  /*  Mutations  */
   const createMutation = useMutation({
     mutationFn: (payload) => http.post("/states/admin/create", payload),
     onSuccess: () => {
@@ -238,7 +238,7 @@ const StateForm = () => {
 
   const handleSubmit = (e) => handleSave(e, false);
 
-  /* ── Image upload ── */
+  /*  Image upload  */
   const handleImageUpload = async (e, fieldPath, isGallery = false) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -282,22 +282,24 @@ const StateForm = () => {
       const res = await http.post("/upload/multiple", fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      const urls = res.images?.map(img => img.url) || res.data?.images?.map(img => img.url);
-      if(urls) {
+      const urls = res.data?.data?.images?.map(img => img.url) || res.data?.images?.map(img => img.url);
+      if (urls && urls.length > 0) {
         setForm((prev) => ({
           ...prev,
           images: { ...prev.images, gallery: [...prev.images.gallery, ...urls] }
         }));
         toast.success("Gallery images uploaded!");
+      } else {
+        throw new Error("No image URLs returned from server");
       }
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Upload failed");
+      toast.error(err?.response?.data?.message || err.message || "Upload failed");
     } finally {
       setUploadingImage(null);
     }
   };
 
-  /* ── Helpers ── */
+  /*  Helpers  */
   const set = (path, value) => {
     const keys = path.split(".");
     if (keys.length === 1) {
@@ -337,7 +339,7 @@ const StateForm = () => {
       images: { ...prev.images, gallery: prev.images.gallery.filter((_, i) => i !== idx) },
     }));
 
-  /* ── Loading ── */
+  /*  Loading  */
   if (isFetching) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
@@ -346,12 +348,12 @@ const StateForm = () => {
     );
   }
 
-  /* ─────────────────────────── RENDER ─────────────────────────── */
+  /*  RENDER  */
   return (
     <div className="max-w-6xl mx-auto space-y-5 pb-16 px-4 sm:px-0">
 
-      {/* ── Sticky Header ── */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-[#0A121F] p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm sticky top-24 z-10">
+      {/*  Sticky Header  */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-[#0A121F] p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm z-10">
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -760,7 +762,7 @@ const StateForm = () => {
               <input value={form.seo.metaTitle}
                 onChange={(e) => set("seo.metaTitle", e.target.value)}
                 placeholder="60 characters recommended…" className={inputCls} />
-              <CharCount value={form.seo.metaTitle} max={60} />
+              <CharCount value={form.seo.metaTitle} max={100} />
             </Field>
 
             <Field label="Meta Description">
@@ -768,7 +770,7 @@ const StateForm = () => {
                 onChange={(e) => set("seo.metaDescription", e.target.value)}
                 placeholder="160 characters recommended…"
                 className={inputCls + " resize-none"} />
-              <CharCount value={form.seo.metaDescription} max={160} />
+              <CharCount value={form.seo.metaDescription} max={250} />
             </Field>
 
             <Field label="Keywords (comma separated)">
@@ -789,7 +791,7 @@ const StateForm = () => {
           </div>
         </Card>
 
-        {/* ── Bottom Submit ── */}
+        {/*  Bottom Submit  */}
         <div className="flex justify-end">
           <button
             type="submit"
@@ -805,10 +807,10 @@ const StateForm = () => {
   );
 };
 
-/* ─────────────────── Utility sub-components ─────────────────── */
+/*  Utility sub-components  */
 
 const Card = ({ title, icon: Icon, action, children }) => (
-  <div className="bg-white dark:bg-[#0A121F] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+  <div className="bg-white dark:bg-[#0A121F] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-visible">
     <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
       <h3 className="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-base">
         {Icon && <Icon size={16} className="text-[#E85D04]" />}
@@ -827,8 +829,8 @@ const Toggle = ({ checked, onChange, label, accent }) => (
       role="switch"
       aria-checked={checked}
       onClick={() => onChange(!checked)}
-      className={`relative w-10 h-5 rounded-full transition-colors duration-200 ${checked ? "bg-[--accent]" : "bg-slate-300 dark:bg-slate-700"}`}
-      style={{ "--accent": accent }}
+      className={`relative w-10 h-5 rounded-full transition-colors duration-200 ${checked ? "" : "bg-slate-300 dark:bg-slate-700"}`}
+      style={{ backgroundColor: checked ? accent : undefined }}
     >
       <span
         className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${checked ? "translate-x-5" : "translate-x-0"}`}

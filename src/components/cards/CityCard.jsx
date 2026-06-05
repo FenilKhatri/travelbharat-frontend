@@ -14,7 +14,8 @@ const CityCard = ({ city, stateSlug, index = 0 }) => {
       transition={{ duration: 0.5, delay: index * 0.05 }}
       className="group"
     >
-      <div className="h-full rounded-3xl overflow-hidden border border-white/10 bg-[#111827] hover:border-[#E85D04]/40 hover:shadow-2xl hover:shadow-[#E85D04]/10 transition-all duration-500 hover:-translate-y-1 flex flex-col">
+      <Link to={`/states/${stateSlug}/cities/${city.slug}`}>
+        <div className="h-full rounded-3xl overflow-hidden border border-white/10 bg-[#111827] hover:border-[#E85D04]/40 hover:shadow-2xl hover:shadow-[#E85D04]/10 transition-all duration-500 hover:-translate-y-1 flex flex-col cursor-pointer">
         <div className="relative aspect-[4/3] overflow-hidden">
           {image ? (
             <img
@@ -42,18 +43,13 @@ const CityCard = ({ city, stateSlug, index = 0 }) => {
             {city.name}
           </h3>
           {description && (
-            <p className="text-sm text-[#8fa3cc] line-clamp-2 leading-relaxed mb-6 flex-1">
+            <p className="text-sm text-[#8fa3cc] line-clamp-2 leading-relaxed flex-1">
               {description}
             </p>
           )}
-          <Link
-            to={`/states/${stateSlug}/cities/${city.slug}`}
-            className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#E85D04]/10 border border-[#E85D04]/30 text-[#E85D04] font-bold text-sm hover:bg-[#E85D04] hover:text-white transition-all duration-300"
-          >
-            View City <FiArrowRight size={16} />
-          </Link>
         </div>
       </div>
+      </Link>
     </motion.div>
   );
 };

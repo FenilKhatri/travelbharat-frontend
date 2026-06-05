@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -8,104 +9,21 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/free-mode';
 
-import { 
-  FiMapPin, FiClock, FiCalendar, FiDollarSign, FiTag, 
+import {
+  FiMapPin, FiClock, FiCalendar, FiDollarSign, FiTag,
   FiX, FiChevronLeft, FiChevronRight, FiCamera,
   FiArrowRight, FiStar, FiInfo, FiWind
 } from "react-icons/fi";
 import { FaHistory, FaQuoteLeft, FaPlane, FaTrain, FaCar, FaBus } from "react-icons/fa";
 import { placeService } from "../../../services/placeService";
 import ReviewSection from "../components/ReviewSection";
-import PlanTripModal from "../components/PlanTripModal";
 import PageLoader from "../../../components/ui/PageLoader";
 import { useAuth } from "../../../context/AuthContext";
-// --- Subcomponents ---
+import LikeButton from "../../../components/ui/LikeButton";
+import GalleryCarousel from "../../../components/ui/GalleryCarousel";
+import { festivalService } from "../../../services/festivalService";
+import ExploreIconicSection from "../sections/home/ExploreIconicSection";
 
-const PhotoModal = ({ isOpen, onClose, photos, initialIndex = 0 }) => {
-  const [currentIndex, setCurrentIndex] = useState(initialIndex);
-
-  useEffect(() => {
-    setCurrentIndex(initialIndex);
-  }, [initialIndex, isOpen]);
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (!isOpen) return;
-      if (e.key === "Escape") onClose();
-      if (e.key === "ArrowRight") nextPhoto();
-      if (e.key === "ArrowLeft") prevPhoto();
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, currentIndex]);
-
-  if (!isOpen) return null;
-
-  const nextPhoto = () => setCurrentIndex((prev) => (prev === photos.length - 1 ? 0 : prev + 1));
-  const prevPhoto = () => setCurrentIndex((prev) => (prev === 0 ? photos.length - 1 : prev - 1));
-
-  return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-3xl flex items-center justify-center overflow-hidden"
-      >
-        <button 
-          onClick={onClose}
-          className="absolute top-8 right-8 w-12 h-12 bg-white/10 hover:bg-[#E85D04] text-white rounded-full flex items-center justify-center transition-colors z-50 backdrop-blur-md"
-        >
-          <FiX size={24} />
-        </button>
-
-        <div className="absolute top-8 left-8 text-white/50 font-black tracking-[0.2em] uppercase z-50 text-sm">
-          {currentIndex + 1} / {photos.length}
-        </div>
-
-        <div className="relative w-full max-w-[100vw] h-[75vh] flex items-center justify-center perspective-1000">
-          
-          {/* Previous Image */}
-          <div 
-            className="absolute left-[-15%] md:left-[5%] w-[60%] md:w-[40%] h-[60%] opacity-40 blur-sm cursor-pointer transition-all duration-700 ease-out hidden sm:block z-0 transform -translate-x-12 scale-90"
-            onClick={prevPhoto}
-          >
-            <img src={photos[currentIndex === 0 ? photos.length - 1 : currentIndex - 1]} className="w-full h-full object-cover rounded-2xl shadow-2xl" alt="Previous" />
-          </div>
-
-          {/* Center Image */}
-          <motion.div 
-            key={currentIndex}
-            initial={{ scale: 0.95, opacity: 0, x: 20 }}
-            animate={{ scale: 1, opacity: 1, x: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="relative z-20 w-[95%] sm:w-[75%] md:w-[60%] h-full rounded-2xl overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.9)] bg-black"
-          >
-            <img src={photos[currentIndex]} className="w-full h-full object-contain" alt="Current Gallery Item" />
-          </motion.div>
-
-          {/* Next Image */}
-          <div 
-            className="absolute right-[-15%] md:right-[5%] w-[60%] md:w-[40%] h-[60%] opacity-40 blur-sm cursor-pointer transition-all duration-700 ease-out hidden sm:block z-0 transform translate-x-12 scale-90"
-            onClick={nextPhoto}
-          >
-            <img src={photos[currentIndex === photos.length - 1 ? 0 : currentIndex + 1]} className="w-full h-full object-cover rounded-2xl shadow-2xl" alt="Next" />
-          </div>
-          
-        </div>
-
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-6 z-50">
-          <button onClick={prevPhoto} className="w-14 h-14 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-full flex items-center justify-center backdrop-blur-md transition-all">
-            <FiChevronLeft size={28} />
-          </button>
-          <button onClick={nextPhoto} className="w-14 h-14 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-full flex items-center justify-center backdrop-blur-md transition-all">
-            <FiChevronRight size={28} />
-          </button>
-        </div>
-      </motion.div>
-    </AnimatePresence>
-  );
-};
 
 // Scroll Reveal Wrapper
 const Reveal = ({ children, delay = 0, y = 30 }) => {
@@ -125,12 +43,9 @@ const Reveal = ({ children, delay = 0, y = 30 }) => {
 
 const PlaceDetails = () => {
   const { slug } = useParams();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [tripModalOpen, setTripModalOpen] = useState(false);
-  const [activePhoto, setActivePhoto] = useState(0);
   const heroRef = useRef(null);
   const { user } = useAuth();
-  
+
   const { scrollY } = useScroll();
   const yHero = useTransform(scrollY, [0, 1000], [0, 300]);
   const opacityHero = useTransform(scrollY, [0, 800], [1, 0]);
@@ -141,6 +56,15 @@ const PlaceDetails = () => {
   });
 
   const place = data?.data?.place;
+  const stateSlug = place?.stateId?.slug;
+
+  const { data: festivalsData, isLoading: festivalsLoading } = useQuery({
+    queryKey: ['festivalsByState', stateSlug],
+    queryFn: () => festivalService.getFestivalsByState(stateSlug),
+    enabled: !!stateSlug
+  });
+
+  const festivals = festivalsData?.data?.festivals || [];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -168,24 +92,24 @@ const PlaceDetails = () => {
 
   const heroImage = place.images?.hero || place.images?.thumbnail || "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80";
   const validGallery = place.images?.gallery?.filter(img => img) || [];
-  const hasValidMap = place.location?.coordinates?.lat !== 0 && place.location?.coordinates?.lng !== 0;
+  const hasValidMap = !!(place.location?.coordinates?.lat && place.location?.coordinates?.lng);
 
   return (
     <div className="bg-[#050505] font-sans overflow-x-hidden selection:bg-[#E85D04] selection:text-white text-white">
-      
-      {/* ── SECTION 1: CINEMATIC HERO ── */}
+
+      {/*  SECTION 1: CINEMATIC HERO  */}
       <section ref={heroRef} className="relative w-full h-screen flex flex-col justify-end overflow-hidden">
-        <motion.div 
+        <motion.div
           style={{ y: yHero, opacity: opacityHero }}
           className="absolute inset-0 z-0 origin-center"
         >
-          <motion.img 
+          <motion.img
             initial={{ scale: 1.15 }}
             animate={{ scale: 1 }}
             transition={{ duration: 25, ease: "easeOut" }}
-            src={heroImage} 
-            className="w-full h-full object-cover" 
-            alt={place.name} 
+            src={heroImage}
+            className="w-full h-full object-cover"
+            alt={place.name}
           />
           <div className="absolute inset-0 bg-black/30 mix-blend-multiply" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
@@ -193,7 +117,7 @@ const PlaceDetails = () => {
         </motion.div>
 
         <div className="relative z-10 max-w-[1600px] mx-auto px-4 w-full pb-24 md:pb-32">
-          
+
           <Reveal delay={0.2}>
             <div className="flex flex-wrap items-center gap-3 mb-6">
               {place.featured && (
@@ -237,32 +161,20 @@ const PlaceDetails = () => {
           <Reveal delay={0.5}>
             <div className="flex flex-wrap gap-4">
               {validGallery.length > 0 && (
-                <button 
-                  onClick={() => { setActivePhoto(0); setModalOpen(true); }}
-                  className="bg-white text-[#050505] px-8 py-4 rounded-full font-black flex items-center gap-2 hover:bg-gray-200 hover:scale-105 transition-all duration-300 shadow-[0_10px_20px_rgba(255,255,255,0.2)]"
+                <a
+                  href="#gallery"
+                  className="bg-white text-[#050505] px-8 py-4 rounded-full font-semibold flex items-center gap-2 hover:bg-gray-200 hover:scale-105 transition-all duration-300"
                 >
                   Explore Photos <FiArrowRight />
-                </button>
+                </a>
               )}
-              <button 
-                onClick={() => {
-                  if (!user) {
-                    toast.error("Please login to plan a trip");
-                  } else {
-                    setTripModalOpen(true);
-                  }
-                }}
-                className="bg-[#E85D04] text-white px-8 py-4 rounded-full font-black flex items-center gap-2 hover:bg-[#D05203] hover:scale-105 transition-all duration-300 shadow-[0_10px_20px_rgba(232,93,4,0.4)]"
-              >
-                Plan a Trip <FiCalendar />
-              </button>
-              
-              <SaveButton itemId={place._id} itemType="place" initialCount={place.saveCount} className="!px-8 !py-4 !text-base" />
+
+              <LikeButton entityId={place._id} entityType="destination" initialCount={place.likeCount} className="!px-8 !py-4 !text-base cursor-pointer" />
             </div>
           </Reveal>
         </div>
 
-        <motion.div 
+        <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/50 text-xs font-bold tracking-[0.2em] uppercase z-10"
@@ -272,7 +184,7 @@ const PlaceDetails = () => {
         </motion.div>
       </section>
 
-      {/* ── SECTION 2: DESTINATION SNAPSHOT ── */}
+      {/*  SECTION 2: DESTINATION SNAPSHOT  */}
       <section className="relative z-20 -mt-10 mb-24 max-w-[1600px] mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
           {[
@@ -283,7 +195,7 @@ const PlaceDetails = () => {
             { icon: FiStar, label: "Rating", value: place.rating > 0 ? `${place.rating} / 5 (${place.reviewCount})` : null },
             { icon: FiTag, label: "Type", value: place.tripType?.[0] || place.category }
           ].filter(item => item.value && item.value !== "Free" && item.value !== "Open 24 Hours").map((item, idx) => (
-            <motion.div 
+            <motion.div
               key={idx}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -302,7 +214,7 @@ const PlaceDetails = () => {
         </div>
       </section>
 
-      {/* ── SECTION 3: WHY VISIT (STORY) ── */}
+      {/*  SECTION 3: WHY VISIT (STORY)  */}
       <section className="py-24 max-w-[1600px] mx-auto px-4">
         <div className="grid lg:grid-cols-12 gap-16 items-center">
           <div className="lg:col-span-7">
@@ -312,7 +224,7 @@ const PlaceDetails = () => {
               </h2>
             </Reveal>
             <Reveal delay={0.2}>
-              <div 
+              <div
                 className="text-white/70 text-lg md:text-xl leading-relaxed font-light prose prose-invert prose-p:mb-6 max-w-none"
                 dangerouslySetInnerHTML={{ __html: place.whyVisit || place.overview || place.description }}
               />
@@ -320,7 +232,7 @@ const PlaceDetails = () => {
           </div>
           <div className="lg:col-span-5 relative hidden md:block">
             <Reveal delay={0.4}>
-              <motion.div 
+              <motion.div
                 whileHover={{ rotate: 2, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
                 className="relative rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.8)] aspect-[4/5] max-w-md ml-auto"
@@ -333,86 +245,32 @@ const PlaceDetails = () => {
         </div>
       </section>
 
-      {/* ── SECTION 4: VISUAL JOURNEY ── */}
-      {validGallery.length > 0 && (
-        <section className="py-24 bg-[#0a0a0a]">
-          <div className="max-w-[1600px] mx-auto px-4">
-            <Reveal>
-              <div className="flex justify-between items-end mb-12">
-                <div>
-                  <h2 className="text-4xl md:text-5xl font-black mb-2">Visual Journey</h2>
-                  <p className="text-white/50 text-sm font-black tracking-[0.2em] uppercase">Glimpses of {place.name}</p>
-                </div>
-                <button 
-                  onClick={() => { setActivePhoto(0); setModalOpen(true); }}
-                  className="hidden md:block bg-white/5 hover:bg-white/10 border border-white/10 text-white px-6 py-3 rounded-full font-bold transition-all text-sm uppercase tracking-wider"
-                >
-                  View All Photos
-                </button>
-              </div>
-            </Reveal>
+      {/*  SECTION 4: VISUAL JOURNEY  */}
+      <div id="gallery">
+        <GalleryCarousel images={validGallery} name={place.name} />
+      </div>
 
-            <Reveal delay={0.2}>
-              <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 h-[50vh] md:h-[70vh]">
-                {/* Hero Feature Image */}
-                <div 
-                  className="md:col-span-2 md:row-span-2 rounded-[2rem] overflow-hidden relative group cursor-pointer"
-                  onClick={() => { setActivePhoto(0); setModalOpen(true); }}
-                >
-                  <img src={validGallery[0]} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Gallery Main" />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
-                </div>
-
-                {/* Grid Images */}
-                {validGallery.slice(1, 5).map((img, idx) => (
-                  <div 
-                    key={idx}
-                    className="hidden md:block rounded-[2rem] overflow-hidden relative group cursor-pointer"
-                    onClick={() => { setActivePhoto(idx + 1); setModalOpen(true); }}
-                  >
-                    <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={`Gallery ${idx+1}`} />
-                    <div className="absolute inset-0 bg-black/30 group-hover:bg-transparent transition-colors duration-500" />
-                    {idx === 3 && validGallery.length > 5 && (
-                      <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm">
-                        <span className="text-white font-black text-3xl">+{validGallery.length - 5}</span>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-            
-            <button 
-              onClick={() => { setActivePhoto(0); setModalOpen(true); }}
-              className="mt-6 w-full md:hidden bg-white/5 border border-white/10 py-4 rounded-xl font-bold uppercase tracking-widest text-sm"
-            >
-              View All Photos
-            </button>
-          </div>
-        </section>
-      )}
-
-      {/* ── SECTION 5: HIGHLIGHTS (TIMELINE) ── */}
+      {/*  SECTION 5: HIGHLIGHTS (TIMELINE)  */}
       {place.highlights?.length > 0 && (
         <section className="py-32 overflow-hidden bg-gradient-to-b from-[#050505] to-[#0a0a0a]">
           <div className="max-w-[1600px] mx-auto px-4">
             <Reveal>
               <h2 className="text-4xl md:text-5xl font-black mb-16 text-center">Key Highlights</h2>
             </Reveal>
-            
+
             <div className="relative">
               {/* Timeline Line */}
               <div className="absolute top-[28px] left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white/20 to-transparent hidden md:block" />
-              
+
               <div className="flex flex-col md:flex-row gap-8 md:gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-8">
                 {place.highlights.map((highlight, idx) => (
                   <Reveal key={idx} delay={idx * 0.1}>
                     <div className="relative w-full md:w-[320px] shrink-0 snap-center md:pt-16 group">
                       {/* Timeline Dot */}
                       <div className="absolute top-[20px] left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#E85D04] border-[4px] border-[#0a0a0a] hidden md:block group-hover:scale-150 transition-transform shadow-[0_0_15px_#E85D04]" />
-                      
+
                       <div className="bg-white/5 border border-white/10 rounded-3xl p-8 hover:bg-white/10 transition-colors h-full">
-                        <h4 className="text-xl font-black mb-4 text-[#E85D04]">{highlight.title || highlight.name || `Highlight ${idx+1}`}</h4>
+                        <h4 className="text-xl font-black mb-4 text-[#E85D04]">{highlight.title || highlight.name || `Highlight ${idx + 1}`}</h4>
                         <p className="text-white/60 leading-relaxed text-sm">
                           {highlight.description || highlight}
                         </p>
@@ -426,7 +284,7 @@ const PlaceDetails = () => {
         </section>
       )}
 
-      {/* ── SECTION 6: ACTIVITIES (AUTO CAROUSEL) ── */}
+      {/*  SECTION 6: ACTIVITIES (AUTO CAROUSEL)  */}
       {place.activities?.length > 0 && (
         <section className="py-24 bg-[#0a0a0a]">
           <div className="max-w-[1600px] mx-auto px-4">
@@ -459,9 +317,9 @@ const PlaceDetails = () => {
                     <SwiperSlide key={idx}>
                       <div className="group bg-[#050505] rounded-[2rem] overflow-hidden border border-white/10 hover:border-white/30 transition-colors cursor-grab active:cursor-grabbing">
                         <div className="h-64 overflow-hidden relative">
-                          <img 
-                            src={act.image || heroImage} 
-                            className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" 
+                          <img
+                            src={act.image || heroImage}
+                            className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
                             alt={act.name}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent" />
@@ -480,7 +338,7 @@ const PlaceDetails = () => {
         </section>
       )}
 
-      {/* ── SECTION 7: FOOD EXPERIENCES ── */}
+      {/*  SECTION 7: FOOD EXPERIENCES  */}
       {place.foodSpecialities?.length > 0 && (
         <section className="py-24 bg-[#050505]">
           <div className="max-w-[1600px] mx-auto px-4">
@@ -491,9 +349,9 @@ const PlaceDetails = () => {
               {place.foodSpecialities.map((food, idx) => (
                 <Reveal key={idx} delay={idx * 0.1}>
                   <div className="w-[280px] sm:w-[350px] shrink-0 snap-center group rounded-[2rem] overflow-hidden relative border border-white/10 aspect-square">
-                    <img 
-                      src={food.image || "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80"} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                    <img
+                      src={food.image || "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80"}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       alt={food.name}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
@@ -509,7 +367,7 @@ const PlaceDetails = () => {
         </section>
       )}
 
-      {/* ── SECTION 8: PHOTOGRAPHY SPOTS (PINTEREST MASONRY) ── */}
+      {/*  SECTION 8: PHOTOGRAPHY SPOTS (PINTEREST MASONRY)  */}
       {place.photographySpots?.length > 0 && (
         <section className="py-24 bg-[#0a0a0a]">
           <div className="max-w-[1600px] mx-auto px-4">
@@ -519,7 +377,7 @@ const PlaceDetails = () => {
                 <h2 className="text-4xl md:text-5xl font-black">Photography Spots</h2>
               </div>
             </Reveal>
-            
+
             <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
               {place.photographySpots.map((spot, idx) => (
                 <Reveal key={idx} delay={idx * 0.1}>
@@ -534,12 +392,12 @@ const PlaceDetails = () => {
         </section>
       )}
 
-      {/* ── SECTION 9: HISTORY & LEGENDS (NAT GEO STYLE) ── */}
+      {/*  SECTION 9: HISTORY & LEGENDS (NAT GEO STYLE)  */}
       {(place.history || place.legends) && (
         <section className="py-32 bg-[#050505] relative border-y border-white/5">
           <div className="max-w-[1400px] mx-auto px-4">
             <div className="grid md:grid-cols-2 gap-16 md:gap-24">
-              
+
               {place.history && (
                 <Reveal>
                   <div className="prose prose-invert max-w-none">
@@ -573,13 +431,13 @@ const PlaceDetails = () => {
         </section>
       )}
 
-      {/* ── SECTION 10: TRAVEL PLANNER ── */}
+      {/*  SECTION 10: TRAVEL PLANNER  */}
       <section className="py-24 bg-[#0a0a0a]">
         <div className="max-w-[1600px] mx-auto px-4">
           <Reveal>
             <h2 className="text-4xl md:text-5xl font-black mb-12">Travel Planner</h2>
           </Reveal>
-          
+
           <div className="grid md:grid-cols-3 gap-6">
             <Reveal delay={0.1}>
               <div className="bg-[#050505] p-8 rounded-[2rem] border border-white/10 h-full">
@@ -624,7 +482,7 @@ const PlaceDetails = () => {
         </div>
       </section>
 
-      {/* ── SECTION 11: HOW TO REACH ── */}
+      {/*  SECTION 11: HOW TO REACH  */}
       {place.howToReach && (
         <section className="py-24 bg-[#050505] border-t border-white/5">
           <div className="max-w-[1600px] mx-auto px-4">
@@ -653,7 +511,7 @@ const PlaceDetails = () => {
         </section>
       )}
 
-      {/* ── SECTION 12: TRAVELER TIPS (STICKY NOTES) ── */}
+      {/*  SECTION 12: TRAVELER TIPS (STICKY NOTES)  */}
       {place.tips?.length > 0 && (
         <section className="py-24 bg-[#0a0a0a] overflow-hidden">
           <div className="max-w-[1600px] mx-auto px-4">
@@ -663,7 +521,7 @@ const PlaceDetails = () => {
             <div className="flex flex-wrap justify-center gap-8 md:gap-12">
               {place.tips.map((tip, idx) => (
                 <Reveal key={idx} delay={idx * 0.1}>
-                  <motion.div 
+                  <motion.div
                     initial={{ rotate: Math.random() * 8 - 4 }}
                     whileHover={{ rotate: 0, scale: 1.05, zIndex: 10 }}
                     className="w-[280px] sm:w-[320px] aspect-square bg-gradient-to-br from-[#E85D04] to-orange-600 p-8 shadow-[10px_10px_30px_rgba(0,0,0,0.5)] flex flex-col justify-center text-center cursor-default"
@@ -678,7 +536,7 @@ const PlaceDetails = () => {
         </section>
       )}
 
-      {/* ── SECTION 13: NEARBY ATTRACTIONS ── */}
+      {/*  SECTION 13: NEARBY ATTRACTIONS  */}
       {place.nearbyAttractions?.length > 0 && (
         <section className="py-24 bg-[#050505] overflow-hidden">
           <div className="max-w-[1600px] mx-auto px-4">
@@ -732,7 +590,7 @@ const PlaceDetails = () => {
         </section>
       )}
 
-      {/* ── SECTION 14: LOCATION MAP ── */}
+      {/*  SECTION 14: LOCATION MAP  */}
       {hasValidMap && (
         <section className="py-24 bg-[#0a0a0a] border-t border-white/5">
           <div className="max-w-[1600px] mx-auto px-4">
@@ -767,7 +625,7 @@ const PlaceDetails = () => {
         </section>
       )}
 
-      {/* ── SECTION 14.5: REVIEWS ── */}
+      {/*  SECTION 14.5: REVIEWS  */}
       <section className="py-24 bg-[#050505] border-t border-white/5">
         <div className="max-w-4xl mx-auto px-4">
           <Reveal>
@@ -776,17 +634,29 @@ const PlaceDetails = () => {
         </div>
       </section>
 
-      {/* ── SECTION 15: EXPLORE MORE CTA ── */}
+      {/*  Related Festivals  */}
+      <ExploreIconicSection
+        type="festival"
+        highlightText="Cultural Experience"
+        title={`Festivals in ${place.stateId?.name || 'the State'}`}
+        subtitle="Immerse yourself in local traditions and celebrations nearby."
+        data={festivals}
+        viewAllLink="/festivals"
+        viewAllText="View All Festivals"
+        isLoading={festivalsLoading}
+      />
+
+      {/*  SECTION 15: EXPLORE MORE CTA  */}
       <section className="py-40 relative flex items-center justify-center text-center px-4 overflow-hidden">
         <div className="absolute inset-0 bg-[#050505] z-0">
           <img src={heroImage} className="w-full h-full object-cover opacity-20 scale-110 blur-xl" alt="CTA Background" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-black/60 to-[#050505]" />
         </div>
-        
+
         <div className="relative z-10 max-w-4xl mx-auto">
           <Reveal>
             <h2 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
-              Ready To Experience <br/><span className="text-[#E85D04]">{place.name}</span>?
+              Ready To Experience <br /><span className="text-[#E85D04]">{place.name}</span>?
             </h2>
           </Reveal>
           <Reveal delay={0.2}>
@@ -803,21 +673,6 @@ const PlaceDetails = () => {
           </Reveal>
         </div>
       </section>
-
-      {/* Fullscreen Photo Modal rendering */}
-      <PhotoModal 
-        isOpen={modalOpen} 
-        onClose={() => setModalOpen(false)} 
-        photos={validGallery} 
-        initialIndex={activePhoto} 
-      />
-
-      <PlanTripModal 
-        isOpen={tripModalOpen} 
-        onClose={() => setTripModalOpen(false)} 
-        placeId={place._id} 
-        placeName={place.name} 
-      />
 
     </div>
   );

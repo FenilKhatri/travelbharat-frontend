@@ -4,6 +4,7 @@ import TrendingPlaces from "../sections/home/TrendingPlaces";
 import TravelCategories from "../sections/home/TravelCategories";
 import Newsletter from "../sections/home/Newsletter";
 import FestivalsSection from "../sections/home/FestivalsSection";
+import JourneySection from "../sections/home/JourneySection";
 import BlogsSection from "../sections/home/BlogsSection";
 
 const Home = () => {
@@ -14,6 +15,7 @@ const Home = () => {
       <TrendingPlaces />
       <TravelCategories />
       <FestivalsSection />
+      <JourneySection />
       <BlogsSection />
       <Newsletter />
     </div>

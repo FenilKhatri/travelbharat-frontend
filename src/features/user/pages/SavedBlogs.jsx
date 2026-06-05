@@ -16,7 +16,7 @@ const SavedBlogs = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#050B14] pb-24 pt-24 font-sans text-slate-800 dark:text-slate-200">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-[1600px] w-full mx-auto px-4">
         
         <div className="flex items-center gap-3 mb-10">
           <FiBookmark className="text-[#E85D04]" size={32} />

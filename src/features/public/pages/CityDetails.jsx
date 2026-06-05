@@ -13,9 +13,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { cityService } from "../../../services/cityService";
 import { placeService } from "../../../services/placeService";
-import SaveButton from "../../../components/ui/SaveButton";
+import LikeButton from "../../../components/ui/LikeButton";
 import DestinationSkeleton from "../../../components/ui/DestinationSkeleton";
 import DestinationCard from "../../../components/cards/DestinationCard";
+import GalleryCarousel from "../../../components/ui/GalleryCarousel";
+import { festivalService } from "../../../services/festivalService";
+import ExploreIconicSection from "../sections/home/ExploreIconicSection";
 
 const SectionLabel = ({ icon: Icon, text }) => (
   <div className="flex items-center gap-2 text-[#E85D04] font-bold text-[10px] uppercase tracking-[0.2em] mb-4">
@@ -27,86 +30,16 @@ const SectionLabel = ({ icon: Icon, text }) => (
 const CityDetailsSkeleton = () => (
   <div className="min-h-screen bg-[#07090f] pt-24">
     <div className="animate-pulse bg-[#1a2338] h-[70vh] w-full" />
-    <div className="max-w-7xl mx-auto px-4 py-16">
+    <div className="max-w-[1600px] w-full mx-auto px-4 py-16">
       <DestinationSkeleton count={6} />
     </div>
   </div>
 );
 
-const PhotoModal = ({ images, initialIndex, onClose }) => {
-  const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
-  const handleNext = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
-  }, [images.length]);
-
-  const handlePrev = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-  }, [images.length]);
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") onClose();
-      if (e.key === "ArrowRight") handleNext();
-      if (e.key === "ArrowLeft") handlePrev();
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    document.body.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "unset";
-    };
-  }, [onClose, handleNext, handlePrev]);
-
-  if (!images?.length) return null;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[200] flex items-center justify-center bg-black/95 backdrop-blur-md"
-      onClick={onClose}
-    >
-      <button onClick={onClose} className="absolute top-6 right-6 text-white/70 hover:text-white z-50 p-3 bg-white/10 rounded-full">
-        <FiX size={24} />
-      </button>
-      {images.length > 1 && (
-        <>
-          <button onClick={(e) => { e.stopPropagation(); handlePrev(); }} className="absolute left-4 md:left-10 text-white/70 hover:text-white z-50 p-4 bg-white/10 rounded-full">
-            <FiChevronLeft size={32} />
-          </button>
-          <button onClick={(e) => { e.stopPropagation(); handleNext(); }} className="absolute right-4 md:right-10 text-white/70 hover:text-white z-50 p-4 bg-white/10 rounded-full">
-            <FiChevronRight size={32} />
-          </button>
-        </>
-      )}
-      <div className="relative w-full max-w-7xl h-full max-h-[85vh] flex items-center justify-center p-4" onClick={(e) => e.stopPropagation()}>
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={currentIndex}
-            src={images[currentIndex]}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.05 }}
-            className="max-w-full max-h-full object-contain rounded-lg drop-shadow-2xl"
-            alt={`Gallery ${currentIndex + 1}`}
-          />
-        </AnimatePresence>
-        {images.length > 1 && (
-          <div className="absolute bottom-[-30px] left-1/2 -translate-x-1/2 text-white/70 text-sm bg-black/50 px-4 py-1 rounded-full">
-            {currentIndex + 1} / {images.length}
-          </div>
-        )}
-      </div>
-    </motion.div>
-  );
-};
 
 const CityDetails = () => {
   const { stateSlug, citySlug } = useParams();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [initialPhotoIndex, setInitialPhotoIndex] = useState(0);
 
   const { data: cityData, isLoading: cityLoading, isError: cityError } = useQuery({
     queryKey: ["cityBySlug", citySlug],
@@ -116,12 +49,21 @@ const CityDetails = () => {
 
   const { data: placesData, isLoading: placesLoading } = useQuery({
     queryKey: ["placesByCity", citySlug],
-    queryFn: () => placeService.getPlacesByCity(citySlug, { limit: 50 }),
+    queryFn: () => placeService.getPlacesByCity(citySlug, { limit: 5 }),
     enabled: !!citySlug,
   });
 
   const city = cityData?.data?.city;
   const places = placesData?.data?.places || [];
+  const resolvedStateSlug = stateSlug || city?.stateId?.slug;
+
+  const { data: festivalsData, isLoading: festivalsLoading } = useQuery({
+    queryKey: ["festivalsByState", resolvedStateSlug],
+    queryFn: () => festivalService.getFestivalsByState(resolvedStateSlug),
+    enabled: !!resolvedStateSlug,
+  });
+
+  const festivals = festivalsData?.data?.festivals || [];
 
   const avgRating = useMemo(() => {
     const rated = places.filter((p) => p.rating > 0);
@@ -164,18 +106,11 @@ const CityDetails = () => {
   }
 
   const validGallery = city.images?.gallery?.filter(Boolean) || [];
-  const resolvedStateSlug = stateSlug || city.stateId?.slug;
   const stateName = city.stateId?.name;
   const validEmergency = city.emergencyInfo && Object.values(city.emergencyInfo).some((v) => v?.trim());
 
   return (
     <div className="min-h-screen bg-[#07090f] font-sans text-[#edf2ff]">
-
-      <AnimatePresence>
-        {modalOpen && validGallery.length > 0 && (
-          <PhotoModal images={validGallery} initialIndex={initialPhotoIndex} onClose={() => setModalOpen(false)} />
-        )}
-      </AnimatePresence>
 
       {/* Hero */}
       <section className="relative min-h-[85vh] flex flex-col justify-end pt-28">
@@ -187,7 +122,7 @@ const CityDetails = () => {
           </div>
         )}
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-20">
+        <div className="relative z-10 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 w-full pb-20">
           <nav className="flex items-center gap-2 text-sm text-white/60 mb-8 flex-wrap">
             <Link to="/" className="hover:text-[#E85D04] transition">Home</Link>
             <span>/</span>
@@ -222,7 +157,7 @@ const CityDetails = () => {
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white font-bold text-sm">
                 <FiMapPin className="text-[#E85D04]" /> {city.totalPlaces || places.length} Destinations
               </span>
-              <SaveButton itemId={city._id} itemType="city" initialCount={city.saveCount} className="!px-4 !py-2 !text-sm" />
+              <LikeButton entityId={city._id} entityType="city" initialCount={city.likeCount} className="!px-4 !py-2 !text-sm" />
             </div>
 
             {city.description && (
@@ -235,7 +170,7 @@ const CityDetails = () => {
       {/* Quick Facts */}
       {quickFacts.length > 0 && (
         <section className="py-16 bg-[#0c1018] border-b border-white/5">
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-[1600px] w-full mx-auto px-4">
             <SectionLabel icon={FiInfo} text="Quick Facts" />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
               {quickFacts.map((fact, i) => (
@@ -245,7 +180,7 @@ const CityDetails = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
-                  className="p-5 rounded-2xl bg-[#111827] border border-white/6 hover:border-[#E85D04]/30 transition-all duration-300 group"
+                  className="p-5 rounded-2xl bg-[#111827] border border-white/6 hover:border-[#E85D04]/30 transition-colors duration-300 group"
                 >
                   <div className="w-10 h-10 rounded-xl bg-[#E85D04]/10 border border-[#E85D04]/20 flex items-center justify-center text-[#E85D04] mb-4 group-hover:scale-110 transition-transform">
                     <fact.icon size={18} />
@@ -262,7 +197,7 @@ const CityDetails = () => {
       {/* About City */}
       {(city.overview || city.description) && (
         <section className="py-24 bg-[#07090f] border-b border-white/5">
-          <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-12 gap-14 items-center">
+          <div className="max-w-[1600px] w-full mx-auto px-4 grid lg:grid-cols-12 gap-14 items-center">
             <div className="lg:col-span-7">
               <SectionLabel icon={FiMapPin} text="About" />
               <h2 className="text-4xl md:text-5xl font-black text-[#edf2ff] mb-6">
@@ -275,7 +210,7 @@ const CityDetails = () => {
             {city.images?.thumbnail && (
               <div className="lg:col-span-5">
                 <div className="rounded-3xl overflow-hidden ring-1 ring-white/10 shadow-2xl">
-                  <img src={city.images.thumbnail} alt={city.name} className="w-full h-80 object-cover hover:scale-105 transition-transform duration-700" loading="lazy" />
+                  <img src={city.images.thumbnail} alt={city.name} className="w-full h-150 object-cover hover:scale-105 transition-transform duration-700" loading="lazy" />
                 </div>
               </div>
             )}
@@ -283,44 +218,13 @@ const CityDetails = () => {
         </section>
       )}
 
-      {/* Masonry Gallery */}
-      {validGallery.length > 0 && (
-        <section className="py-24 bg-[#0c1018] border-b border-white/5">
-          <div className="max-w-7xl mx-auto px-4">
-            <SectionLabel icon={FiImage} text="Gallery" />
-            <div className="flex justify-between items-end mb-10">
-              <h2 className="text-4xl font-black text-[#edf2ff]">{city.name} in Pictures</h2>
-              <button
-                onClick={() => { setInitialPhotoIndex(0); setModalOpen(true); }}
-                className="hidden sm:flex items-center gap-2 px-6 py-2.5 rounded-full border border-white/10 text-[#edf2ff] font-bold hover:bg-white/5 text-sm"
-              >
-                View All <FiArrowRight size={14} />
-              </button>
-            </div>
-
-            <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-              {validGallery.map((src, i) => (
-                <div
-                  key={i}
-                  className="break-inside-avoid rounded-2xl overflow-hidden cursor-pointer group ring-1 ring-white/5"
-                  onClick={() => { setInitialPhotoIndex(i); setModalOpen(true); }}
-                >
-                  <img
-                    src={src}
-                    alt={`${city.name} ${i + 1}`}
-                    className={`w-full object-cover group-hover:scale-105 transition-transform duration-700 ${i % 3 === 0 ? "h-80" : i % 3 === 1 ? "h-64" : "h-72"}`}
-                    loading="lazy"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      <div id="gallery">
+        <GalleryCarousel images={validGallery} name={city.name} />
+      </div>
 
       {/* Destinations */}
       <section id="destinations" className="py-24 bg-[#07090f] border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-[1600px] w-full mx-auto px-4">
           <SectionLabel icon={FiCompass} text="Must Visit" />
           <h2 className="text-4xl font-black text-[#edf2ff] mb-4">
             Top Places to Visit in <span className="text-[#E85D04]">{city.name}</span>
@@ -355,7 +259,7 @@ const CityDetails = () => {
       {/* Attractions (embedded) */}
       {city.attractions?.length > 0 && (
         <section className="py-24 bg-[#0c1018] border-b border-white/5">
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-[1600px] w-full mx-auto px-4">
             <SectionLabel icon={FiMapPin} text="Local Highlights" />
             <h2 className="text-4xl font-black text-[#edf2ff] mb-12">Must Visit Places</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -380,7 +284,7 @@ const CityDetails = () => {
       {/* Travel Tips */}
       {travelTips.length > 0 && (
         <section className="py-24 bg-[#07090f] border-b border-white/5">
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-[1600px] w-full mx-auto px-4">
             <SectionLabel icon={FaLightbulb} text="Travel Tips" />
             <h2 className="text-4xl font-black text-[#edf2ff] mb-12">Essential Tips for {city.name}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -400,7 +304,7 @@ const CityDetails = () => {
       {/* Hotels */}
       {city.hotels?.length > 0 && (
         <section className="py-24 bg-[#0c1018] border-b border-white/5">
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-[1600px] w-full mx-auto px-4">
             <SectionLabel icon={FaHotel} text="Stays" />
             <h2 className="text-4xl font-black text-[#edf2ff] mb-12">Where to Stay</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -433,7 +337,7 @@ const CityDetails = () => {
       {/* Restaurants */}
       {city.restaurants?.length > 0 && (
         <section className="py-24 bg-[#07090f] border-b border-white/5">
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-[1600px] w-full mx-auto px-4">
             <SectionLabel icon={FaUtensils} text="Food" />
             <h2 className="text-4xl font-black text-[#edf2ff] mb-12">Culinary Delights</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -459,7 +363,7 @@ const CityDetails = () => {
       {/* Shopping */}
       {city.shopping?.length > 0 && (
         <section className="py-24 bg-[#0c1018] border-b border-white/5">
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-[1600px] w-full mx-auto px-4">
             <SectionLabel icon={FaShoppingBag} text="Shopping" />
             <h2 className="text-4xl font-black text-[#edf2ff] mb-12">Retail Therapy</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -481,7 +385,7 @@ const CityDetails = () => {
       {/* Transport */}
       {city.transport && (city.transport.fromAirport || city.transport.fromStation || city.transport.busStation || city.transport.local) && (
         <section className="py-24 bg-[#07090f] border-b border-white/5">
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-[1600px] w-full mx-auto px-4">
             <SectionLabel icon={FiNavigation} text="Getting Around" />
             <h2 className="text-4xl font-black text-[#edf2ff] mb-12">How To Reach {city.name}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -507,7 +411,7 @@ const CityDetails = () => {
       {/* Nearby Places */}
       {city.nearbyPlaces?.length > 0 && (
         <section className="py-24 bg-[#0c1018] border-b border-white/5">
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-[1600px] w-full mx-auto px-4">
             <SectionLabel icon={FiMapPin} text="Day Trips" />
             <h2 className="text-4xl font-black text-[#edf2ff] mb-12">Nearby Explorations</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
@@ -532,7 +436,7 @@ const CityDetails = () => {
       {/* Emergency */}
       {validEmergency && (
         <section className="py-24 bg-[#0c1018] border-b border-white/5">
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-[1600px] w-full mx-auto px-4">
             <div className="rounded-3xl border border-[#E85D04]/20 bg-[#111827] p-10 md:p-14">
               <div className="flex items-center gap-4 mb-10">
                 <div className="w-14 h-14 rounded-2xl bg-[#E85D04]/20 flex items-center justify-center text-[#E85D04]">
@@ -578,9 +482,21 @@ const CityDetails = () => {
         </section>
       )}
 
+      {/*  Related Festivals  */}
+      <ExploreIconicSection
+        type="festival"
+        highlightText="Cultural Experience"
+        title={`Festivals in ${stateName || 'the State'}`}
+        subtitle="Immerse yourself in local traditions and celebrations nearby."
+        data={festivals}
+        viewAllLink="/festivals"
+        viewAllText="View All Festivals"
+        isLoading={festivalsLoading}
+      />
+
       {/* CTA */}
       <section className="py-24 bg-[#07090f]">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-[1600px] w-full mx-auto px-4">
           <div className="relative rounded-[2rem] overflow-hidden bg-[#0c1018] p-12 md:p-20 text-center border border-white/6">
             {city.images?.hero && (
               <img src={city.images.hero} alt="" className="absolute inset-0 w-full h-full object-cover opacity-15" />

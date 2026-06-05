@@ -7,6 +7,7 @@ export const publicRoutes = [
     { to: "/places", label: "Destinations" },
     { to: "/places/:slug", label: "Place Details" },
     { to: "/festivals", label: "Festivals" },
+
     { to: "/blogs", label: "Blogs" },
     { to: "/blog/:slug", label: "Blog Details" },
     { to: "/about", label: "About" },
@@ -21,6 +22,7 @@ export const authRoutes = [
 
 export const navLinks = [
     { path: "/", name: "Home" },
+
     { path: "/states", name: "States" },
     { path: "/cities", name: "Cities" },
     { path: "/places", name: "Destinations" },

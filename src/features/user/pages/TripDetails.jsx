@@ -175,7 +175,7 @@ const TripDetails = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           
           {/* LEFT: TABS SIDEBAR */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 relative z-20">
             <div className="bg-[#0A121F] border border-white/5 rounded-2xl p-2 sticky top-28">
               {TABS.map(tab => {
                 const Icon = tab.icon;

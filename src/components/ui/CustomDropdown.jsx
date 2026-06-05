@@ -1,18 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { FiChevronDown, FiSearch, FiCheck } from "react-icons/fi";
 
-/**
- * CustomDropdown — a reusable, accessible, searchable dropdown component.
- *
- * @param {string}   value       - Currently selected value
- * @param {function} onChange    - Callback when value changes: (value) => void
- * @param {Array}    options     - Array of { value, label } objects
- * @param {string}   placeholder - Placeholder text
- * @param {boolean}  disabled    - Whether the dropdown is disabled
- * @param {string}   error       - Error message string
- * @param {boolean}  searchable  - Enable search filter
- * @param {boolean}  multiple    - Allow multiple selections (value should be an array)
- */
 const CustomDropdown = ({
   value,
   onChange,
@@ -133,7 +121,7 @@ const CustomDropdown = ({
   return (
     <div
       ref={containerRef}
-      className={`relative ${className}`}
+      className={`relative ${isOpen ? 'z-50' : ''} ${className}`}
       id={id}
       onKeyDown={handleKeyDown}
     >

@@ -1,31 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
-import { FiStar, FiCheck, FiX, FiTrash2, FiMessageSquare, FiChevronLeft, FiChevronRight, FiMapPin, FiUser, FiClock } from "react-icons/fi";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { FiStar, FiCheck, FiX, FiTrash2, FiMessageSquare, FiMapPin, FiUser, FiClock, FiGrid, FiList } from "react-icons/fi";
 import http from "../../../lib/axios";
 import SearchAndFilter from "../../../components/ui/SearchAndFilter";
+import AdminPageLayout from "../components/ui/AdminPageLayout";
+import AdminPagination from "../components/ui/AdminPagination";
 import { toast } from "react-toastify";
 
 const Reviews = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
-  // Moderation state
   const [responseModal, setResponseModal] = useState(null);
   const [adminReplyText, setAdminReplyText] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [viewMode, setViewMode] = useState(() => localStorage.getItem("adminReviewsViewMode") || "list");
 
-  // URL parameters
+  useEffect(() => {
+    localStorage.setItem("adminReviewsViewMode", viewMode);
+  }, [viewMode]);
+
   const page = parseInt(searchParams.get("page") || "1");
   const statusFilter = searchParams.get("status") || "";
 
-  // Query reviews
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["adminReviews", page, statusFilter],
     queryFn: async () => {
       const params = { page, limit: 10 };
       if (statusFilter) params.status = statusFilter;
-
       const response = await http.get("/reviews/admin/all", { params });
       return response.data;
     },
@@ -36,7 +40,6 @@ const Reviews = () => {
   const reviews = responseData.reviews || [];
   const pagination = responseData.pagination || { total: 0, pages: 1 };
 
-  // Mutations
   const approveMutation = useMutation({
     mutationFn: async (id) => {
       const response = await http.put(`/reviews/admin/approve/${id}`);
@@ -96,7 +99,8 @@ const Reviews = () => {
     }
   });
 
-  const handleRespondClick = (review) => {
+  const handleRespondClick = (e, review) => {
+    e.stopPropagation();
     setResponseModal(review);
     setAdminReplyText(review.adminResponse || "");
   };
@@ -107,11 +111,8 @@ const Reviews = () => {
     respondMutation.mutate({ id: responseModal._id, text: adminReplyText.trim() });
   };
 
-  const handlePageChange = (newPage) => {
-    setSearchParams((prev) => {
-      prev.set("page", newPage.toString());
-      return prev;
-    });
+  const handleRowClick = (review) => {
+    navigate(`/admin/reviews/${review._id}`);
   };
 
   const filters = [
@@ -126,23 +127,26 @@ const Reviews = () => {
   ];
 
   return (
-    <div className="space-y-6 pb-12">
-      {/* Title Header */}
-      <div>
-        <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-2">Review Management</h1>
-        <p className="text-slate-500 dark:text-slate-400 text-sm">Approve, reject, respond to user feedback, and moderate rating metrics for destinations.</p>
-      </div>
-
-      {/* Filter toolbar */}
+    <AdminPageLayout
+      title="Review Management"
+      subtitle="Approve, reject, respond to user feedback, and moderate rating metrics for destinations."
+      actions={
+        <div className="hidden sm:flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+          <button onClick={() => setViewMode('list')} className={`p-2 rounded-lg transition cursor-pointer ${viewMode === 'list' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}><FiList size={16} /></button>
+          <button onClick={() => setViewMode('grid')} className={`p-2 rounded-lg transition cursor-pointer ${viewMode === 'grid' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}><FiGrid size={16} /></button>
+        </div>
+      }
+    >
       <SearchAndFilter
         searchPlaceholder="Filter items..."
         filters={filters}
       />
 
-      {/* List Card */}
-      <div className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+      <div className="bg-transparent">
+        {viewMode === "list" && (
+        <div className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden mb-6">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-100 dark:border-slate-800/60 bg-slate-55/40 dark:bg-slate-900/10 text-slate-400 text-xs font-extrabold uppercase tracking-wider">
                 <th className="py-4 px-6">Traveler / Date</th>
@@ -188,9 +192,11 @@ const Reviews = () => {
                 </tr>
               ) : (
                 reviews.map((review) => (
-                  <tr key={review._id} className="hover:bg-slate-50/50 dark:hover:bg-slate-850/5 transition">
-                    
-                    {/* User profile */}
+                  <tr 
+                    key={review._id} 
+                    onClick={() => handleRowClick(review)}
+                    className="hover:bg-slate-50/50 dark:hover:bg-slate-850/5 transition cursor-pointer"
+                  >
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-2.5">
                         {review.userId?.profileImage ? (
@@ -213,16 +219,12 @@ const Reviews = () => {
                         </div>
                       </div>
                     </td>
-
-                    {/* Place Destination */}
                     <td className="py-4 px-6 font-semibold">
                       <div className="flex items-center gap-1.5 text-xs">
                         <FiMapPin className="text-[#E85D04] shrink-0" size={14} />
                         <span className="truncate max-w-[150px]">{review.placeId?.name || "Deleted Destination"}</span>
                       </div>
                     </td>
-
-                    {/* Comments */}
                     <td className="py-4 px-6">
                       <div className="max-w-[280px]">
                         {review.title && <h5 className="font-extrabold text-xs text-slate-800 dark:text-slate-200 mb-0.5 truncate">{review.title}</h5>}
@@ -237,8 +239,6 @@ const Reviews = () => {
                         )}
                       </div>
                     </td>
-
-                    {/* Rating */}
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-0.5 text-amber-500">
                         {[...Array(5)].map((_, i) => (
@@ -250,8 +250,6 @@ const Reviews = () => {
                         ))}
                       </div>
                     </td>
-
-                    {/* Status */}
                     <td className="py-4 px-6">
                       <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                         review.isApproved
@@ -261,14 +259,11 @@ const Reviews = () => {
                         {review.isApproved ? "Approved" : "Pending Approval"}
                       </span>
                     </td>
-
-                    {/* Actions */}
                     <td className="py-4 px-6 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        {/* Approve */}
                         {!review.isApproved ? (
                           <button
-                            onClick={() => approveMutation.mutate(review._id)}
+                            onClick={(e) => { e.stopPropagation(); approveMutation.mutate(review._id); }}
                             title="Approve & Publish"
                             className="p-2 text-slate-400 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 rounded-xl transition cursor-pointer"
                           >
@@ -276,26 +271,22 @@ const Reviews = () => {
                           </button>
                         ) : (
                           <button
-                            onClick={() => rejectMutation.mutate(review._id)}
+                            onClick={(e) => { e.stopPropagation(); rejectMutation.mutate(review._id); }}
                             title="Reject & Hide"
                             className="p-2 text-slate-400 hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-500/10 rounded-xl transition cursor-pointer"
                           >
                             <FiX size={16} />
                           </button>
                         )}
-
-                        {/* Reply */}
                         <button
-                          onClick={() => handleRespondClick(review)}
+                          onClick={(e) => handleRespondClick(e, review)}
                           title="Write administrative response"
                           className="p-2 text-slate-400 hover:text-[#E85D04] hover:bg-orange-50 dark:hover:bg-[#E85D04]/10 rounded-xl transition cursor-pointer"
                         >
                           <FiMessageSquare size={16} />
                         </button>
-
-                        {/* Delete */}
                         <button
-                          onClick={() => setConfirmDelete(review._id)}
+                          onClick={(e) => { e.stopPropagation(); setConfirmDelete(review._id); }}
                           title="Delete permanently"
                           className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition cursor-pointer"
                         >
@@ -309,36 +300,94 @@ const Reviews = () => {
             </tbody>
           </table>
         </div>
+        </div>
+        )}
 
-        {/* Pagination */}
-        {!isLoading && !isError && pagination.pages > 1 && (
-          <div className="flex justify-between items-center px-6 py-4 border-t border-slate-100 dark:border-slate-800/40">
-            <span className="text-xs font-semibold text-slate-400">
-              Showing page {page} of {pagination.pages} ({pagination.total} total)
-            </span>
-            <div className="flex gap-2">
-              <button
-                disabled={page <= 1}
-                onClick={() => handlePageChange(page - 1)}
-                className="flex items-center gap-1 px-3 py-1.5 border border-slate-200 dark:border-slate-800/80 rounded-lg text-xs font-bold text-slate-650 dark:text-slate-300 disabled:opacity-40 disabled:pointer-events-none hover:bg-slate-55 dark:hover:bg-slate-900 transition"
-              >
-                <FiChevronLeft size={14} />
-                <span>Prev</span>
-              </button>
-              <button
-                disabled={page >= pagination.pages}
-                onClick={() => handlePageChange(page + 1)}
-                className="flex items-center gap-1 px-3 py-1.5 border border-slate-200 dark:border-slate-800/80 rounded-lg text-xs font-bold text-slate-655 dark:text-slate-300 disabled:opacity-40 disabled:pointer-events-none hover:bg-slate-55 dark:hover:bg-slate-900 transition"
-              >
-                <span>Next</span>
-                <FiChevronRight size={14} />
-              </button>
-            </div>
+        {viewMode === "grid" && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6">
+            {isLoading ? (
+              [...Array(8)].map((_, i) => (
+                <div key={i} className="bg-slate-100 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm p-4 animate-pulse h-64" />
+              ))
+            ) : isError ? (
+              <div className="col-span-full text-center py-10 text-red-500 font-bold">Error loading reviews</div>
+            ) : reviews.length === 0 ? (
+              <div className="col-span-full text-center py-12 text-slate-400 font-semibold">No traveler reviews found under selected criteria.</div>
+            ) : (
+              reviews.map((review) => (
+                <div 
+                  key={review._id} 
+                  onClick={() => handleRowClick(review)}
+                  className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition flex flex-col group cursor-pointer p-5 relative"
+                >
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex items-center gap-2">
+                      {review.userId?.profileImage ? (
+                        <img src={review.userId.profileImage} alt={review.userId.name} className="w-8 h-8 rounded-full object-cover shrink-0 border border-slate-200 dark:border-slate-850" />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-[#E85D04]/10 text-[#E85D04] text-[10px] font-bold flex items-center justify-center shrink-0">
+                          {review.userId?.name ? review.userId.name[0].toUpperCase() : <FiUser />}
+                        </div>
+                      )}
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold truncate max-w-[120px]">{review.userId?.name || "Guest Traveler"}</p>
+                        <span className="text-[10px] text-slate-400 flex items-center gap-1">
+                          <FiClock size={10} />
+                          {new Date(review.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${
+                      review.isApproved ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-450" : "bg-amber-500/10 text-amber-600 dark:text-amber-500"
+                    }`}>
+                      {review.isApproved ? "Approved" : "Pending"}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-xs font-semibold mb-3">
+                    <FiMapPin className="text-[#E85D04] shrink-0" size={14} />
+                    <span className="truncate max-w-[150px]">{review.placeId?.name || "Deleted Destination"}</span>
+                  </div>
+
+                  <div className="flex items-center gap-0.5 text-amber-500 mb-3">
+                    {[...Array(5)].map((_, i) => (
+                      <FiStar key={i} size={12} className={i < review.rating ? "fill-amber-500" : "text-slate-200 dark:text-slate-800"} />
+                    ))}
+                  </div>
+
+                  <div className="flex-1 mb-4">
+                    {review.title && <h5 className="font-extrabold text-xs text-slate-800 dark:text-slate-200 mb-0.5 truncate">{review.title}</h5>}
+                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-3 leading-relaxed">
+                      {review.comment}
+                    </p>
+                    {review.adminResponse && (
+                      <div className="mt-2 p-2 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850/50 rounded-lg text-[10px] italic text-[#E85D04] dark:text-[#FFA034] line-clamp-2">
+                        <span className="font-bold uppercase tracking-wider not-italic mr-1 text-[9px] bg-[#E85D04]/15 px-1.5 py-0.5 rounded-sm">Reply:</span>
+                        {review.adminResponse}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="mt-auto pt-3 border-t border-slate-100 dark:border-slate-800/50 flex items-center justify-between">
+                    <div className="flex gap-1">
+                      {!review.isApproved ? (
+                        <button onClick={(e) => { e.stopPropagation(); approveMutation.mutate(review._id); }} className="p-1.5 text-slate-400 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 rounded-lg transition cursor-pointer"><FiCheck size={14} /></button>
+                      ) : (
+                        <button onClick={(e) => { e.stopPropagation(); rejectMutation.mutate(review._id); }} className="p-1.5 text-slate-400 hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-500/10 rounded-lg transition cursor-pointer"><FiX size={14} /></button>
+                      )}
+                      <button onClick={(e) => handleRespondClick(e, review)} className="p-1.5 text-slate-400 hover:text-[#E85D04] hover:bg-orange-50 dark:hover:bg-[#E85D04]/10 rounded-lg transition cursor-pointer"><FiMessageSquare size={14} /></button>
+                    </div>
+                    <button onClick={(e) => { e.stopPropagation(); setConfirmDelete(review._id); }} className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition cursor-pointer"><FiTrash2 size={14} /></button>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         )}
+
+        <AdminPagination isLoading={isLoading} isError={isError} pagination={pagination} />
       </div>
 
-      {/* Write Response Modal */}
       {responseModal && (
         <div className="fixed inset-0 bg-slate-955/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fadeIn">
           <div className="bg-white dark:bg-[#0A121F] border border-slate-200 dark:border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl animate-scaleIn">
@@ -390,7 +439,6 @@ const Reviews = () => {
         </div>
       )}
 
-      {/* Delete Confirmation */}
       {confirmDelete && (
         <div className="fixed inset-0 bg-slate-955/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fadeIn">
           <div className="bg-white dark:bg-[#0A121F] border border-slate-200 dark:border-slate-850 rounded-2xl max-w-md w-full p-6 shadow-2xl animate-scaleIn">
@@ -415,7 +463,7 @@ const Reviews = () => {
           </div>
         </div>
       )}
-    </div>
+    </AdminPageLayout>
   );
 };
 

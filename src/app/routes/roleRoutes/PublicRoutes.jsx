@@ -12,6 +12,8 @@ const Places = lazy(() => import("../../../features/public/pages/Places"));
 const PlaceDetails = lazy(() => import("../../../features/public/pages/PlaceDetails"));
 const CityDetails = lazy(() => import("../../../features/public/pages/CityDetails"));
 const Festivals = lazy(() => import("../../../features/public/pages/Festivals"));
+const FestivalDetails = lazy(() => import("../../../features/public/pages/FestivalDetails"));
+
 const Blogs = lazy(() => import("../../../features/public/pages/Blogs"));
 const BlogDetails = lazy(() => import("../../../features/public/pages/BlogDetails"));
 const About = lazy(() => import("../../../features/public/pages/About"));
@@ -36,6 +38,9 @@ const PublicRoutes = () => (
     <Route path="/places/:slug" element={<PlaceDetails />} />
     
     <Route path="/festivals" element={<Festivals />} />
+    <Route path="/festivals/:slug" element={<FestivalDetails />} />
+    
+
     
     <Route path="/blogs" element={<Blogs />} />
     <Route path="/blogs/:slug" element={<BlogDetails />} />

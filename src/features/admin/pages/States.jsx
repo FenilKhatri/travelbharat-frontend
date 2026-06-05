@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
-import { FiMap, FiPlus, FiTrash2, FiCheck, FiX, FiUpload, FiImage, FiGlobe, FiChevronLeft, FiChevronRight, FiChevronDown, FiStar, FiGrid, FiList } from "react-icons/fi";
-import { FaPencilAlt } from "react-icons/fa";
+import { FiMap, FiPlus, FiTrash2, FiImage, FiEdit, FiChevronLeft, FiChevronRight, FiStar, FiGrid, FiList } from "react-icons/fi";
 import http from "../../../lib/axios";
 import SearchAndFilter from "../../../components/ui/SearchAndFilter";
 import { toast } from "react-toastify";
@@ -200,7 +199,11 @@ const States = () => {
                 </tr>
               ) : (
                 states.map((stateItem) => (
-                  <tr key={stateItem._id} className="hover:bg-slate-50/50 dark:hover:bg-slate-900/70 transition">
+                  <tr 
+                    key={stateItem._id} 
+                    onClick={() => navigate(`/admin/states/${stateItem._id}`)}
+                    className="hover:bg-slate-50/50 dark:hover:bg-slate-900/70 transition cursor-pointer"
+                  >
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-4">
                         {stateItem.images?.thumbnail ? (
@@ -229,7 +232,7 @@ const States = () => {
 
                     <td className="py-4 px-6">
                       <button
-                        onClick={() => handleToggleFeatured(stateItem)}
+                        onClick={(e) => { e.stopPropagation(); handleToggleFeatured(stateItem); }}
                         className={`p-1.5 rounded-lg border transition duration-200 cursor-pointer ${stateItem.featured
                             ? "bg-amber-500/10 border-amber-500/20 text-amber-500"
                             : "border-slate-200 dark:border-slate-800 text-slate-300 hover:text-slate-500"
@@ -241,7 +244,7 @@ const States = () => {
 
                     <td className="py-4 px-6">
                       <button
-                        onClick={() => handleToggleActive(stateItem)}
+                        onClick={(e) => { e.stopPropagation(); handleToggleActive(stateItem); }}
                         className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold transition cursor-pointer ${stateItem.isActive
                             ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-450 hover:bg-emerald-500/20"
                             : "bg-red-500/10 text-red-650 dark:text-red-400 hover:bg-red-500/20"
@@ -254,13 +257,13 @@ const States = () => {
                     <td className="py-4 px-6 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button
-                          onClick={() => handleEditClick(stateItem)}
-                          className="p-2 text-slate-400 hover:text-slate-850 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition cursor-pointer"
+                          onClick={(e) => { e.stopPropagation(); handleEditClick(stateItem); }}
+                          className="p-2 text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition cursor-pointer"
                         >
-                          <FaPencilAlt size={16} />
+                          <FiEdit size={16} />
                         </button>
                         <button
-                          onClick={() => setConfirmDelete(stateItem._id)}
+                          onClick={(e) => { e.stopPropagation(); setConfirmDelete(stateItem._id); }}
                           className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition cursor-pointer"
                         >
                           <FiTrash2 size={16} />
@@ -287,7 +290,11 @@ const States = () => {
               <div className="col-span-full text-center py-12 text-slate-400 font-semibold">No states registered.</div>
             ) : (
               states.map((stateItem) => (
-                <div key={stateItem._id} className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition flex flex-col group">
+                <div 
+                  key={stateItem._id} 
+                  onClick={() => navigate(`/admin/states/${stateItem._id}`)}
+                  className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition flex flex-col group cursor-pointer"
+                >
                   <div className="h-40 bg-slate-100 dark:bg-slate-800 relative">
                     {stateItem.images?.thumbnail ? (
                       <img src={stateItem.images.thumbnail} alt={stateItem.name} className="w-full h-full object-cover" />
@@ -309,8 +316,8 @@ const States = () => {
                         {stateItem.isActive ? "Active" : "Hidden"}
                       </span>
                       <div className="flex items-center gap-1">
-                        <button onClick={() => handleEditClick(stateItem)} className="p-2 text-slate-400 hover:text-[#E85D04] bg-slate-50 dark:bg-slate-800 hover:bg-[#E85D04]/10 rounded-lg transition"><FaPencilAlt size={14} /></button>
-                        <button onClick={() => setConfirmDelete(stateItem._id)} className="p-2 text-slate-400 hover:text-red-500 bg-slate-50 dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition"><FiTrash2 size={14} /></button>
+                        <button onClick={(e) => { e.stopPropagation(); handleEditClick(stateItem); }} className="p-2 text-slate-400 hover:text-[#E85D04] bg-slate-50 dark:bg-slate-800 hover:bg-[#E85D04]/10 rounded-lg transition"><FiEdit size={14} /></button>
+                        <button onClick={(e) => { e.stopPropagation(); setConfirmDelete(stateItem._id); }} className="p-2 text-slate-400 hover:text-red-500 bg-slate-50 dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition"><FiTrash2 size={14} /></button>
                       </div>
                     </div>
                   </div>

@@ -24,7 +24,6 @@ const DashboardLayout = memo(({ theme, toggleTheme }) => {
   const roleConfig = sidebarConfig[user?.role] || {};
   const fallbackTitle = roleConfig.title || "Admin Panel";
 
-  // Sync theme to document.documentElement so tailwind dark mode works globally for admin
   useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
@@ -33,18 +32,16 @@ const DashboardLayout = memo(({ theme, toggleTheme }) => {
     }
   }, [theme]);
 
-  // Build breadcrumbs dynamically from URL pathname
   const pathSegments = location.pathname.split("/").filter(Boolean);
 
   const getBreadcrumbLabel = (segment) => {
-    // Capitalize and format segment strings nicely
     return segment
       .replace(/-/g, " ")
       .replace(/\b\w/g, (c) => c.toUpperCase());
   };
 
   return (
-    <div className={`flex min-h-screen transition-colors duration-300 ${theme === "dark" ? "dark bg-[#03060E]" : "bg-slate-50"}`}>
+    <div className={`flex h-screen overflow-hidden transition-colors duration-300 ${theme === "dark" ? "dark bg-[#03060E]" : "bg-slate-50"}`}>
       
       {/* Sidebar Navigation */}
       <Sidebar
@@ -55,7 +52,7 @@ const DashboardLayout = memo(({ theme, toggleTheme }) => {
       />
 
       {/* main Layout Container */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         
         {/* TOP NAVBAR */}
         <header className="h-16 flex items-center justify-between px-6 bg-white/70 dark:bg-[#050816]/70 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/40 sticky top-0 z-30">

@@ -7,6 +7,7 @@ import { blogService } from "../../../services/blogService";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../context/AuthContext";
+import LikeButton from "../../../components/ui/LikeButton";
 
 const BlogDetails = () => {
   const { slug } = useParams();
@@ -164,7 +165,7 @@ const BlogDetails = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#050B14] via-[#050B14]/70 to-[#050B14]/20" />
         
-        <div className="absolute bottom-0 left-0 right-0 max-w-7xl mx-auto px-4 pb-16 w-full">
+        <div className="absolute bottom-0 left-0 right-0 max-w-[1600px] w-full mx-auto px-4 pb-16 w-full">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -237,7 +238,7 @@ const BlogDetails = () => {
       {/* ----------------------------------------------------
           MAIN LAYOUT
       ---------------------------------------------------- */}
-      <section className="max-w-7xl mx-auto px-4 mt-12 grid grid-cols-1 lg:grid-cols-12 gap-16">
+      <section className="max-w-[1600px] w-full mx-auto px-4 mt-12 grid grid-cols-1 lg:grid-cols-12 gap-16">
         
         {/* CONTENT AREA (LEFT 70%) */}
         <article className="lg:col-span-8">
@@ -253,13 +254,7 @@ const BlogDetails = () => {
               <button onClick={() => handleShare('native')} className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-[#E85D04] hover:text-white transition-colors cursor-pointer"><FiShare2 size={18} /></button>
             </div>
             <div className="flex gap-3">
-              <button 
-                onClick={() => saveMutation.mutate()}
-                disabled={saveMutation.isPending}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-colors cursor-pointer text-sm font-bold disabled:opacity-50 ${isBookmarked ? 'border-[#E85D04] text-[#E85D04] bg-[#E85D04]/10' : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900'}`}
-              >
-                <FiBookmark className={isBookmarked ? "fill-current" : ""} /> {saveMutation.isPending ? "Saving..." : (isBookmarked ? "Saved" : "Save")}
-              </button>
+              <LikeButton entityId={blog._id} entityType="blog" initialCount={blog.likeCount || blog.likes} />
             </div>
           </div>
 
