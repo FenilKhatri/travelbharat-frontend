@@ -6,6 +6,7 @@ import { FaMountain, FaMagic } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../../components/ui/Button";
 import http from "../../../../lib/axios";
+import { statsService } from "../../../../services/statsService";
 
 const fallbackSlides = [
   {
@@ -60,6 +61,16 @@ const HeroSection = () => {
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+
+  /* ------------------------------ */
+  /* FETCH STATS FROM BACKEND */
+  /* ------------------------------ */
+
+  const { data: statsData } = useQuery({
+    queryKey: ["publicStats"],
+    queryFn: () => statsService.getPublicStats(),
+    staleTime: 5 * 60 * 1000,
+  });
 
   /* ------------------------------ */
   /* FETCH SLIDERS FROM BACKEND */
@@ -202,9 +213,9 @@ const HeroSection = () => {
             {/* STATS */}
             <div className="flex flex-wrap gap-8 mt-12 border-t border-slate-200/50 dark:border-white/5 pt-8">
               {[
-                { number: "28+", label: "States" },
-                { number: "500+", label: "Destinations" },
-                { number: "100+", label: "Festivals" },
+                { number: statsData?.data?.data?.states ? `${statsData.data.data.states}+` : "28+", label: "States" },
+                { number: statsData?.data?.data?.destinations ? `${statsData.data.data.destinations}+` : "500+", label: "Destinations" },
+                { number: statsData?.data?.data?.festivals ? `${statsData.data.data.festivals}+` : "100+", label: "Festivals" },
               ].map((item, index) => (
                 <div key={index}>
                   <h3 className="text-3xl font-black text-slate-900 dark:text-white">

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { FiCalendar, FiMapPin, FiUsers, FiClock, FiActivity, FiChevronLeft, FiImage, FiFileText, FiTrash2, FiPlus, FiUploadCloud, FiShare2 } from "react-icons/fi";
@@ -12,6 +12,15 @@ import CustomDropdown from "../../../components/ui/CustomDropdown";
 const TripDetails = () => {
   const { tripId } = useParams();
   const [activeTab, setActiveTab] = useState("overview");
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const isPrint = new URLSearchParams(location.search).get('print');
+    if (isPrint === 'true') {
+      setTimeout(() => window.print(), 1000);
+    }
+  }, [location.search]);
   const queryClient = useQueryClient();
   const [isUploading, setIsUploading] = useState(false);
   const [newExpense, setNewExpense] = useState({ title: "", amount: "", category: "food" });
@@ -52,10 +61,10 @@ const TripDetails = () => {
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
-    if (files.length > 5) return toast.error("Maximum 5 files allowed at a time");
+    if (files.length > 10) return toast.error("Maximum 10 files allowed at a time");
     
     for (let f of files) {
-      if (f.size > 5 * 1024 * 1024) return toast.error(`File ${f.name} exceeds 5MB limit`);
+      if (f.size > 25 * 1024 * 1024) return toast.error(`File ${f.name} exceeds 25MB limit`);
     }
 
     const formData = new FormData();
@@ -92,8 +101,9 @@ const TripDetails = () => {
   }
 
   const trip = data;
-  const firstPlace = trip.places?.[0]?.placeId;
-  const coverImage = trip.coverImage || firstPlace?.heroImage || firstPlace?.images?.thumbnail || firstPlace?.images?.gallery?.[0] || "https://images.unsplash.com/photo-1506461883276-594a12b11ac3?auto=format&fit=crop&q=80";
+  const firstPlace = trip.destinationId || trip.places?.[0]?.placeId;
+  let coverImg = trip.coverImage || firstPlace?.heroImage || firstPlace?.images?.hero || firstPlace?.images?.thumbnail || firstPlace?.images?.gallery?.[0];
+  const coverImage = (coverImg && coverImg.trim() !== "") ? coverImg : "https://images.unsplash.com/photo-1506461883276-594a12b11ac3?auto=format&fit=crop&q=80";
   
   const TABS = [
     { id: "overview", label: "Overview", icon: FiFileText },
@@ -175,8 +185,8 @@ const TripDetails = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           
           {/* LEFT: TABS SIDEBAR */}
-          <div className="lg:col-span-1 relative z-20">
-            <div className="bg-[#0A121F] border border-white/5 rounded-2xl p-2 sticky top-28">
+          <div className="lg:col-span-1 relative z-50">
+            <div className="bg-[#0A121F] border border-white/5 rounded-2xl p-2 sticky top-28 shadow-2xl">
               {TABS.map(tab => {
                 const Icon = tab.icon;
                 const isActive = activeTab === tab.id;
@@ -184,7 +194,7 @@ const TripDetails = () => {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${isActive ? "bg-[#FF7A00]/10 text-[#FF7A00]" : "text-white/60 hover:bg-white/5 hover:text-white"}`}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all cursor-pointer relative z-50 ${isActive ? "bg-[#FF7A00]/10 text-[#FF7A00]" : "text-white/60 hover:bg-white/5 hover:text-white"}`}
                   >
                     <Icon size={18} /> {tab.label}
                   </button>
@@ -446,7 +456,7 @@ const TripDetails = () => {
                         className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00]" required 
                       />
                       <input 
-                        type="number" placeholder="Amount (₹)" 
+                        type="number" placeholder="Amount ()" 
                         value={newExpense.amount} onChange={e => setNewExpense({...newExpense, amount: Number(e.target.value)})}
                         className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00]" required min="1"
                       />
@@ -483,7 +493,7 @@ const TripDetails = () => {
                             </div>
                           </div>
                           <div className="flex items-center gap-4">
-                            <span className="font-bold text-white">₹{expense.amount.toLocaleString()}</span>
+                            <span className="font-bold text-white">{expense.amount.toLocaleString()}</span>
                             <button onClick={() => deleteExpenseMutation.mutate(expense._id)} className="text-white/20 hover:text-red-500 transition opacity-0 group-hover:opacity-100">
                               <FiTrash2 />
                             </button>
@@ -532,7 +542,7 @@ const TripDetails = () => {
                     <div className="text-center py-16 border-2 border-dashed border-white/10 rounded-3xl">
                        <FiImage className="mx-auto text-white/20 mb-3" size={40} />
                        <p className="text-white/50 font-bold mb-2">Empty Gallery</p>
-                       <p className="text-sm text-white/40 mb-4">Upload photos and videos to remember your journey. (Max 5 files, 5MB each)</p>
+                       <p className="text-sm text-white/40 mb-4">Upload photos and videos to remember your journey. (Max 10 files, 25MB each)</p>
                        <label className="cursor-pointer px-5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-bold transition text-sm inline-block">
                          Browse Files
                          <input type="file" multiple accept="image/*,video/*" className="hidden" onChange={handleFileUpload} disabled={isUploading} />

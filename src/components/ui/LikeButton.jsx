@@ -35,7 +35,7 @@ const LikeButton = ({ entityId, entityType, initialCount = 0, className = "" }) 
     
     if (!user) {
       toast.info("Please login to like this item.");
-      navigate("/login");
+      navigate("/auth");
       return;
     }
 

@@ -33,7 +33,7 @@ const milestones = [
   {
     id: 5, title: "Plan Your Trip",
     desc: "Create personalized travel itineraries and save favorites.",
-    icon: FiBookOpen, cardIcon: FiBookOpen, align: "left", link: "/user/profile",
+    icon: FiBookOpen, cardIcon: FiBookOpen, align: "left", link: "/user/trips",
   },
   {
     id: 6, title: "Create Memories",
@@ -103,12 +103,6 @@ const JourneySection = () => {
         <ellipse cx="130" cy="65" rx="55" ry="35" fill="#3b82f6" />
         <ellipse cx="100" cy="50" rx="50" ry="30" fill="#60a5fa" />
       </svg>
-
-      {/* faded map / terrain – right side (desktop only) */}
-      <div
-        className="absolute right-0 top-[30%] w-[340px] md:w-[520px] h-[500px] md:h-[700px] bg-contain bg-no-repeat bg-right opacity-[0.06] pointer-events-none hidden md:block"
-        style={{ backgroundImage: `url(${journeyBg})` }}
-      />
 
       {/* journey_bg at bottom — full width */}
       <div
@@ -258,7 +252,7 @@ const JourneySection = () => {
             <FiCompass className="text-base" /> Explore India
           </Link>
           <Link
-            to="/user/profile"
+            to="/user/trips"
             className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-3.5 bg-transparent border border-[#1e3050] text-white font-bold text-sm rounded-full hover:bg-white/5 transition-all"
           >
             <FiBookOpen className="text-base" /> Plan My Journey

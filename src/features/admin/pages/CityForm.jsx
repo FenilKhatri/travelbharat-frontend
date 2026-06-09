@@ -546,7 +546,7 @@ const CityForm = () => {
                   <input value={h.address} onChange={(e) => changeItem("hotels", i, "address", e.target.value)} placeholder="Address" className={inputCls} />
                   <div className="grid grid-cols-2 gap-3">
                     <input type="number" step="0.1" max="5" value={h.rating} onChange={(e) => changeItem("hotels", i, "rating", parseFloat(e.target.value) || 0)} placeholder="Rating (0-5)" className={inputCls} />
-                    <input value={h.priceRange} onChange={(e) => changeItem("hotels", i, "priceRange", e.target.value)} placeholder="Price e.g. ₹2000 - ₹5000" className={inputCls} />
+                    <input value={h.priceRange} onChange={(e) => changeItem("hotels", i, "priceRange", e.target.value)} placeholder="Price e.g. 2000 - 5000" className={inputCls} />
                   </div>
                   <input value={h.image} onChange={(e) => changeItem("hotels", i, "image", e.target.value)} placeholder="Image URL" className={inputCls} />
                   <textarea rows={10} value={h.description} onChange={(e) => changeItem("hotels", i, "description", e.target.value)} placeholder="Description" className={inputCls + " resize-none"} />

@@ -12,7 +12,8 @@ import 'swiper/css/free-mode';
 import {
   FiMapPin, FiClock, FiCalendar, FiDollarSign, FiTag,
   FiX, FiChevronLeft, FiChevronRight, FiCamera,
-  FiArrowRight, FiStar, FiInfo, FiWind
+  FiArrowRight, FiStar, FiInfo, FiWind,
+  FiCompass
 } from "react-icons/fi";
 import { FaHistory, FaQuoteLeft, FaPlane, FaTrain, FaCar, FaBus } from "react-icons/fa";
 import { placeService } from "../../../services/placeService";
@@ -160,6 +161,12 @@ const PlaceDetails = () => {
 
           <Reveal delay={0.5}>
             <div className="flex flex-wrap gap-4">
+              <Link
+                to={`/plan/${place.slug}`}
+                className="bg-[#E85D04] text-white px-8 py-4 rounded-full font-black flex items-center gap-2 hover:bg-[#D05203] hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(232,93,4,0.4)]"
+              >
+                Plan a Trip <FiCompass />
+              </Link>
               {validGallery.length > 0 && (
                 <a
                   href="#gallery"
@@ -590,6 +597,18 @@ const PlaceDetails = () => {
         </section>
       )}
 
+      {/*  Related Festivals  */}
+      <ExploreIconicSection
+        type="festival"
+        highlightText="Cultural Experience"
+        title={`Festivals in ${place.stateId?.name || 'the State'}`}
+        subtitle="Immerse yourself in local traditions and celebrations nearby."
+        data={festivals}
+        viewAllLink="/festivals"
+        viewAllText="View All Festivals"
+        isLoading={festivalsLoading}
+      />
+
       {/*  SECTION 14: LOCATION MAP  */}
       {hasValidMap && (
         <section className="py-24 bg-[#0a0a0a] border-t border-white/5">
@@ -630,46 +649,6 @@ const PlaceDetails = () => {
         <div className="max-w-4xl mx-auto px-4">
           <Reveal>
             <ReviewSection placeId={place._id} />
-          </Reveal>
-        </div>
-      </section>
-
-      {/*  Related Festivals  */}
-      <ExploreIconicSection
-        type="festival"
-        highlightText="Cultural Experience"
-        title={`Festivals in ${place.stateId?.name || 'the State'}`}
-        subtitle="Immerse yourself in local traditions and celebrations nearby."
-        data={festivals}
-        viewAllLink="/festivals"
-        viewAllText="View All Festivals"
-        isLoading={festivalsLoading}
-      />
-
-      {/*  SECTION 15: EXPLORE MORE CTA  */}
-      <section className="py-40 relative flex items-center justify-center text-center px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-[#050505] z-0">
-          <img src={heroImage} className="w-full h-full object-cover opacity-20 scale-110 blur-xl" alt="CTA Background" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-black/60 to-[#050505]" />
-        </div>
-
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <Reveal>
-            <h2 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
-              Ready To Experience <br /><span className="text-[#E85D04]">{place.name}</span>?
-            </h2>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-12">
-              <Link to="/places" className="w-full sm:w-auto bg-[#E85D04] text-white px-10 py-5 rounded-full font-black text-lg hover:bg-[#D05203] hover:-translate-y-1 transition-all shadow-[0_20px_40px_rgba(232,93,4,0.3)]">
-                Explore More Destinations
-              </Link>
-              {place.cityId?.slug && place.stateId?.slug && (
-                <Link to={`/states/${place.stateId.slug}/cities/${place.cityId.slug}`} className="w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/20 text-white px-10 py-5 rounded-full font-black text-lg hover:bg-white/20 transition-all">
-                  Discover {place.cityId.name}
-                </Link>
-              )}
-            </div>
           </Reveal>
         </div>
       </section>
