@@ -1,6 +1,18 @@
 {
   "rewrites": [
     {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/blogs.xml",
+      "destination": "/api/blogs"
+    },
+    {
+      "source": "/blogs/:slug.html",
+      "destination": "/blogs/[slug]/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
