@@ -9,13 +9,15 @@ export default async function handler(req, res) {
     const frontendUrl = `${protocol}://${host}`;
 
     // Helper to fetch data safely
-    const fetchData = async (endpoint) => {
+    const fetchData = async (endpoint, dataKey) => {
       try {
-        const response = await fetch(`${apiUrl}${endpoint}`);
-        if (!response.ok) return { data: [] };
+        const response = await fetch(`${apiUrl}${endpoint}?limit=5000`);
+        if (!response.ok) return [];
         const json = await response.json();
-        // Assuming standard response format: { data: [...] } or just [...]
-        return Array.isArray(json) ? json : (json.data || json.items || []);
+        if (json.data && Array.isArray(json.data[dataKey])) {
+          return json.data[dataKey];
+        }
+        return [];
       } catch (error) {
         console.error(`Error fetching ${endpoint}:`, error);
         return [];
@@ -24,11 +26,11 @@ export default async function handler(req, res) {
 
     // Fetch lists
     const [states, cities, places, festivals, blogs] = await Promise.all([
-      fetchData('/states'),
-      fetchData('/cities'),
-      fetchData('/places'),
-      fetchData('/festivals'),
-      fetchData('/blogs'),
+      fetchData('/states', 'states'),
+      fetchData('/cities', 'cities'),
+      fetchData('/places', 'places'),
+      fetchData('/festivals', 'festivals'),
+      fetchData('/blogs', 'blogs'),
     ]);
 
     // Start constructing the XML
