@@ -13,6 +13,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { cityService } from "../../../services/cityService";
 import { placeService } from "../../../services/placeService";
+import { hotelService } from "../../../services/hotelService";
+import { restaurantService } from "../../../services/restaurantService";
 import LikeButton from "../../../components/ui/LikeButton";
 import DestinationSkeleton from "../../../components/ui/DestinationSkeleton";
 import DestinationCard from "../../../components/cards/DestinationCard";
@@ -56,6 +58,21 @@ const CityDetails = () => {
   const city = cityData?.data?.city;
   const places = placesData?.data?.places || [];
   const resolvedStateSlug = stateSlug || city?.stateId?.slug;
+
+  const { data: hotelsData, isLoading: hotelsLoading } = useQuery({
+    queryKey: ["hotelsByCity", city?._id],
+    queryFn: () => hotelService.getHotels({ cityId: city._id, limit: 6 }),
+    enabled: !!city?._id,
+  });
+
+  const { data: restaurantsData, isLoading: restaurantsLoading } = useQuery({
+    queryKey: ["restaurantsByCity", city?._id],
+    queryFn: () => restaurantService.getRestaurants({ cityId: city._id, limit: 6 }),
+    enabled: !!city?._id,
+  });
+
+  const hotels = hotelsData?.data?.hotels || [];
+  const restaurants = restaurantsData?.data?.restaurants || [];
 
   const { data: festivalsData, isLoading: festivalsLoading } = useQuery({
     queryKey: ["festivalsByState", resolvedStateSlug],
@@ -122,7 +139,7 @@ const CityDetails = () => {
           </div>
         )}
 
-        <div className="relative z-10 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 w-full pb-20">
+        <div className="relative z-10 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 pb-20">
           <nav className="flex items-center gap-2 text-sm text-white/60 mb-8 flex-wrap">
             <Link to="/" className="hover:text-[#E85D04] transition">Home</Link>
             <span>/</span>
@@ -256,30 +273,7 @@ const CityDetails = () => {
         </div>
       </section>
 
-      {/* Attractions (embedded) */}
-      {city.attractions?.length > 0 && (
-        <section className="py-24 bg-[#0c1018] border-b border-white/5">
-          <div className="max-w-[1600px] w-full mx-auto px-4">
-            <SectionLabel icon={FiMapPin} text="Local Highlights" />
-            <h2 className="text-4xl font-black text-[#edf2ff] mb-12">Must Visit Places</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {city.attractions.map((attraction, idx) => (
-                <div key={idx} className="group rounded-3xl overflow-hidden border border-white/6 bg-[#111827] hover:border-[#E85D04]/30 transition-all duration-500 hover:-translate-y-1">
-                  {attraction.image && (
-                    <div className="h-56 overflow-hidden">
-                      <img src={attraction.image} alt={attraction.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-                    </div>
-                  )}
-                  <div className="p-6">
-                    <h3 className="text-xl font-black text-[#edf2ff] mb-2 group-hover:text-[#E85D04] transition-colors">{attraction.name}</h3>
-                    {attraction.description && <p className="text-sm text-[#8fa3cc] line-clamp-3">{attraction.description}</p>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Removed embedded Attractions since we have Destinations */}
 
       {/* Travel Tips */}
       {travelTips.length > 0 && (
@@ -302,17 +296,17 @@ const CityDetails = () => {
       )}
 
       {/* Hotels */}
-      {city.hotels?.length > 0 && (
+      {hotels.length > 0 && (
         <section className="py-24 bg-[#0c1018] border-b border-white/5">
           <div className="max-w-[1600px] w-full mx-auto px-4">
             <SectionLabel icon={FaHotel} text="Stays" />
             <h2 className="text-4xl font-black text-[#edf2ff] mb-12">Where to Stay</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {city.hotels.map((hotel, idx) => (
+              {hotels.map((hotel, idx) => (
                 <div key={idx} className="rounded-3xl overflow-hidden border border-white/6 bg-[#111827] group hover:border-[#E85D04]/30 transition-all">
-                  {hotel.image && (
+                  {hotel.images?.thumbnail && (
                     <div className="h-52 overflow-hidden relative">
-                      <img src={hotel.image} alt={hotel.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+                      <img src={hotel.images.thumbnail} alt={hotel.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
                       {hotel.priceRange && (
                         <span className="absolute top-4 right-4 px-3 py-1 rounded-lg bg-black/70 text-white text-xs font-bold">{hotel.priceRange}</span>
                       )}
@@ -335,16 +329,16 @@ const CityDetails = () => {
       )}
 
       {/* Restaurants */}
-      {city.restaurants?.length > 0 && (
+      {restaurants.length > 0 && (
         <section className="py-24 bg-[#07090f] border-b border-white/5">
           <div className="max-w-[1600px] w-full mx-auto px-4">
             <SectionLabel icon={FaUtensils} text="Food" />
             <h2 className="text-4xl font-black text-[#edf2ff] mb-12">Culinary Delights</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {city.restaurants.map((r, idx) => (
+              {restaurants.map((r, idx) => (
                 <div key={idx} className="flex gap-4 p-5 rounded-2xl bg-[#111827] border border-white/6 hover:border-[#E85D04]/20 transition-all">
-                  {r.image ? (
-                    <img src={r.image} alt={r.name} className="w-20 h-20 rounded-xl object-cover shrink-0" loading="lazy" />
+                  {r.images?.thumbnail ? (
+                    <img src={r.images.thumbnail} alt={r.name} className="w-20 h-20 rounded-xl object-cover shrink-0" loading="lazy" />
                   ) : (
                     <div className="w-20 h-20 rounded-xl bg-[#1a2338] flex items-center justify-center shrink-0"><FaUtensils className="text-[#E85D04]/50" /></div>
                   )}
@@ -360,27 +354,7 @@ const CityDetails = () => {
         </section>
       )}
 
-      {/* Shopping */}
-      {city.shopping?.length > 0 && (
-        <section className="py-24 bg-[#0c1018] border-b border-white/5">
-          <div className="max-w-[1600px] w-full mx-auto px-4">
-            <SectionLabel icon={FaShoppingBag} text="Shopping" />
-            <h2 className="text-4xl font-black text-[#edf2ff] mb-12">Retail Therapy</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {city.shopping.map((shop, idx) => (
-                <div key={idx} className="group relative rounded-3xl overflow-hidden aspect-[3/4] ring-1 ring-white/10 hover:ring-[#E85D04]/40 transition-all">
-                  {shop.image && <img src={shop.image} alt={shop.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#07090f] via-[#07090f]/40 to-transparent" />
-                  <div className="absolute bottom-0 p-6">
-                    <h4 className="text-xl font-black text-white">{shop.name}</h4>
-                    {shop.speciality && <p className="text-[#E85D04] text-xs font-bold uppercase mt-1">{shop.speciality}</p>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Removed Shopping (embedded) */}
 
       {/* Transport */}
       {city.transport && (city.transport.fromAirport || city.transport.fromStation || city.transport.busStation || city.transport.local) && (

@@ -14,6 +14,7 @@ import { stateService } from "../../../services/stateService";
 import { cityService } from "../../../services/cityService";
 import { festivalService } from "../../../services/festivalService";
 import { placeService } from "../../../services/placeService";
+import { foodService } from "../../../services/foodService";
 import LikeButton from '../../../components/ui/LikeButton';
 import ExploreIconicSection from '../sections/home/ExploreIconicSection';
 import { motion, AnimatePresence } from "framer-motion";
@@ -98,9 +99,17 @@ const StateDetails = () => {
   });
 
   const state = stateData?.data?.state;
+
+  const { data: foodsData, isLoading: foodsLoading } = useQuery({
+    queryKey: ["foodsByState", state?._id],
+    queryFn: () => foodService.getFoods({ stateId: state._id, limit: 6 }),
+    enabled: !!state?._id,
+  });
+
   const cities = citiesData?.data?.cities || [];
   const festivals = festivalsData?.data?.festivals || [];
   const places = placesData?.data?.places || [];
+  const foods = foodsData?.data?.foods || [];
 
   if (stateLoading) return <StateDetailsSkeleton />;
 
@@ -117,7 +126,7 @@ const StateDetails = () => {
     );
   }
 
-  const validFoods = state.food?.filter(f => f.image) || [];
+  const validFoods = foods.filter(f => f.images?.thumbnail) || [];
   const validGallery = state.images?.gallery?.filter(img => img) || [];
 
   return (
@@ -370,21 +379,21 @@ const StateDetails = () => {
                 <div key={i} className="bg-[#111827] rounded-3xl border border-white/6 overflow-hidden hover:border-white/12 hover:shadow-2xl hover:shadow-black/50 transition-all duration-300 group">
                   <div className="relative h-48 overflow-hidden">
                     <img
-                      src={item.image}
+                      src={item.images?.thumbnail}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       alt={item.name}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                     <div className="absolute top-4 right-4">
-                      {item.isVeg ? (
+                      {item.type === "veg" ? (
                         <div className="bg-[#0c1018]/90 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] font-black text-emerald-400 flex items-center gap-1.5 border border-emerald-500/20">
                           <div className="w-2 h-2 rounded-full bg-emerald-500" /> VEG
                         </div>
-                      ) : (
+                      ) : item.type === "non-veg" ? (
                         <div className="bg-[#0c1018]/90 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] font-black text-red-400 flex items-center gap-1.5 border border-red-500/20">
                           <div className="w-2 h-2 rounded-full bg-red-500" /> NON-VEG
                         </div>
-                      )}
+                      ) : null}
                     </div>
                   </div>
                   <div className="p-6">

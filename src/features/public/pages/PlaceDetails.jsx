@@ -325,7 +325,7 @@ const PlaceDetails = () => {
                       <div className="group bg-[#050505] rounded-[2rem] overflow-hidden border border-white/10 hover:border-white/30 transition-colors cursor-grab active:cursor-grabbing">
                         <div className="h-64 overflow-hidden relative">
                           <img
-                            src={act.image || heroImage}
+                            src={act.images?.thumbnail || act.image || heroImage}
                             className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
                             alt={act.name}
                           />
@@ -357,7 +357,7 @@ const PlaceDetails = () => {
                 <Reveal key={idx} delay={idx * 0.1}>
                   <div className="w-[280px] sm:w-[350px] shrink-0 snap-center group rounded-[2rem] overflow-hidden relative border border-white/10 aspect-square">
                     <img
-                      src={food.image || "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80"}
+                      src={food.images?.thumbnail || food.image || "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80"}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       alt={food.name}
                     />
@@ -576,8 +576,8 @@ const PlaceDetails = () => {
                     <SwiperSlide key={idx}>
                       <div className="group cursor-pointer">
                         <div className="w-full aspect-square rounded-[2rem] overflow-hidden mb-4 border border-white/10 group-hover:border-[#E85D04]/50 transition-colors relative shadow-xl">
-                          {attraction.image ? (
-                            <img src={attraction.image} className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" loading="lazy" />
+                          {attraction.placeId?.images?.thumbnail ? (
+                            <img src={attraction.placeId.images.thumbnail} className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" loading="lazy" />
                           ) : (
                             <div className="w-full h-full bg-[#0a0a0a] flex items-center justify-center">
                               <FiMapPin className="text-white/20" size={40} />
@@ -585,7 +585,7 @@ const PlaceDetails = () => {
                           )}
                           <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
                         </div>
-                        <h4 className="text-xl font-bold text-white mb-1 group-hover:text-[#E85D04] transition-colors line-clamp-1">{attraction.name}</h4>
+                        <h4 className="text-xl font-bold text-white mb-1 group-hover:text-[#E85D04] transition-colors line-clamp-1">{attraction.placeId?.name || attraction.name}</h4>
                         {attraction.distance && <p className="text-white/50 text-sm font-medium">{attraction.distance}</p>}
                       </div>
                     </SwiperSlide>
