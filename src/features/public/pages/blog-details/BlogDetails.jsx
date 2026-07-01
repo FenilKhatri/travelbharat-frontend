@@ -1,5 +1,4 @@
 import { useParams, Link } from "react-router-dom";
-import PageLoader from "../../../../../components/ui/PageLoader";
 import { useBlogDetails } from "./hooks/useBlogDetails";
 import { useLogHistory } from "../../../../../utils/auth/useLogHistory";
 
@@ -8,6 +7,7 @@ import BlogContent from "./components/BlogContent";
 import BlogAuthorBox from "./components/BlogAuthorBox";
 import BlogComments from "./components/BlogComments";
 import BlogTOC from "./components/BlogTOC";
+import PageLoader from "../../../../components/ui/PageLoader";
 
 const BlogDetails = () => {
   const { slug } = useParams();
