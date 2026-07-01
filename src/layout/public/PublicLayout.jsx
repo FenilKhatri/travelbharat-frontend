@@ -4,6 +4,7 @@ import { Suspense, memo } from "react";
 import Footer from "../core/Footer";
 import Navbar from "../core/Navbar";
 import GlobalLoader from "../../components/ui/GlobalLoader";
+import { motion } from "framer-motion";
 
 const pageVariants = {
   initial: { opacity: 0 },
@@ -37,4 +38,4 @@ const PublicLayout = memo(() => {
   );
 });
 
-export default PublicLayout;
+export default PublicLayout;

@@ -21,7 +21,7 @@ const StateExperiences = ({ experiences }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative rounded-3xl overflow-hidden aspect-[4/5] md:aspect-[3/4] cursor-pointer"
+              className="group relative rounded-3xl overflow-hidden aspect-4/5 md:aspect-3/4 cursor-pointer"
             >
               {exp.image?.url ? (
                 <img 

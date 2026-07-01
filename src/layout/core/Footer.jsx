@@ -7,6 +7,7 @@ import { FiMail, FiPhone, FiMapPin, FiArrowUpRight } from "react-icons/fi";
 import { memo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { statsService } from "../../services/statsService";
+import { motion } from "framer-motion";
 
 const Footer = memo(() => {
   const { data: statsData } = useQuery({

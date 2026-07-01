@@ -49,7 +49,7 @@ const CityDetails = () => {
         {/* Left Column: Image & Quick Stats */}
         <div className="space-y-6">
           <div className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-3xl overflow-hidden shadow-sm">
-            <div className="aspect-[4/3] bg-slate-100 dark:bg-slate-800 relative">
+            <div className="aspect-4/3 bg-slate-100 dark:bg-slate-800 relative">
               {cityData.images?.hero || cityData.images?.thumbnail ? (
                 <img
                   src={(cityData.images.hero?.url || cityData.images.hero) || (cityData.images.thumbnail?.url || cityData.images.thumbnail)}

@@ -1,6 +1,8 @@
 import { FiMapPin, FiGlobe, FiInfo, FiCalendar } from "react-icons/fi";
 import TravelBadge from "../../../../../components/ui/TravelBadge";
 import LikeButton from "../../../../../components/ui/LikeButton";
+import { motion } from "framer-motion";
+
 const StateHero = ({ state }) => {
   return (
     <section className="relative w-full min-h-[85vh] flex flex-col justify-center">
