@@ -14,6 +14,7 @@ const LikeButton = ({ entityId, entityType, initialCount = 0, className = "" }) 
   const [isLiked, setIsLiked] = useState(false);
   const [count, setCount] = useState(initialCount);
   const [loading, setLoading] = useState(false);
+  const isLikingRef = React.useRef(false);
 
   useEffect(() => {
     setCount(initialCount);
@@ -38,6 +39,9 @@ const LikeButton = ({ entityId, entityType, initialCount = 0, className = "" }) 
       navigate("/auth");
       return;
     }
+    
+    if (isLikingRef.current) return;
+    isLikingRef.current = true;
 
     // Optimistic update
     const previousLiked = isLiked;
@@ -48,7 +52,12 @@ const LikeButton = ({ entityId, entityType, initialCount = 0, className = "" }) 
     try {
       const res = await http.post("/likes/toggle", { entityId, entityType });
       const currentlyLiked = res.data?.data?.isLiked;
+      const newCount = res.data?.data?.likeCount;
+      
       setIsLiked(currentlyLiked);
+      if (newCount !== undefined) {
+         setCount(newCount);
+      }
       
       // Invalidate queries that might depend on liked items
       queryClient.invalidateQueries(['userLikes']);
@@ -62,6 +71,7 @@ const LikeButton = ({ entityId, entityType, initialCount = 0, className = "" }) 
       toast.error(err.response?.data?.message || "Failed to like item.");
     } finally {
       setLoading(false);
+      isLikingRef.current = false;
     }
   };
 
@@ -69,7 +79,7 @@ const LikeButton = ({ entityId, entityType, initialCount = 0, className = "" }) 
     <button 
       onClick={handleLike} 
       disabled={loading}
-      className={`flex items-center gap-2 px-4 py-2 rounded-full font-bold text-sm transition-all shadow-sm active:scale-95 ${
+      className={`flex items-center gap-2 px-4 py-2 rounded-full font-bold text-sm transition-all shadow-sm active:scale-95 cursor-pointer disabled:cursor-not-allowed ${
         isLiked 
           ? 'bg-rose-50 text-rose-500 border border-rose-200 hover:bg-rose-100' 
           : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:text-slate-900'

@@ -71,8 +71,6 @@ const Reviews = () => {
     }
   });
 
-
-
   const respondMutation = useMutation({
     mutationFn: async ({ id, text }) => {
       const response = await http.put(`/reviews/admin/respond/${id}`, { adminResponse: text });

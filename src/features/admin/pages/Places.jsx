@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import {
   FiMapPin,
   FiEdit,
@@ -9,12 +9,11 @@ import {
   FiStar,
   FiTrendingUp
 } from "react-icons/fi";
-import http from "../../../lib/axios";
-import { toast } from "react-toastify";
 import AdminDataExplorer from "../components/ui/AdminDataExplorer";
 
 import { useAdminList } from "../hooks/useAdminList";
 import { useAdminMutations } from "../hooks/useAdminMutations";
+import { places_filters } from "../data/adminData";
 
 const Places = () => {
   const queryClient = useQueryClient();
@@ -23,7 +22,7 @@ const Places = () => {
   const [confirmDelete, setConfirmDelete] = useState(null);
 
   // Queries
-  const { data, isLoading, isError, error, searchParams, setSearchParams } = useAdminList({
+  const { data, isLoading, isError, error } = useAdminList({
     queryKey: "adminPlaces",
     endpoint: "/places/admin/all",
     extractParams: (params) => ({
@@ -58,36 +57,6 @@ const Places = () => {
   };
 
   const handleToggleActive = (place) => toggleStatus(place._id, place.isActive);
-
-  const categoriesList = [
-    { value: "heritage", label: "Heritage" },
-    { value: "nature", label: "Nature" },
-    { value: "temple", label: "Temple" },
-    { value: "beach", label: "Beach" },
-    { value: "hill-station", label: "Hill Station" },
-    { value: "wildlife", label: "Wildlife" },
-    { value: "adventure", label: "Adventure" },
-    { value: "religious", label: "Religious" },
-    { value: "modern", label: "Modern" },
-    { value: "other", label: "Other" }
-  ];
-
-  const filters = [
-    {
-      key: "category",
-      label: "Category",
-      options: categoriesList
-    },
-    {
-      key: "budget",
-      label: "Budget",
-      options: [
-        { value: "budget", label: "Budget Friendly" },
-        { value: "moderate", label: "Moderate" },
-        { value: "luxury", label: "Luxury" }
-      ]
-    }
-  ];
 
   const renderHeader = () => (
     <>
@@ -277,7 +246,7 @@ const Places = () => {
         onAddClick={handleOpenCreate}
         addButtonLabel="Add New Destination"
         searchPlaceholder="Search destinations..."
-        filters={filters}
+        filters={places_filters}
         isLoading={isLoading}
         isError={isError}
         error={error}

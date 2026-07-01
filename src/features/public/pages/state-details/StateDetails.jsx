@@ -1,19 +1,24 @@
 import { useParams, Link } from "react-router-dom";
 import { FiMapPin, FiArrowLeft, FiGlobe } from "react-icons/fi";
 import { useStateData } from "./hooks/useStateData";
-import ExploreIconicSection from "../../sections/home/ExploreIconicSection";
-import TravelCard from "../../../../components/cards/TravelCard";
 import GalleryCarousel from "../../../../components/ui/GalleryCarousel";
-import SectionLabel from "../../../../components/ui/SectionLabel";
 
 // Components
 import StateDetailsSkeleton from "./components/StateDetailsSkeleton";
 import StateHero from "./components/StateHero";
-import StateOverview from "./components/StateOverview";
-import StateFoods from "./components/StateFoods";
-import StateWeather from "./components/StateWeather";
-import StateTransport from "./components/StateTransport";
-import StateTips from "./components/StateTips";
+import StateWhyVisit from "./components/StateWhyVisit";
+import StateDiscover from "./components/StateDiscover";
+import StateTimeline from "./components/StateTimeline";
+import StateExperiences from "./components/StateExperiences";
+import StateFeaturedAttractions from "./components/StateFeaturedAttractions";
+import StateFeaturedFestivals from "./components/StateFeaturedFestivals";
+import StateCuisine from "./components/StateCuisine";
+import StateWildlife from "./components/StateWildlife";
+import StateSeasons from "./components/StateSeasons";
+import StateTravelInfo from "./components/StateTravelInfo";
+import StateTravelTips from "./components/StateTravelTips";
+import StateFAQ from "./components/StateFAQ";
+import StateNearby from "./components/StateNearby";
 import StateCities from "./components/StateCities";
 import StateDiscoverBanner from "./components/StateDiscoverBanner";
 
@@ -21,11 +26,7 @@ const StateDetails = () => {
   const { slug } = useParams();
   const {
     state, stateLoading, stateError,
-    cities, citiesLoading,
-    festivals, festivalsLoading,
-    places, placesLoading,
-    foods, foodsLoading,
-    similarStates, similarStatesLoading
+    cities, citiesLoading
   } = useStateData(slug);
 
   if (stateLoading) return <StateDetailsSkeleton />;
@@ -43,8 +44,7 @@ const StateDetails = () => {
     );
   }
 
-  const validFoods = foods.filter(f => f.image?.url || f.images?.thumbnail) || [];
-  const validGallery = state.images?.gallery?.map(img => img.url).filter(Boolean) || [];
+  const validGallery = state.gallery?.map(img => img.url).filter(Boolean) || state.images?.gallery?.map(img => img.url).filter(Boolean) || [];
 
   return (
     <div className="min-h-screen bg-[#07090f] font-sans text-[#edf2ff] relative overflow-x-hidden">
@@ -69,19 +69,48 @@ const StateDetails = () => {
         />
       )}
 
+      {/* Hero Section */}
       <StateHero state={state} />
 
-      <StateOverview state={state} validGallery={validGallery} />
+      {/* Overview / Why Visit */}
+      {state.whyVisit?.length > 0 && <StateWhyVisit whyVisit={state.whyVisit} />}
 
-      <div id="gallery">
-        <GalleryCarousel images={validGallery} name={state.name} />
-      </div>
+      {/* Discover / About */}
+      {state.discoverSections?.length > 0 && <StateDiscover discoverSections={state.discoverSections} />}
 
-      <StateFoods stateName={state.name} validFoods={validFoods} />
+      {/* Timeline */}
+      {state.historyTimeline?.length > 0 && <StateTimeline timeline={state.historyTimeline} />}
 
-      <StateWeather state={state} />
+      {/* Gallery */}
+      {validGallery.length > 0 && (
+        <div id="gallery">
+          <GalleryCarousel images={validGallery} name={state.name} />
+        </div>
+      )}
 
-      <StateTransport state={state} />
+      {/* Experiences */}
+      {state.experiences?.length > 0 && <StateExperiences experiences={state.experiences} />}
+
+      {/* Top Attractions */}
+      {state.featuredAttractions?.length > 0 && <StateFeaturedAttractions featuredAttractions={state.featuredAttractions} slug={slug} />}
+
+      {/* Festivals */}
+      {state.featuredFestivals?.length > 0 && <StateFeaturedFestivals featuredFestivals={state.featuredFestivals} slug={slug} />}
+
+      {/* Cities - still a separate query conceptually, passing in to old component */}
+      <StateCities state={state} cities={cities} citiesLoading={citiesLoading} slug={slug} />
+
+      {/* Cuisine */}
+      {state.featuredCuisine?.length > 0 && <StateCuisine featuredCuisine={state.featuredCuisine} />}
+
+      {/* Wildlife */}
+      {state.wildlifeHighlights?.length > 0 && <StateWildlife wildlifeHighlights={state.wildlifeHighlights} />}
+
+      {/* Climate & Seasons */}
+      {state.seasons?.length > 0 && <StateSeasons seasons={state.seasons} />}
+
+      {/* Travel Info */}
+      {state.travelInfo && <StateTravelInfo travelInfo={state.travelInfo} />}
 
       {/* Map */}
       {state.mapCoordinates?.lat && state.mapCoordinates?.lng && (
@@ -99,49 +128,16 @@ const StateDetails = () => {
         </section>
       )}
 
-      <StateTips state={state} />
+      {/* Travel Tips */}
+      {state.travelTips?.length > 0 && <StateTravelTips travelTips={state.travelTips} />}
 
-      <StateCities state={state} cities={cities} citiesLoading={citiesLoading} slug={slug} />
+      {/* FAQ */}
+      {state.faq?.length > 0 && <StateFAQ faq={state.faq} />}
 
-      <ExploreIconicSection
-        type="festival"
-        highlightText="Cultural Experience"
-        title={`Festivals in ${state.name}`}
-        subtitle="Immerse yourself in local traditions and celebrations."
-        data={festivals}
-        viewAllLink="/festivals"
-        viewAllText="View All Festivals"
-        isLoading={festivalsLoading}
-      />
+      {/* Nearby States */}
+      {state.nearbyStates?.length > 0 && <StateNearby nearbyStates={state.nearbyStates} />}
 
-      <ExploreIconicSection
-        type="destination"
-        highlightText="Top Attractions"
-        title={`Must-Visit Places in ${state.name}`}
-        subtitle="Explore the most iconic and highly rated tourist spots."
-        data={places}
-        viewAllLink={`/places?state=${slug}`}
-        viewAllText="Explore All Places"
-        isLoading={placesLoading}
-      />
-
-      {similarStates.length > 0 && (
-        <section className="py-24 bg-[#07090f] border-b border-white/5">
-          <div className="max-w-[1600px] w-full mx-auto px-4">
-            <SectionLabel icon={FiGlobe} text="Discover More" />
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
-              <h2 className="text-4xl font-black text-[#edf2ff]">Similar States</h2>
-              <p className="text-[#8fa3cc] text-sm font-medium">Based on shared characteristics and badges</p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {similarStates.map((similarState, index) => (
-                <TravelCard key={similarState._id} type="state" data={similarState} index={index} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
+      {/* Bottom CTA Banner */}
       <StateDiscoverBanner state={state} />
 
     </div>

@@ -4,15 +4,49 @@ import { FiX, FiUpload, FiImage, FiChevronDown } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import http from "../../../lib/axios";
 import { toast } from "react-toastify";
+import PageLoader from "../../../components/ui/PageLoader";
 
-import { SharedBlogFormFields, INITIAL_BLOG_FORM } from "../../../components/shared/SharedBlogFormFields";
+import {
+  FormCard,
+  FormField,
+  FormInput,
+  FormTextarea,
+  FormImageUpload,
+  ArrayEditor,
+  FormToggle,
+  FormHeader,
+  FormSEO,
+  FormGallery,
+} from "../../admin/components/form";
+import CustomDropdown from "../../../components/ui/CustomDropdown";
+
+const CATEGORIES = [
+  "travel-guide", "destination", "food", "culture", 
+  "adventure", "heritage", "festivals", "tips", 
+  "budget-travel", "luxury-travel", "wildlife", "spiritual", "other"
+];
+
+const INITIAL_BLOG_FORM = {
+  title: "",
+  slug: "",
+  content: "",
+  excerpt: "",
+  category: "travel-guide",
+  tags: [],
+  images: { hero: "", thumbnail: "" },
+  gallery: [],
+  stateId: "",
+  relatedCities: [],
+  relatedDestinations: [],
+  travelTips: [],
+  faqs: [],
+  isPublished: false,
+};
 
 const WriteBlog = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [uploadingImage, setUploadingImage] = useState(false);
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-
   const [form, setForm] = useState(INITIAL_BLOG_FORM);
 
   // States & Cities for Select
@@ -26,7 +60,7 @@ const WriteBlog = () => {
 
   const queryClient = useQueryClient();
 
-  const { data: myBlogsData } = useQuery({
+  const { data: myBlogsData, isLoading: isLoadingBlog } = useQuery({
     queryKey: ['myBlogs'],
     queryFn: () => http.get('/blogs/user/my-blogs'),
     enabled: !!id
@@ -46,21 +80,14 @@ const WriteBlog = () => {
         images: { 
           hero: blogToEdit.images?.hero || "", 
           thumbnail: blogToEdit.images?.thumbnail || "", 
-          gallery: blogToEdit.images?.gallery || [] 
         },
+        gallery: blogToEdit.images?.gallery || [],
         stateId: blogToEdit.stateId || "",
         relatedCities: blogToEdit.relatedCities || [],
         relatedDestinations: blogToEdit.relatedDestinations || [],
         travelTips: blogToEdit.travelTips || [],
         faqs: blogToEdit.faqs || [],
-        priority: blogToEdit.priority || 0,
-        featured: blogToEdit.featured || false,
         isPublished: blogToEdit.status === 'published',
-        seo: { 
-          metaTitle: blogToEdit.seo?.metaTitle || "", 
-          metaDescription: blogToEdit.seo?.metaDescription || "",
-          keywords: blogToEdit.seo?.keywords || []
-        }
       });
     }
   }, [blogToEdit]);
@@ -70,40 +97,80 @@ const WriteBlog = () => {
     onSuccess: () => { 
       toast.success(id ? "Blog updated successfully!" : "Blog created successfully!");
       queryClient.invalidateQueries(["myBlogs"]);
-      navigate("/user/my-blogs"); // or some other page
+      navigate("/user/profile"); // or some other page
     },
     onError: (err) => toast.error(err?.response?.data?.message || (id ? "Failed to update blog" : "Failed to create blog")),
   });
 
-  const handleImageUpload = async (e, field) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setUploadingImage(field);
+  const uploadSingleImage = async (file, path) => {
     const formData = new FormData();
     formData.append("image", file);
+    const res = await http.post("/upload/single", formData, { headers: { "Content-Type": "multipart/form-data" } });
+    return res.data?.data?.image?.url || res.data?.image?.url;
+  };
+  
+  const uploadMultipleImages = async (files, path) => {
+      const formData = new FormData();
+      Array.from(files).forEach(file => formData.append("images", file));
+      const res = await http.post("/upload/multiple", formData, { headers: { "Content-Type": "multipart/form-data" } });
+      return res.data?.data?.images?.map(img => img.url) || res.data?.images?.map(img => img.url) || [];
+  };
+
+  const handleImgUpload = async (file, path) => {
+    setUploadingImage(path);
     try {
-      const res = await http.post("/upload/single", formData, { headers: { "Content-Type": "multipart/form-data" } });
-      const url = res.data?.data?.image?.url || res.data?.image?.url;
-      const [parent, child] = field.split(".");
-      setForm((prev) => ({ ...prev, [parent]: { ...prev[parent], [child]: url } }));
+      const url = await uploadSingleImage(file, path);
+      const keys = path.split(".");
+      if (keys.length === 1) {
+          setForm(prev => ({ ...prev, [path]: url }));
+      } else {
+          const [parent, child] = keys;
+          setForm(prev => ({ ...prev, [parent]: { ...prev[parent], [child]: url } }));
+      }
       toast.success("Image uploaded!");
-    } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to upload image");
+    } catch (error) {
+      toast.error("Failed to upload image");
     } finally {
       setUploadingImage(false);
     }
   };
 
+  const set = (key, value) => {
+    setForm(prev => {
+      const keys = key.split(".");
+      if (keys.length === 1) return { ...prev, [key]: value };
+      const [parent, child] = keys;
+      return { ...prev, [parent]: { ...prev[parent], [child]: value } };
+    });
+  };
+
+  const handleArrayString = (key, value) => {
+    const arr = value.split(",").map(s => s.trim()).filter(Boolean);
+    set(key, arr);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!form.title.trim() || !form.content.trim()) {
+        toast.error("Title and content are required.");
+        return;
+    }
     const payload = {
       ...form,
+      images: {
+          ...form.images,
+          gallery: form.gallery
+      },
       status: form.isPublished ? 'published' : 'draft'
     };
     createMutation.mutate(payload);
   };
 
-  const isSubmitting = createMutation.isLoading;
+  const isSubmitting = createMutation.isLoading || createMutation.isPending;
+
+  if (isLoadingBlog) {
+      return <div className="min-h-[60vh] flex items-center justify-center"><PageLoader fullScreen={false} size="md" /></div>;
+  }
 
   return (
     <div className="space-y-6 pt-30 pb-12 max-w-4xl mx-auto px-4">
@@ -114,17 +181,133 @@ const WriteBlog = () => {
 
       <div className="bg-white dark:bg-[#0A121F] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
-          <SharedBlogFormFields 
-            form={form} 
-            setForm={setForm} 
-            states={states} 
-            cities={cities} 
-            places={places} 
-            handleImageUpload={handleImageUpload} 
-            uploadingImage={uploadingImage} 
-            isAdmin={false} 
-          />
-          
+            <FormCard title="Basic Information">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <FormField label="Title" required><FormInput value={form.title} onChange={v => set("title", v)} /></FormField>
+                    <FormField label="Slug"><FormInput value={form.slug} onChange={v => set("slug", v)} placeholder="Auto-generated if empty" /></FormField>
+                    <FormField label="Category" required>
+                        <CustomDropdown
+                        value={form.category}
+                        onChange={(val) => set("category", val)}
+                        options={CATEGORIES.map(c => ({ value: c, label: c.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) }))}
+                        placeholder="Select Category"
+                        />
+                    </FormField>
+                    <FormField label="State (Optional)">
+                        <CustomDropdown
+                        value={form.stateId}
+                        onChange={(val) => set("stateId", val)}
+                        options={[
+                            { value: "", label: "None" },
+                            ...states.map(s => ({ value: s._id, label: s.name })),
+                        ]}
+                        placeholder="None"
+                        searchable
+                        />
+                    </FormField>
+                    <FormField label="Excerpt" span2><FormTextarea value={form.excerpt} onChange={v => set("excerpt", v)} rows={2} /></FormField>
+                    <FormField label="Tags (comma separated)" span2><FormInput value={form.tags.join(", ")} onChange={v => handleArrayString("tags", v)} /></FormField>
+                </div>
+            </FormCard>
+
+            <FormCard title="Content Editor">
+                <div className="flex justify-between items-end mb-2">
+                    <div className="text-xs text-slate-500 font-bold">Supports Markdown formatting</div>
+                </div>
+                <FormTextarea value={form.content} onChange={v => set("content", v)} placeholder="Write your amazing post here..." rows={20} required />
+            </FormCard>
+
+            <FormCard title="Images" defaultOpen={false}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                    <FormImageUpload
+                    src={form.images.hero}
+                    label="Hero Image (16:9)"
+                    onUpload={e => handleImgUpload(e.target.files[0], "images.hero")}
+                    uploading={uploadingImage === "images.hero"}
+                    onRemove={() => set("images.hero", "")}
+                    />
+                    <FormImageUpload
+                    src={form.images.thumbnail}
+                    label="Thumbnail (1:1)"
+                    aspect="aspect-square max-w-[250px]"
+                    onUpload={e => handleImgUpload(e.target.files[0], "images.thumbnail")}
+                    uploading={uploadingImage === "images.thumbnail"}
+                    onRemove={() => set("images.thumbnail", "")}
+                    />
+                </div>
+            </FormCard>
+            
+            <FormGallery 
+                images={form.gallery.map(u => ({url: u}))}
+                onChange={(newGallery) => set("gallery", newGallery.map(g => g.url))}
+                onUpload={async (e) => {
+                    setUploadingImage("gallery");
+                    try {
+                        const urls = await uploadMultipleImages(e.target.files, "gallery");
+                        set("gallery", [...form.gallery, ...urls]);
+                    } catch(err) {
+                        toast.error("Upload failed");
+                    } finally {
+                        setUploadingImage(false);
+                    }
+                }}
+                uploading={uploadingImage === "gallery"}
+            />
+
+            <FormCard title="Travel Tips" defaultOpen={false}>
+                <ArrayEditor
+                    items={form.travelTips.map(t => ({ tip: t }))}
+                    onAdd={() => set("travelTips", [...form.travelTips, ""])}
+                    onRemove={(idx) => set("travelTips", form.travelTips.filter((_, i) => i !== idx))}
+                    renderItem={(item, idx, onChange) => (
+                        <FormInput value={item.tip} onChange={v => {
+                            const newTips = [...form.travelTips];
+                            newTips[idx] = v;
+                            set("travelTips", newTips);
+                        }} placeholder={`Tip ${idx+1}`} />
+                    )}
+                />
+            </FormCard>
+            
+            <FormCard title="FAQs" defaultOpen={false}>
+                <ArrayEditor
+                    items={form.faqs}
+                    onAdd={() => set("faqs", [...form.faqs, { question: "", answer: "" }])}
+                    onRemove={(idx) => set("faqs", form.faqs.filter((_, i) => i !== idx))}
+                    renderItem={(item, idx, onChange) => (
+                        <div className="space-y-3">
+                            <FormInput value={item.question} onChange={v => onChange("question", v)} placeholder="Question" />
+                            <FormTextarea value={item.answer} onChange={v => onChange("answer", v)} placeholder="Answer" rows={2} />
+                        </div>
+                    )}
+                />
+            </FormCard>
+
+            <FormCard title="Related Content" defaultOpen={false}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <FormField label="Related Cities (Select Multiple)">
+                    <CustomDropdown
+                        multiple
+                        searchable
+                        value={form.relatedCities || []}
+                        onChange={(val) => set("relatedCities", val)}
+                        options={cities.map(c => ({ value: c._id, label: c.name }))}
+                        placeholder="Select Cities..."
+                    />
+                    </FormField>
+                    <FormField label="Related Destinations">
+                    <CustomDropdown
+                        multiple
+                        searchable
+                        value={form.relatedDestinations || []}
+                        onChange={(val) => set("relatedDestinations", val)}
+                        options={places.map(p => ({ value: p._id, label: p.name }))}
+                        placeholder="Select Destinations..."
+                    />
+                    </FormField>
+                </div>
+            </FormCard>
+
           {/* Status */}
           <div className="flex gap-6 mt-6">
             <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-600 dark:text-slate-300">

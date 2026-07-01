@@ -10,7 +10,7 @@ const ContactDetails = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ['contactInquiry', id],
-    queryFn: () => http.get(`/contact/${id}`) // assuming you have this endpoint or similar
+    queryFn: () => http.get(`/contact/${id}`)
   });
 
   if (isLoading) return <div className="p-8 text-[#E85D04]">Loading inquiry details...</div>;

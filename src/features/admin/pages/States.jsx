@@ -47,29 +47,6 @@ const States = () => {
 
   const handleToggleActive = (stateItem) => toggleStatus(stateItem._id, stateItem.isActive);
 
-  const filters = [
-    {
-      key: "region",
-      label: "Region",
-      options: [
-        { value: "north", label: "North India" },
-        { value: "south", label: "South India" },
-        { value: "east", label: "East India" },
-        { value: "west", label: "West India" },
-        { value: "central", label: "Central India" },
-        { value: "northeast", label: "Northeast India" }
-      ]
-    },
-    {
-      key: "featured",
-      label: "Featured",
-      options: [
-        { value: "true", label: "Featured" },
-        { value: "false", label: "Non-Featured" }
-      ]
-    }
-  ];
-
   const renderHeader = () => (
     <>
       <th className="py-4 px-6">State / Tagline</th>

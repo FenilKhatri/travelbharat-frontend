@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FiEdit, FiTrash2, FiImage, FiCalendar } from "react-icons/fi";
-import http from "../../../lib/axios";
-import { toast } from "react-toastify";
 import AdminDataExplorer from "../components/ui/AdminDataExplorer";
 
 import { useAdminList } from "../hooks/useAdminList";
 import { useAdminMutations } from "../hooks/useAdminMutations";
+import { fest_filters } from "../data/adminData";
 
 const Festivals = () => {
   const queryClient = useQueryClient();
@@ -17,7 +16,7 @@ const Festivals = () => {
   const [confirmDelete, setConfirmDelete] = useState(null);
 
   // Fetch festivals
-  const { data, isLoading, isError, error, searchParams, setSearchParams } = useAdminList({
+  const { data, isLoading, isError, error } = useAdminList({
     queryKey: "adminFestivals",
     endpoint: "/festivals/admin/all",
     extractParams: (params) => ({
@@ -41,22 +40,6 @@ const Festivals = () => {
   const handleToggleActive = (f) => toggleStatus(f._id, f.isActive);
   const handleEditClick = (f) => navigate(`/admin/festivals/edit/${f._id}`);
   const handleOpenCreate = () => navigate("/admin/festivals/create");
-
-  const categories = [
-    { value: "religious", label: "Religious" },
-    { value: "cultural", label: "Cultural" },
-    { value: "harvest", label: "Harvest" },
-    { value: "seasonal", label: "Seasonal" },
-    { value: "national", label: "National" }
-  ];
-
-  const filters = [
-    {
-      key: "category",
-      label: "Category",
-      options: categories
-    }
-  ];
 
   const renderHeader = () => (
     <>
@@ -182,7 +165,7 @@ const Festivals = () => {
         onAddClick={handleOpenCreate}
         addButtonLabel="Add New Festival"
         searchPlaceholder="Search festivals by name..."
-        filters={filters}
+        filters={fest_filters}
         isLoading={isLoading}
         isError={isError}
         error={error}
