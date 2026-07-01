@@ -20,11 +20,13 @@ const FeaturedCollections = ({ collections, badgeConfig, onCollectionClick }) =>
         spaceBetween={24}
         slidesPerView="auto"
         loop={true}
+        speed={4000}
         autoplay={{
-          delay: 3000,
+          delay: 0,
           disableOnInteraction: false,
+          pauseOnMouseEnter: true,
         }}
-        className="w-full pb-8"
+        className="w-full pb-8 [&>.swiper-wrapper]:!ease-linear"
       >
         {[...collections, ...collections, ...collections].map((collection, idx) => (
           <SwiperSlide key={idx} className="w-auto!" >
