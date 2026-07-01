@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { FiUser } from "react-icons/fi";
 import HeroBg from "../../../../assets/images/home/herobg.avif";
 import { fadeUp, slideRight } from "../../../../animations/motionVariants";

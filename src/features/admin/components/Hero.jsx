@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { MdSecurity } from "react-icons/md";
 import Button from "../../../components/ui/Button";

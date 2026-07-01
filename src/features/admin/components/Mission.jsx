@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { fadeUp, stagger, scaleIn } from "../../../animations/motionVariants";
 import MissionImg from "../../../assets/images/aboutus/mission.avif";
 import TitleAndDescription from "../../../components/ui/TitleAndDescription";

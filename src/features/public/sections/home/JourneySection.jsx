@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useScroll, useSpring } from "framer-motion";
+import { useScroll, useSpring, motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import {
   FiMap, FiMapPin, FiCompass, FiCalendar, FiBookOpen, FiCamera} from "react-icons/fi";

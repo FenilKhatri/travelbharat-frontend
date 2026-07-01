@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { FiNavigation, FiInfo } from "react-icons/fi";
 import { FaPlane, FaTrain, FaCar, FaBus } from "react-icons/fa";
 import SectionLabel from "../../../../../components/ui/SectionLabel";

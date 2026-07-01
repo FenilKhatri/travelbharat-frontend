@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FiStar, FiMapPin } from "react-icons/fi";
 import LikeButton from "../../../../../components/ui/LikeButton";

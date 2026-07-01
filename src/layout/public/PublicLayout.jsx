@@ -1,11 +1,9 @@
 import { Outlet, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Suspense, memo } from "react";
 import Footer from "../core/Footer";
 import Navbar from "../core/Navbar";
 import GlobalLoader from "../../components/ui/GlobalLoader";
-import { motion } from "framer-motion";
-
 const pageVariants = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },

@@ -5,7 +5,7 @@ import {
   FiGlobe, FiAward, FiNavigation, FiActivity, FiBookmark, FiShare2,
   FiMap, FiCheckCircle, FiClock, FiStar
 } from 'react-icons/fi';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from "framer-motion";
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import http from '../../../lib/axios';

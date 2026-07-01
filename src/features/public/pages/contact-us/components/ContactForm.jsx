@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { FiMessageCircle, FiSend, FiCheck } from "react-icons/fi";
 const fadeUp = {
   initial: { opacity: 0, y: 30 },

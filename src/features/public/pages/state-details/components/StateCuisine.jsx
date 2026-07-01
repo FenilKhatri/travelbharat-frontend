@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { FaUtensils } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
 import { Link } from "react-router-dom";

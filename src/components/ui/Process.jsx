@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { fadeUp } from "../../animations/motionVariants";
 import TitleAndDescription from "../../components/ui/TitleAndDescription";
 import { processSteps } from "../../features/public/data/aboutData";

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { MdSecurity } from "react-icons/md";
 import { FiEye, FiFileText, FiLock, FiCompass, FiPhoneCall, FiInfo } from "react-icons/fi";

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { FiMapPin, FiCalendar, FiClock, FiInfo } from "react-icons/fi";
 import LikeButton from "../../../../../components/ui/LikeButton";
 const FestivalHero = ({ festival }) => {

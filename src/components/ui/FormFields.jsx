@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Input from "./Input";
 import { fadeUp } from "../../animations/motionVariants";
 

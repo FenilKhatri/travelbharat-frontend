@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import TitleAndDescription from "../../../../components/ui/TitleAndDescription";
 import { fadeUp } from "../../../../animations/motionVariants";
 

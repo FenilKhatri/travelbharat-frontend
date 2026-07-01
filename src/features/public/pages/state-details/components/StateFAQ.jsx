@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { FiHelpCircle, FiChevronDown } from "react-icons/fi";
 import { useState } from "react";
 import SectionLabel from "../../../../../components/ui/SectionLabel";

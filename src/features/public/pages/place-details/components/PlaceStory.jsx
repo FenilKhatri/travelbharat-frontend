@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Reveal from "../../../../../components/ui/Reveal";
 const PlaceStory = ({ place, heroImage }) => {
   return (

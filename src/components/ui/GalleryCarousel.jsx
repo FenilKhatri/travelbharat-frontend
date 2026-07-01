@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from "framer-motion";
 import { FiChevronLeft, FiChevronRight, FiX } from 'react-icons/fi';
 
 // Scroll Reveal Wrapper

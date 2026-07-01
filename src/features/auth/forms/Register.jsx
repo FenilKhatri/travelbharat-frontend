@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Button from "../../../components/ui/Button";
 import FormFields from "../../../components/ui/FormFields";
 import GoogleAuthButton from "../../../components/ui/GoogleAuthButton";

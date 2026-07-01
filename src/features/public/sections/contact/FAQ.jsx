@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import {
   containerVariants,

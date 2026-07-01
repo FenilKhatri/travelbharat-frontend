@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { FiBell, FiCheckCircle, FiInfo, FiAlertCircle, FiTrash2, FiCheck, FiClock, FiSettings } from "react-icons/fi";
 import { Link } from "react-router-dom";

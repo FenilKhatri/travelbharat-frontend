@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { FiInfo } from "react-icons/fi";
 import Reveal from "../../../../../components/ui/Reveal";
 const PlaceTips = ({ place }) => {

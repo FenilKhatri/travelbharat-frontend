@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { FiHeart, FiStar, FiImage } from "react-icons/fi";

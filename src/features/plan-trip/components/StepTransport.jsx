@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { useTripPlanner } from "../context/TripPlannerContext";
 import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { FaPlane, FaTrain, FaBus, FaCar, FaCarSide } from "react-icons/fa";

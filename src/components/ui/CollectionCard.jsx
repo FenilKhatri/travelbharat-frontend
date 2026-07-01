@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import TravelBadge from "./TravelBadge";
 const CollectionCard = ({ title, subtitle, image, onClick, badgeConfig }) => {
   return (

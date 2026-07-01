@@ -1,5 +1,5 @@
 import { FaMagic } from "react-icons/fa";
-import { AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 const HeroContent = ({ currentBanner, currentSlide, statsData }) => {
   return (
     <div className="lg:col-span-7">

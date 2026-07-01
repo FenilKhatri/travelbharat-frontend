@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useScroll, useTransform } from "framer-motion";
+import { useScroll, useTransform, motion } from "framer-motion";
 import { FiCompass, FiArrowRight } from "react-icons/fi";
 import Reveal from "../../../../../components/ui/Reveal";
 import LikeButton from "../../../../../components/ui/LikeButton";

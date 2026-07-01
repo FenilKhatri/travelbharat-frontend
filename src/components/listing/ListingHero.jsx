@@ -1,4 +1,4 @@
-import { useScroll, useTransform } from "framer-motion";
+import { useScroll, useTransform, motion } from "framer-motion";
 import { memo } from "react";
 const ListingHero = ({ heroImage, highlightText, title, subtitle, onScrollClick }) => {
   const { scrollY } = useScroll();

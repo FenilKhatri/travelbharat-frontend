@@ -1,6 +1,6 @@
 import { Outlet, useLocation, Link } from "react-router-dom";
 import { useState, useEffect, Suspense, memo } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { FiSun, FiMoon, FiChevronRight, FiChevronLeft, FiMenu, FiBell } from "react-icons/fi";
 
 import Sidebar from "./Sidebar";

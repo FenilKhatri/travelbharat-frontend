@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
 const contactInfo = [
   {

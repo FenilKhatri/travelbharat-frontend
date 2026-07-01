@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Descriptiontext from "./DescriptionText";
 import H2 from "./H2";
 import { fadeUp } from "../../animations/motionVariants";

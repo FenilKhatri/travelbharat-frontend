@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { FiShare2, FiImage, FiInfo, FiMapPin, FiHelpCircle } from "react-icons/fi";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import LikeButton from "../../../../../components/ui/LikeButton";
 const BlogContent = ({ blog, handleShare, setSelectedImage, expandedFaq, setExpandedFaq }) => {
   return (

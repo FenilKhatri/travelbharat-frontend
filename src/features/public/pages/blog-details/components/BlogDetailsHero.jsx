@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FiArrowLeft, FiUser, FiCalendar, FiEye, FiHeart } from "react-icons/fi";
 const BlogDetailsHero = ({ blog, likeMutation }) => {

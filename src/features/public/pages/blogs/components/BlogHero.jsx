@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { FiBookOpen, FiSearch } from "react-icons/fi";
 const BlogHero = ({ searchTerm, setSearchTerm }) => {
   return (

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { fadeUp, scaleIn, stagger } from "../../../animations/motionVariants";
 import { visionItems } from "../../public/data/aboutData";
 import TitleAndDescription from "../../../components/ui/TitleAndDescription";

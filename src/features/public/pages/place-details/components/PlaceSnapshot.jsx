@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { FiClock, FiCalendar, FiWind, FiDollarSign, FiStar, FiTag } from "react-icons/fi";
 const PlaceSnapshot = ({ place }) => {
   const items = [

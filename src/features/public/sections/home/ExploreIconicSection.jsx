@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FiCalendar, FiMapPin, FiStar, FiNavigation } from "react-icons/fi";
 

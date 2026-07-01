@@ -1,4 +1,4 @@
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { FaMountain } from "react-icons/fa";
 import { FiCamera } from "react-icons/fi";
 const HeroImageCard = ({ currentBanner, currentSlide, setIsHovered }) => {

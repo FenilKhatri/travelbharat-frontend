@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { FiSun, FiCloudRain, FiThermometer, FiCalendar } from "react-icons/fi";
 import { BsSnow } from "react-icons/bs";
 import SectionLabel from "../../../../../components/ui/SectionLabel";

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FaMountain, FaTree, FaCampground, FaWater } from "react-icons/fa";
 import { MdCastle } from "react-icons/md";

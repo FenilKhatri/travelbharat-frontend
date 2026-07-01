@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import Button from "../../../components/ui/Button";
 import TitleText from "../../../components/ui/TitleText";

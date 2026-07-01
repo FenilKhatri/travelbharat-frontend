@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { FiArrowUp } from "react-icons/fi";
-
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -50,4 +49,4 @@ const ScrollToTop = () => {
 };
 
 export default ScrollToTop;
-
+

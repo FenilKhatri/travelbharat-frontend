@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { useTripPlanner } from "../context/TripPlannerContext";
 import { FiCalendar, FiUsers, FiCompass, FiDollarSign, FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { useEffect } from "react";

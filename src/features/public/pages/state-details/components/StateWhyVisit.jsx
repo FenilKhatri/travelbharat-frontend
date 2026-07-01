@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { FiCheckCircle } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
 const StateWhyVisit = ({ whyVisit }) => {

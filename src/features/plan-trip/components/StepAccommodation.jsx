@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useTripPlanner } from "../context/TripPlannerContext";
 import { accommodationService } from "../../../services/accommodationService";

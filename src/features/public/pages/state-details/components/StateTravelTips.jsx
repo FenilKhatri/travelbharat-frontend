@@ -1,6 +1,8 @@
 import { FiCheckCircle, FiAlertTriangle, FiInfo, FiHeart, FiStar } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
 import * as Icons from "react-icons/fi";
+import { motion } from "framer-motion";
+
 const StateTravelTips = ({ travelTips }) => {
   if (!travelTips || travelTips.length === 0) return null;
   const getIcon = (iconName) => {
