@@ -360,7 +360,7 @@ const Settings = () => {
                 >
                   <div className="relative h-44 bg-slate-100 dark:bg-slate-800">
                     {banner.image ? (
-                      <img src={banner.image} alt={banner.title} className="w-full h-full object-cover" />
+                      <img src={banner.image?.url || banner.image} alt={banner.title} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-slate-400"><FiImage size={28} /></div>
                     )}
@@ -494,7 +494,7 @@ const Settings = () => {
                 <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider">Slider Image File</label>
                 <div className="flex items-center gap-4">
                   {bannerForm.image ? (
-                    <img src={bannerForm.image} alt="Slider Preview" className="w-24 h-12 object-cover rounded-lg border border-slate-205" />
+                    <img src={bannerForm.image?.url || bannerForm.image} alt="Slider Preview" className="w-24 h-12 object-cover rounded-lg border border-slate-205" />
                   ) : (
                     <div className="w-24 h-12 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center text-slate-400"><FiImage /></div>
                   )}

@@ -79,7 +79,7 @@ const TripDetails = () => {
                   <li key={place.placeId?._id || index} className="flex items-start gap-4 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-slate-900/30">
                     <div className="w-12 h-12 rounded-xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-500 shrink-0">
                       {place.placeId?.images?.thumbnail ? (
-                        <img src={place.placeId.images.thumbnail} alt={place.placeId.name} className="w-full h-full object-cover rounded-xl" />
+                        <img src={place.placeId.images.thumbnail?.url || place.placeId.images.thumbnail} alt={place.placeId.name} className="w-full h-full object-cover rounded-xl" />
                       ) : (
                         <FiMapPin size={20} />
                       )}

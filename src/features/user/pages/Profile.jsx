@@ -122,7 +122,7 @@ const Profile = () => {
       <section className="relative w-full mb-28 md:mb-40 pt-16">
         <div className="absolute inset-0 z-0 h-[300px] md:h-[400px] group/cover">
           <img src={user.coverImage || "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80"} className="w-full h-full object-cover opacity-60" alt="Cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-[#050505] via-[#050505]/60 to-transparent" />
           <label className="absolute top-6 right-6 flex items-center justify-center bg-black/60 hover:bg-black/80 text-white rounded-xl px-4 py-2 opacity-0 group-hover/cover:opacity-100 transition-opacity cursor-pointer z-20 gap-2 font-bold text-xs uppercase tracking-widest backdrop-blur-md border border-white/10">
             <FiCamera size={16} /> Change Cover
             <input type="file" accept="image/*" className="hidden" onChange={handleCoverUpload} disabled={uploading} />
@@ -320,7 +320,7 @@ const Profile = () => {
                       <div key={idx} className="bg-[#0c1018] rounded-3xl border border-white/5 overflow-hidden shadow-xl group hover:-translate-y-1 transition-all hover:border-white/10 flex flex-col">
                         <div className="h-48 relative overflow-hidden shrink-0">
                           <img src={cImg} onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1506461883276-594a12b11ac3?auto=format&fit=crop&q=80" }} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={trip.name} />
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#0c1018] to-transparent" />
+                          <div className="absolute inset-0 bg-linear-to-t from-[#0c1018] to-transparent" />
                           <div className="absolute top-4 left-4">
                             {trip.status === 'upcoming' && <span className="bg-blue-500/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-blue-400/50 flex items-center gap-1.5"><FiClock size={12} /> Upcoming</span>}
                             {trip.status === 'completed' && <span className="bg-emerald-500/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-emerald-400/50 flex items-center gap-1.5"><FiCheckCircle size={12} /> Completed</span>}
@@ -512,7 +512,7 @@ const Profile = () => {
               <div className="grid grid-cols-3 gap-4">
                 {badges.map((badge, i) => (
                   <div key={i} className="flex flex-col items-center text-center group cursor-default">
-                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${badge.color || 'from-orange-500 to-red-600'} flex items-center justify-center text-2xl shadow-xl group-hover:scale-110 group-hover:-translate-y-1 transition-all duration-300 border border-white/20 mb-3`}>
+                    <div className={`w-16 h-16 rounded-2xl bg-linear-to-br ${badge.color || 'from-orange-500 to-red-600'} flex items-center justify-center text-2xl shadow-xl group-hover:scale-110 group-hover:-translate-y-1 transition-all duration-300 border border-white/20 mb-3`}>
                       {badge.icon}
                     </div>
                     <p className="text-xs font-bold text-white leading-tight mb-1">{badge.name}</p>

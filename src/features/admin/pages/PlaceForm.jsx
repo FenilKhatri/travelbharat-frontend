@@ -5,6 +5,7 @@ import { FiSave, FiArrowLeft, FiUpload, FiImage, FiMapPin, FiSettings, FiGrid } 
 import { toast } from "react-toastify";
 import http from "../../../lib/axios";
 import CustomDropdown from "../../../components/ui/CustomDropdown";
+import BadgeSelector from "../components/BadgeSelector";
 import PageLoader from "../../../components/ui/PageLoader";
 
 /*  Constants  */
@@ -24,6 +25,8 @@ const INITIAL_FORM = {
   featured: false,
   trending: false,
   isActive: true,
+  badges: [],
+  primaryBadge: "",
   images: {
     thumbnail: "",
     hero: ""
@@ -182,6 +185,8 @@ const PlaceForm = () => {
         featured: p.featured || false,
         trending: p.trending || false,
         isActive: p.isActive ?? true,
+        badges: p.badges || [],
+        primaryBadge: p.primaryBadge || "",
         images: {
           thumbnail: p.images?.thumbnail || "",
           hero: p.images?.hero || ""
@@ -406,6 +411,14 @@ const PlaceForm = () => {
                 <Toggle checked={form.trending} onChange={(v) => set("trending", v)} label="Trending" accent="#3b82f6" />
               </div>
             </div>
+
+            <Field label="Badges" span2>
+              <BadgeSelector 
+                selectedBadges={form.badges} 
+                primaryBadge={form.primaryBadge} 
+                onChange={(badges, primary) => setForm(prev => ({ ...prev, badges, primaryBadge: primary }))} 
+              />
+            </Field>
           </div>
         </Card>
 
@@ -430,9 +443,9 @@ const PlaceForm = () => {
         {/*  CARD 4: MEDIA  */}
         <Card title="Destination Imagery" icon={FiImage}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <ImageTile src={form.images.hero} label="Hero Banner (Landscape)" aspect="aspect-video"
+            <ImageTile src={(form.images.hero?.url || form.images.hero)?.url || (form.images.hero?.url || form.images.hero)} label="Hero Banner (Landscape)" aspect="aspect-video"
               uploading={uploadingImage === "hero"} onUpload={(e) => handleImageUpload(e, "hero")} />
-            <ImageTile src={form.images.thumbnail} label="Thumbnail (Square)" aspect="aspect-square max-w-[220px]"
+            <ImageTile src={(form.images.thumbnail?.url || form.images.thumbnail)?.url || (form.images.thumbnail?.url || form.images.thumbnail)} label="Thumbnail (Square)" aspect="aspect-square max-w-[220px]"
               uploading={uploadingImage === "thumbnail"} onUpload={(e) => handleImageUpload(e, "thumbnail")} />
           </div>
         </Card>

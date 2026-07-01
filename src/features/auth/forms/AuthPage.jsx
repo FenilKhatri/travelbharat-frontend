@@ -21,7 +21,7 @@ const AuthPage = ({ role = "user" }) => {
             backgroundImage: "url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80')"
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-[#050B14]/80 to-transparent"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-[#050B14]/80 to-transparent"></div>
         </div>
 
         {/* Cultural Overlay Image */}
@@ -89,8 +89,8 @@ const AuthPage = ({ role = "user" }) => {
             <button
               onClick={() => setIsLogin(true)}
               className={`w-1/2 py-2.5 rounded-lg text-sm font-semibold transition-all ${isLogin
-                  ? "bg-white dark:bg-[#050B14] text-[#E85D04] shadow-sm"
-                  : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                ? "bg-white dark:bg-[#050B14] text-[#E85D04] shadow-sm"
+                : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                 }`}
             >
               Login
@@ -99,8 +99,8 @@ const AuthPage = ({ role = "user" }) => {
             <button
               onClick={() => setIsLogin(false)}
               className={`w-1/2 py-2.5 rounded-lg text-sm font-semibold transition-all ${!isLogin
-                  ? "bg-white dark:bg-[#050B14] text-[#E85D04] shadow-sm"
-                  : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                ? "bg-white dark:bg-[#050B14] text-[#E85D04] shadow-sm"
+                : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                 }`}
             >
               Signup

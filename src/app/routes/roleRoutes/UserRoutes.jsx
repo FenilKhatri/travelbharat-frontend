@@ -12,11 +12,14 @@ const SavedBlogs = lazy(() => import("../../../features/user/pages/SavedBlogs"))
 const WriteBlog = lazy(() => import("../../../features/user/pages/WriteBlog"));
 const MyBlogs = lazy(() => import("../../../features/user/pages/MyBlogs"));
 const TripDetails = lazy(() => import("../../../features/user/pages/TripDetails"));
+const History = lazy(() => import("../../../features/user/pages/History"));
 const Notifications = lazy(() => import("../../../features/user/pages/Notifications"));
+
 const UserRoutes = () => (
   <Route element={<ProtectedRoute />}>
     <Route element={<RoleRoute allowedRoles={[ROLES.USER]} />}>
       <Route path="/user/profile" element={<UserProfile />} />
+      <Route path="/user/history" element={<History />} />
       <Route path="/user/trips" element={<Trips />} />
       <Route path="/user/likes" element={<Likes />} />
       <Route path="/user/settings" element={<Settings />} />

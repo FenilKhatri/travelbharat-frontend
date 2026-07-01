@@ -6,13 +6,24 @@ import logoDark from "../../assets/logo_dark.png";
 import logoLight from "../../assets/logo_light.png";
 import { FiMail, FiPhone, FiMapPin, FiArrowUpRight } from "react-icons/fi";
 import { memo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { statsService } from "../../services/statsService";
 
 const Footer = memo(() => {
+  const { data: statsData } = useQuery({
+    queryKey: ["publicStats"],
+    queryFn: statsService.getPublicStats,
+    staleTime: 1000 * 60 * 60 * 24, // 24 hours
+  });
+
+  // axios interceptor already returns res.data, so statsData is the API response body
+  const stats = statsData?.data || {};
+
   const footerLinksDesign =
     "group inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-[#E85D04] transition-all duration-300 text-[15px]";
 
   return (
-    <footer className="relative overflow-hidden bg-gradient-to-b from-[#FFF7ED] via-[#FFF1E6] to-[#FFE4CC] dark:from-[#050816] dark:via-[#08101F] dark:to-[#050816] border-t border-[#E85D04]/10 dark:border-white/5">
+    <footer className="relative overflow-hidden bg-linear-to-b from-[#FFF7ED] via-[#FFF1E6] to-[#FFE4CC] dark:from-[#070A11] dark:via-[#0A0F1A] dark:to-[#070A11] border-t border-[#E85D04]/10 dark:border-white/10">
 
       {/* Background Image */}
       <div
@@ -72,15 +83,15 @@ const Footer = memo(() => {
             {/* Stats */}
             <div className="flex flex-wrap gap-4 sm:gap-6 mt-8 sm:mt-10">
               {[
-                { value: "28+", label: "States" },
-                { value: "500+", label: "Destinations" },
-                { value: "100+", label: "Festivals" },
+                { value: stats.states ? `${stats.states}` : "28+", label: "States" },
+                { value: stats.destinations ? `${stats.destinations}` : "500+", label: "Destinations" },
+                { value: stats.festivals ? `${stats.festivals}` : "100+", label: "Festivals" },
               ].map((item, index) => (
                 <div
                   key={index}
                   className="px-4 py-3 sm:px-6 sm:py-4 rounded-xl sm:rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-lg"
                 >
-                  <h4 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+                  <h4 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white text-center">
                     {item.value}
                   </h4>
 

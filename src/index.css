@@ -2,28 +2,61 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary: #E85D04;
-  --color-primary-hover: #DC2F02;
-  --color-secondary: #0F172A;
-  --color-secondary-hover: #1E293B;
-  --color-accent: #D4A72C;
-  --color-accent-hover: #F48C06;
-  --color-dark-bg: #050B14;
-  --color-dark-card: #0A121F;
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+
+  --color-background: var(--bg-background);
+  --color-surface: var(--bg-surface);
+  --color-surface-elevated: var(--bg-surface-elevated);
+  
+  --color-glass-bg: var(--glass-bg);
+  --color-glass-border: var(--glass-border);
+  
+  --color-border-theme: var(--border-theme);
+
+  --color-accent: #F97316;
+  --color-accent-hover: #EA580C;
+}
+
+:root {
+  --bg-background: #f8fafc; /* slate-50 */
+  --bg-surface: #ffffff; /* white */
+  --bg-surface-elevated: #fafaf9; /* stone-50 */
+  
+  --glass-bg: rgba(255,255,255,0.75);
+  --glass-border: rgba(15,23,42,0.08);
+  
+  --border-theme: #e2e8f0; /* slate-200 */
+  
+  --text-primary: #0f172a; /* slate-900 */
+  --text-secondary: #334155; /* slate-700 */
+  --text-muted: #64748b; /* slate-500 */
+}
+
+.dark {
+  --bg-background: #070A11;
+  --bg-surface: #0F172A;
+  --bg-surface-elevated: #111827;
+  
+  --glass-bg: rgba(10,15,25,0.65);
+  --glass-border: rgba(255,255,255,0.08);
+  
+  --border-theme: rgba(255,255,255,0.08);
+  
+  --text-primary: #ffffff; /* white */
+  --text-secondary: #cbd5e1; /* slate-300 */
+  --text-muted: #94a3b8; /* slate-400 */
 }
 
 body {
-  @apply bg-slate-50 text-slate-900 transition-colors duration-300 overflow-x-hidden;
+  @apply bg-background text-primary transition-colors duration-300 overflow-x-hidden;
   font-family: 'Inter', system-ui, sans-serif;
-}
-
-.dark body {
-  @apply bg-[#050B14] text-slate-200;
 }
 
 /* Glassmorphism utilities */
 .glass {
-  @apply bg-white/70 dark:bg-[#0A121F]/70 backdrop-blur-xl border border-white/40 dark:border-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.4)];
+  @apply bg-glass-bg backdrop-blur-xl border border-glass-border shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.4)];
 }
 
 .dropdown-item {

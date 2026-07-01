@@ -67,7 +67,7 @@ const About = () => {
     <div className="min-h-screen bg-slate-50 dark:bg-[#0A1628]">
       {/*  Hero Section  */}
       <section className="relative pt-28 pb-24 md:pt-40 md:pb-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628] via-[#0E1E36] to-[#162544]" />
+        <div className="absolute inset-0 bg-linear-to-br from-[#0A1628] via-[#0E1E36] to-[#162544]" />
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-20 left-10 w-72 h-72 bg-[#E85D04]/20 rounded-full blur-3xl" />
           <div className="absolute bottom-10 right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
@@ -80,7 +80,7 @@ const About = () => {
             </span>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight">
               Discover India with{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E85D04] to-[#FFA647]">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-[#E85D04] to-[#FFA647]">
                 TravelBharat
               </span>
             </h1>
@@ -180,7 +180,7 @@ const About = () => {
       </section>
 
       {/*  Journey Statistics  */}
-      <section className="py-20 bg-gradient-to-r from-[#E85D04] to-[#FFA647] relative overflow-hidden">
+      <section className="py-20 bg-linear-to-r from-[#E85D04] to-[#FFA647] relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-1/4 w-64 h-64 bg-white rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-white rounded-full blur-3xl" />
@@ -234,7 +234,7 @@ const About = () => {
               Built with Passion
             </h2>
             <div className="flex justify-center mb-8">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#E85D04] to-[#FFA647] flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-[#E85D04]/30">
+              <div className="w-24 h-24 rounded-full bg-linear-to-br from-[#E85D04] to-[#FFA647] flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-[#E85D04]/30">
                 TB
               </div>
             </div>

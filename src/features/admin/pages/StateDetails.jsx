@@ -53,7 +53,7 @@ const StateDetails = () => {
             <div className="aspect-[4/3] bg-slate-100 dark:bg-slate-800 relative">
               {stateData.images?.hero || stateData.images?.thumbnail ? (
                 <img
-                  src={stateData.images.hero || stateData.images.thumbnail}
+                  src={(stateData.images.hero?.url || stateData.images.hero) || (stateData.images.thumbnail?.url || stateData.images.thumbnail)}
                   alt={stateData.name}
                   className="w-full h-full object-cover"
                 />

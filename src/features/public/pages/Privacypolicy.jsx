@@ -49,13 +49,13 @@ const Privacypolicy = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#050B14] pt-24 md:pt-32 pb-24 relative transition-colors duration-300">
-      
+
       {/* Background Decorative Patterns */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#E85D04]/10 blur-[130px] rounded-full pointer-events-none z-0"></div>
       <div className="absolute bottom-10 left-0 w-[450px] h-[450px] bg-[#FFB703]/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
 
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
-        
+
         {/* Header Hero Banner */}
         <div className="text-center mb-16 max-w-3xl mx-auto">
           <motion.div
@@ -90,7 +90,7 @@ const Privacypolicy = () => {
 
         {/* main Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-12 lg:gap-16 items-start">
-          
+
           {/* Sidebar - Table of Contents */}
           <aside className="hidden lg:block sticky top-28 bg-white/70 dark:bg-[#0A121F]/70 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 p-6 rounded-2xl shadow-xl z-20">
             <h3 className="text-xs uppercase tracking-wider font-semibold text-slate-400 mb-6">
@@ -104,11 +104,10 @@ const Privacypolicy = () => {
                   <button
                     key={sec.id}
                     onClick={() => scrollToSection(sec.id)}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm font-medium transition-all ${
-                      activeSection === sec.id
-                        ? "bg-gradient-to-r from-[#E85D04] to-[#FF9E00] text-white shadow-md shadow-[#E85D04]/20 scale-[1.02]"
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm font-medium transition-all ${activeSection === sec.id
+                        ? "bg-linear-to-r from-[#E85D04] to-[#FF9E00] text-white shadow-md shadow-[#E85D04]/20 scale-[1.02]"
                         : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white"
-                    }`}
+                      }`}
                   >
                     <Icon size={16} className="shrink-0" />
                     <span>{sec.label}</span>
@@ -120,7 +119,7 @@ const Privacypolicy = () => {
 
           {/* Policy Document Content */}
           <div className="bg-white/70 dark:bg-[#0A121F]/70 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 p-6 sm:p-10 md:p-14 rounded-3xl shadow-xl space-y-16">
-            
+
             {/* Section 1 */}
             <section id="introduction" className="scroll-mt-32 space-y-5">
               <div className="flex items-center gap-4 border-b border-slate-100 dark:border-slate-800/50 pb-4">
@@ -130,7 +129,7 @@ const Privacypolicy = () => {
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-white">1. Introduction</h2>
               </div>
               <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                Welcome to TravelBharat – Explore India State by State ("TravelBharat", "we", "us", or "our"). We are committed to safeguarding the privacy of our platform visitors, registered explorers, and administrators. 
+                Welcome to TravelBharat – Explore India State by State ("TravelBharat", "we", "us", or "our"). We are committed to safeguarding the privacy of our platform visitors, registered explorers, and administrators.
               </p>
               <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                 This Privacy Policy explains how we collect, store, share, use, and process your personal information when you use our website, mobile interface, or connect with our backend services (collectively, the "Platform"). By accessing the Platform, you consent to the data collection and processing methods outlined in this policy.
@@ -298,8 +297,8 @@ const Privacypolicy = () => {
               <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                 If you have questions about this policy, require data removal assistance, or want to raise concerns about cookies, please get in touch with our security administrator:
               </p>
-              
-              <div className="p-6 rounded-2xl bg-gradient-to-br from-[#FFF7ED] to-[#FFF1E6] dark:from-[#0B132B] dark:to-[#0C1E36] border border-[#E85D04]/15 dark:border-white/5 space-y-4 max-w-md">
+
+              <div className="p-6 rounded-2xl bg-linear-to-br from-[#FFF7ED] to-[#FFF1E6] dark:from-[#0B132B] dark:to-[#0C1E36] border border-[#E85D04]/15 dark:border-white/5 space-y-4 max-w-md">
                 <div>
                   <span className="text-xs uppercase tracking-wider font-semibold text-slate-400 dark:text-slate-500">TravelBharat HQ Address</span>
                   <p className="font-semibold text-slate-800 dark:text-white text-base">Surat, Gujarat, India</p>

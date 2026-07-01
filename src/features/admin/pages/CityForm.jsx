@@ -6,6 +6,7 @@ import { FaUtensils, FaBuilding, FaBed } from "react-icons/fa";
 import { toast } from "react-toastify";
 import http from "../../../lib/axios";
 import CustomDropdown from "../../../components/ui/CustomDropdown";
+import BadgeSelector from "../components/BadgeSelector";
 import PageLoader from "../../../components/ui/PageLoader";
 
 /*  Constants  */
@@ -31,6 +32,8 @@ const INITIAL_FORM = {
   priority: 0,
   featured: false,
   isActive: true,
+  badges: [],
+  primaryBadge: "",
   totalPlaces: 0,
   seo: { metaTitle: "", metaDescription: "", keywords: [] },
 };
@@ -70,34 +73,7 @@ const AddBtn = ({ onClick, label }) => (
     <FiPlus size={14} /> {label}
   </button>
 );
-
-const ImageTile = ({ src, label, aspect, onUpload, uploading }) => (
-  <div className="space-y-2">
-    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">
-      {label}
-    </label>
-    <div
-      className={`relative ${aspect} rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 overflow-hidden bg-slate-50 dark:bg-slate-900 group flex flex-col items-center justify-center`}
-    >
-      {src ? (
-        <img src={src} alt={label} className="w-full h-full object-cover" />
-      ) : (
-        <div className="text-center p-4 pointer-events-none">
-          <FiImage size={28} className="mx-auto text-slate-400 mb-1.5" />
-          <span className="text-xs text-slate-400">No image</span>
-        </div>
-      )}
-      <label className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center cursor-pointer">
-        <span className="bg-white text-slate-900 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow">
-          <FiUpload size={13} />
-          {uploading ? "Uploading…" : "Upload"}
-        </span>
-        <input type="file" accept="image/*" className="hidden" onChange={onUpload} disabled={uploading} />
-      </label>
-    </div>
-  </div>
-);
-
+import AdminImageTile from "../components/ui/AdminImageTile";
 /*  Main Component  */
 const CityForm = () => {
   const { id } = useParams();
@@ -176,6 +152,8 @@ const CityForm = () => {
         priority: c.priority ?? 0,
         featured: c.featured ?? false,
         isActive: c.isActive ?? true,
+        badges: c.badges ?? [],
+        primaryBadge: c.primaryBadge ?? "",
         totalPlaces: c.totalPlaces ?? 0,
         seo: {
           metaTitle: c.seo?.metaTitle ?? "",
@@ -463,15 +441,23 @@ const CityForm = () => {
                 <Toggle checked={form.isActive} onChange={(v) => set("isActive", v)} label="Publicly Active" accent="#22c55e" />
               </div>
             </div>
+
+            <Field label="Badges" span2>
+              <BadgeSelector 
+                selectedBadges={form.badges} 
+                primaryBadge={form.primaryBadge} 
+                onChange={(badges, primary) => setForm(prev => ({ ...prev, badges, primaryBadge: primary }))} 
+              />
+            </Field>
           </div>
         </Card>
 
         {/*  CARD 3: MEDIA  */}
         <Card title="City Imagery" icon={FiImage}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <ImageTile src={form.images.hero} label="Hero Banner (Landscape)" aspect="aspect-video"
+            <AdminImageTile src={(form.images.hero?.url || form.images.hero)?.url || (form.images.hero?.url || form.images.hero)} label="Hero Banner (Landscape)" aspect="aspect-video"
               uploading={uploadingImage === "images.hero"} onUpload={(e) => handleImageUpload(e, "images.hero")} />
-            <ImageTile src={form.images.thumbnail} label="Thumbnail (Square)" aspect="aspect-square max-w-[220px]"
+            <AdminImageTile src={(form.images.thumbnail?.url || form.images.thumbnail)?.url || (form.images.thumbnail?.url || form.images.thumbnail)} label="Thumbnail (Square)" aspect="aspect-square max-w-[220px]"
               uploading={uploadingImage === "images.thumbnail"} onUpload={(e) => handleImageUpload(e, "images.thumbnail")} />
           </div>
 

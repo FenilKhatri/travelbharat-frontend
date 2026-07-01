@@ -1,10 +1,5 @@
-import { motion } from "framer-motion";
-import { FiSearch, FiCompass, FiMapPin, FiImage } from "react-icons/fi";
+import { FiCompass, FiMapPin } from "react-icons/fi";
 
-/**
- * Reusable Layout for Explore Pages (States, Cities, Festivals, Destinations).
- * Includes Hero Banner, Sidebar Filters, and Grid Content Area.
- */
 const ExplorePageLayout = ({
   heroImage,
   title,
@@ -37,7 +32,7 @@ const ExplorePageLayout = ({
         />
         {/* Overlays */}
         <div className="absolute inset-0 bg-slate-900/60 dark:bg-slate-900/70" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-50 dark:from-[#0A1628] via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-slate-50 dark:from-[#0A1628] via-transparent to-transparent" />
 
         {/* Hero Content */}
         <div className="relative z-10 text-center px-4 w-full max-w-5xl mx-auto">
@@ -70,7 +65,7 @@ const ExplorePageLayout = ({
       </div>
 
       {/*  Main Content Area (2-Column Layout)  */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 mt-12 md:mt-16">
+      <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 mt-12 md:mt-16">
         <div className="flex flex-col lg:flex-row gap-8 items-start">
 
           {/* Left Sidebar (Sticky) */}

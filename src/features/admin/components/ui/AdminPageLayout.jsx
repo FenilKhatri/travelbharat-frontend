@@ -1,4 +1,4 @@
-import React from "react";
+
 
 const AdminPageLayout = ({ title, subtitle, actions, children }) => {
   return (
@@ -15,7 +15,7 @@ const AdminPageLayout = ({ title, subtitle, actions, children }) => {
             </p>
           )}
         </div>
-        
+
         {/* Actions (Create button, view toggles, etc.) */}
         {actions && (
           <div className="flex items-center gap-3">

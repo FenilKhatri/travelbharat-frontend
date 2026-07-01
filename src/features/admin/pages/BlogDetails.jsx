@@ -47,7 +47,7 @@ const BlogDetails = () => {
             <div className="aspect-[4/3] bg-slate-100 dark:bg-slate-800 relative">
               {blog.images?.hero || blog.images?.thumbnail ? (
                 <img
-                  src={blog.images.hero || blog.images.thumbnail}
+                  src={(blog.images.hero?.url || blog.images.hero) || (blog.images.thumbnail?.url || blog.images.thumbnail)}
                   alt={blog.title}
                   className="w-full h-full object-cover"
                 />

@@ -102,7 +102,7 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
               className="h-8 w-auto object-contain shrink-0 hidden dark:block"
             />
             {!collapsed && (
-              <span className="font-black text-slate-800 dark:text-white tracking-wide text-base bg-gradient-to-r from-[#E85D04] to-[#FF9E00] bg-clip-text text-transparent">
+              <span className="font-black text-slate-800 dark:text-white tracking-wide text-base bg-linear-to-r from-[#E85D04] to-[#FF9E00] bg-clip-text text-transparent">
                 TravelBharat
               </span>
             )}
@@ -119,10 +119,10 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
         {/* NAVIGATION LINKS */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto scrollbar-none">
           {navLinks.map(({ to, label, icon: Icon }) => {
-            const isActive = to === '/' 
-              ? location.pathname === '/' 
-              : to === '/admin' || to === '/user' 
-                ? location.pathname === to 
+            const isActive = to === '/'
+              ? location.pathname === '/'
+              : to === '/admin' || to === '/user'
+                ? location.pathname === to
                 : location.pathname.startsWith(to);
             return (
               <div

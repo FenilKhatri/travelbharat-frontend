@@ -41,7 +41,7 @@ const DashboardLayout = memo(({ theme, toggleTheme }) => {
   };
 
   return (
-    <div className={`flex h-screen overflow-hidden transition-colors duration-300 ${theme === "dark" ? "dark bg-[#03060E]" : "bg-slate-50"}`}>
+    <div className={`flex h-screen overflow-hidden transition-colors duration-300 bg-background text-primary`}>
       
       {/* Sidebar Navigation */}
       <Sidebar

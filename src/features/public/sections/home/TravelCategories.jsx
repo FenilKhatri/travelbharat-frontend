@@ -81,7 +81,7 @@ const TravelCategories = () => {
                         className="absolute inset-0 bg-cover bg-center opacity-[0.07] group-hover:opacity-[0.12] transition-opacity duration-500"
                         style={{ backgroundImage: `url(${category.image})` }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-[#0A121F] via-white/60 dark:via-[#0A121F]/60 to-white/30 dark:to-[#0A121F]/30" />
+                      <div className="absolute inset-0 bg-linear-to-t from-white dark:from-[#0A121F] via-white/60 dark:via-[#0A121F]/60 to-white/30 dark:to-[#0A121F]/30" />
                     </>
                   )}
 

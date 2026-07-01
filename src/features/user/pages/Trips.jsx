@@ -24,7 +24,7 @@ const Trips = () => {
     queryKey: ['userTrips'],
     queryFn: () => http.get("/trips")
   });
-  
+
   const allTrips = data?.data?.trips || data?.trips || [];
   const filteredTrips = allTrips.filter(trip => trip.status === activeTab);
 
@@ -86,7 +86,7 @@ const Trips = () => {
           <FiNavigation className="text-[#E85D04]" size={32} />
           <h1 className="text-4xl font-black text-slate-900 dark:text-white">My Trips</h1>
         </div>
-        <button 
+        <button
           onClick={() => navigate('/plan')}
           className="flex items-center justify-center gap-2 px-6 py-3 bg-[#E85D04] text-white font-black tracking-wider rounded-xl hover:bg-[#D05203] transition-colors shadow-lg hover:shadow-xl hover:scale-[1.02]"
         >
@@ -100,11 +100,10 @@ const Trips = () => {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-5 py-2.5 rounded-full font-bold text-sm transition-colors whitespace-nowrap ${
-              activeTab === tab.id 
-                ? "bg-[#E85D04] text-white shadow-md" 
+            className={`px-5 py-2.5 rounded-full font-bold text-sm transition-colors whitespace-nowrap ${activeTab === tab.id
+                ? "bg-[#E85D04] text-white shadow-md"
                 : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
-            }`}
+              }`}
           >
             {tab.label}
             <span className="ml-2 bg-black/10 px-2 py-0.5 rounded-full text-xs">
@@ -126,18 +125,18 @@ const Trips = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredTrips.map((trip) => {
-             const firstPlace = trip.destinationId || trip.places?.[0]?.placeId;
-             let coverImg = trip.coverImage || firstPlace?.heroImage || firstPlace?.images?.hero || firstPlace?.images?.thumbnail || firstPlace?.images?.gallery?.[0];
-             const coverImage = (coverImg && coverImg.trim() !== "") ? coverImg : "https://images.unsplash.com/photo-1506461883276-594a12b11ac3?auto=format&fit=crop&q=80";
+            const firstPlace = trip.destinationId || trip.places?.[0]?.placeId;
+            let coverImg = trip.coverImage || firstPlace?.heroImage || firstPlace?.images?.hero || firstPlace?.images?.thumbnail || firstPlace?.images?.gallery?.[0];
+            const coverImage = (coverImg && coverImg.trim() !== "") ? coverImg : "https://images.unsplash.com/photo-1506461883276-594a12b11ac3?auto=format&fit=crop&q=80";
 
-             return (
-             <motion.div key={trip._id} layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white dark:bg-[#0A121F] border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden flex flex-col relative">
-                
+            return (
+              <motion.div key={trip._id} layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white dark:bg-[#0A121F] border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden flex flex-col relative">
+
                 {/* Image Header */}
                 <div className="h-48 relative w-full shrink-0 cursor-pointer rounded-t-3xl" onClick={() => navigate(`/user/trips/${trip._id}`)}>
                   <img src={coverImage} alt={trip.name} className="w-full h-full object-cover group-hover:scale-110 transition duration-700 rounded-t-3xl" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A121F] via-transparent to-black/40 rounded-t-3xl" />
-                  
+                  <div className="absolute inset-0 bg-linear-to-t from-[#0A121F] via-transparent to-black/40 rounded-t-3xl" />
+
                   {/* Context Menu Button */}
                   <button onClick={(e) => toggleMenu(e, trip._id)} className="absolute top-4 right-4 w-8 h-8 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-black/60 transition z-50 relative">
                     <FiMoreVertical />
@@ -146,64 +145,64 @@ const Trips = () => {
                   {/* Context Menu Dropdown */}
                   <AnimatePresence>
                     {openMenuId === trip._id && (
-                      <motion.div 
+                      <motion.div
                         initial={{ opacity: 0, scale: 0.9, originTopRight: true }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
                         className="absolute top-14 right-4 w-48 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden z-[60] py-1"
                       >
-                         <button onClick={(e) => { e.stopPropagation(); navigate(`/user/trips/${trip._id}`); }} className="w-full text-left px-4 py-2 text-sm font-bold flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800"><FiEdit2 /> View & Edit</button>
-                         <button onClick={(e) => { e.stopPropagation(); duplicateMutation.mutate(trip._id); setOpenMenuId(null); }} className="w-full text-left px-4 py-2 text-sm font-bold flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800"><FiCopy /> Duplicate</button>
-                         <button onClick={(e) => handleShare(e, trip._id)} className="w-full text-left px-4 py-2 text-sm font-bold flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800"><FiShare2 /> Share Trip</button>
-                         <button onClick={(e) => handleDownload(e, trip._id)} className="w-full text-left px-4 py-2 text-sm font-bold flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800"><FiDownload /> Download PDF</button>
-                         <div className="h-px bg-slate-200 dark:bg-slate-700 my-1"></div>
-                         <button onClick={(e) => { e.stopPropagation(); deleteMutation.mutate(trip._id); setOpenMenuId(null); }} className="w-full text-left px-4 py-2 text-sm font-bold flex items-center gap-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10"><FiTrash2 /> Delete Trip</button>
+                        <button onClick={(e) => { e.stopPropagation(); navigate(`/user/trips/${trip._id}`); }} className="w-full text-left px-4 py-2 text-sm font-bold flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800"><FiEdit2 /> View & Edit</button>
+                        <button onClick={(e) => { e.stopPropagation(); duplicateMutation.mutate(trip._id); setOpenMenuId(null); }} className="w-full text-left px-4 py-2 text-sm font-bold flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800"><FiCopy /> Duplicate</button>
+                        <button onClick={(e) => handleShare(e, trip._id)} className="w-full text-left px-4 py-2 text-sm font-bold flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800"><FiShare2 /> Share Trip</button>
+                        <button onClick={(e) => handleDownload(e, trip._id)} className="w-full text-left px-4 py-2 text-sm font-bold flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800"><FiDownload /> Download PDF</button>
+                        <div className="h-px bg-slate-200 dark:bg-slate-700 my-1"></div>
+                        <button onClick={(e) => { e.stopPropagation(); deleteMutation.mutate(trip._id); setOpenMenuId(null); }} className="w-full text-left px-4 py-2 text-sm font-bold flex items-center gap-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10"><FiTrash2 /> Delete Trip</button>
                       </motion.div>
                     )}
                   </AnimatePresence>
 
                   <div className="absolute bottom-4 left-5 right-5">
-                      <h3 className="text-xl font-black text-white line-clamp-1 mb-1">{trip.name}</h3>
-                      <p className="text-xs text-white/80 font-bold flex items-center gap-1">
-                        <FiMapPin className="text-[#E85D04]"/> {trip.city ? `${trip.city}, ${trip.state}` : (firstPlace?.name || "Multiple Destinations")}
-                      </p>
+                    <h3 className="text-xl font-black text-white line-clamp-1 mb-1">{trip.name}</h3>
+                    <p className="text-xs text-white/80 font-bold flex items-center gap-1">
+                      <FiMapPin className="text-[#E85D04]" /> {trip.city ? `${trip.city}, ${trip.state}` : (firstPlace?.name || "Multiple Destinations")}
+                    </p>
                   </div>
                 </div>
 
                 {/* Details Body */}
                 <div className="p-5 flex flex-col flex-1 bg-white dark:bg-[#0A121F] cursor-pointer" onClick={() => navigate(`/user/trips/${trip._id}`)}>
-                   <div className="flex items-center justify-between mb-4 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
-                     <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider">
-                        <FiCalendar className="text-[#E85D04]" size={16} />
-                        <div>
-                          {trip.startDate ? new Date(trip.startDate).toLocaleDateString(undefined, {month:'short', day:'numeric'}) : "TBD"} 
-                          <span className="mx-1">→</span>
-                          {trip.endDate ? new Date(trip.endDate).toLocaleDateString(undefined, {month:'short', day:'numeric'}) : "TBD"}
-                        </div>
-                     </div>
-                     <span className="text-xs font-black bg-white dark:bg-slate-800 px-2 py-1 rounded shadow-sm border border-slate-200 dark:border-slate-700">
-                       {trip.duration || 1} Days
-                     </span>
-                   </div>
-                   
-                   <div className="flex items-center justify-between mt-auto">
-                       <div className="flex flex-col">
-                         <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Est. Budget</span>
-                         <span className="font-black text-lg text-slate-900 dark:text-white">
-                           {trip.estimatedCost ? `₹${trip.estimatedCost.toLocaleString()}` : (trip.budget ? `₹${trip.budget.toLocaleString()}` : "N/A")}
-                         </span>
-                       </div>
-                       <div className="flex flex-col items-end">
-                         <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Travelers</span>
-                         <span className="font-bold text-sm text-slate-700 dark:text-slate-300">
-                           {trip.travelers ? `${trip.travelers.adults}A, ${trip.travelers.children}C` : `${trip.totalPerson || 1} Person`}
-                         </span>
-                       </div>
-                   </div>
+                  <div className="flex items-center justify-between mb-4 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider">
+                      <FiCalendar className="text-[#E85D04]" size={16} />
+                      <div>
+                        {trip.startDate ? new Date(trip.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : "TBD"}
+                        <span className="mx-1">→</span>
+                        {trip.endDate ? new Date(trip.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : "TBD"}
+                      </div>
+                    </div>
+                    <span className="text-xs font-black bg-white dark:bg-slate-800 px-2 py-1 rounded shadow-sm border border-slate-200 dark:border-slate-700">
+                      {trip.duration || 1} Days
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between mt-auto">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Est. Budget</span>
+                      <span className="font-black text-lg text-slate-900 dark:text-white">
+                        {trip.estimatedCost ? `₹${trip.estimatedCost.toLocaleString()}` : (trip.budget ? `₹${trip.budget.toLocaleString()}` : "N/A")}
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-end">
+                      <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Travelers</span>
+                      <span className="font-bold text-sm text-slate-700 dark:text-slate-300">
+                        {trip.travelers ? `${trip.travelers.adults}A, ${trip.travelers.children}C` : `${trip.totalPerson || 1} Person`}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-             </motion.div>
-             )
-           })}
+              </motion.div>
+            )
+          })}
         </div>
       )}
 

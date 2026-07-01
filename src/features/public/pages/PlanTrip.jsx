@@ -59,7 +59,7 @@ const PlanTrip = () => {
 
       const res = await tripPlannerService.generateTrip(payload);
       const generatedTrip = res.data || res;
-      
+
       // Navigate to results page passing data via state
       navigate('/trip-result', { state: { tripData: generatedTrip } });
     } catch (error) {
@@ -82,27 +82,27 @@ const PlanTrip = () => {
       <div className="bg-[#050505] pt-40 min-h-screen font-sans text-white pb-32 flex flex-col items-center justify-center p-4">
         <h1 className="text-4xl md:text-5xl font-black mb-4">Where do you want to go?</h1>
         <p className="text-white/60 mb-8 text-center max-w-lg">Select a destination to start planning your perfect itinerary with our AI Trip Planner.</p>
-        
+
         {placesLoading ? (
-           <PageLoader fullScreen={false} message="Loading destinations..." />
+          <PageLoader fullScreen={false} message="Loading destinations..." />
         ) : (
-           <div className="w-full max-w-md bg-[#0A0F1A] border border-white/10 rounded-2xl p-4 shadow-2xl">
-              <div className="max-h-96 overflow-y-auto custom-scrollbar pr-2 space-y-2">
-                 {allPlaces.map((p) => (
-                    <button 
-                       key={p._id} 
-                       onClick={() => navigate(`/plan/${p.slug}`)}
-                       className="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10 text-left"
-                    >
-                       <img src={p.images?.thumbnail || p.images?.hero} className="w-12 h-12 rounded-lg object-cover bg-white/10" alt="" />
-                       <div>
-                          <h4 className="font-bold">{p.name}</h4>
-                          <p className="text-xs text-white/50">{p.cityId?.name}, {p.stateId?.name}</p>
-                       </div>
-                    </button>
-                 ))}
-              </div>
-           </div>
+          <div className="w-full max-w-md bg-[#0A0F1A] border border-white/10 rounded-2xl p-4 shadow-2xl">
+            <div className="max-h-96 overflow-y-auto custom-scrollbar pr-2 space-y-2">
+              {allPlaces.map((p) => (
+                <button
+                  key={p._id}
+                  onClick={() => navigate(`/plan/${p.slug}`)}
+                  className="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10 text-left"
+                >
+                  <img src={p.images?.thumbnail || p.images?.hero} className="w-12 h-12 rounded-lg object-cover bg-white/10" alt="" />
+                  <div>
+                    <h4 className="font-bold">{p.name}</h4>
+                    <p className="text-xs text-white/50">{p.cityId?.name}, {p.stateId?.name}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
         )}
       </div>
     );
@@ -119,7 +119,7 @@ const PlanTrip = () => {
       <section className="relative h-[50vh] min-h-[400px] flex items-end">
         <div className="absolute inset-0">
           <img src={heroImage} alt={place.name} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-black/30" />
+          <div className="absolute inset-0 bg-linear-to-t from-[#050505] via-[#050505]/80 to-black/30" />
         </div>
         <div className="relative z-10 max-w-[1600px] mx-auto w-full px-4 pb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
@@ -134,7 +134,7 @@ const PlanTrip = () => {
               <span>{place.cityId?.name}, {place.stateId?.name}</span>
             </div>
           </div>
-          
+
           {/* Quick Stats Grid */}
           <div className="flex gap-4">
             <div className="bg-white/10 backdrop-blur-md border border-white/10 p-4 rounded-2xl text-center min-w-[100px]">
@@ -152,7 +152,7 @@ const PlanTrip = () => {
       {/* PLANNER FORM */}
       <section className="max-w-4xl mx-auto px-4 -mt-6 relative z-20">
         <form onSubmit={handleGenerate} className="bg-[#0A0F1A] border border-white/10 rounded-3xl p-6 md:p-10 shadow-2xl">
-          
+
           <div className="space-y-10">
             {/* DURATION */}
             <div>
@@ -160,10 +160,10 @@ const PlanTrip = () => {
                 <FiCalendar className="text-[#E85D04]" /> Trip Duration
               </h3>
               <div className="flex items-center gap-4">
-                <input 
-                  type="range" 
-                  min="1" max="15" 
-                  value={duration} 
+                <input
+                  type="range"
+                  min="1" max="15"
+                  value={duration}
                   onChange={(e) => setDuration(Number(e.target.value))}
                   className="w-full accent-[#E85D04]"
                 />
@@ -179,10 +179,10 @@ const PlanTrip = () => {
                 <FiDollarSign className="text-[#E85D04]" /> Estimated Budget (₹)
               </h3>
               <div className="flex items-center gap-4">
-                <input 
-                  type="range" 
+                <input
+                  type="range"
                   min="5000" max="200000" step="1000"
-                  value={budget} 
+                  value={budget}
                   onChange={(e) => setBudget(Number(e.target.value))}
                   className="w-full accent-[#E85D04]"
                 />
@@ -210,11 +210,10 @@ const PlanTrip = () => {
                       key={style}
                       type="button"
                       onClick={() => toggleSelection(style, selectedStyles, setSelectedStyles)}
-                      className={`px-5 py-2.5 rounded-full text-sm font-bold border transition-all ${
-                        isSelected 
-                          ? "bg-[#E85D04] border-[#E85D04] text-white" 
+                      className={`px-5 py-2.5 rounded-full text-sm font-bold border transition-all ${isSelected
+                          ? "bg-[#E85D04] border-[#E85D04] text-white"
                           : "bg-transparent border-white/20 text-white/60 hover:border-white/50"
-                      }`}
+                        }`}
                     >
                       {style}
                     </button>
@@ -236,11 +235,10 @@ const PlanTrip = () => {
                       key={interest}
                       type="button"
                       onClick={() => toggleSelection(interest, selectedInterests, setSelectedInterests)}
-                      className={`px-5 py-2.5 rounded-full text-sm font-bold border transition-all ${
-                        isSelected 
-                          ? "bg-blue-600 border-blue-600 text-white" 
+                      className={`px-5 py-2.5 rounded-full text-sm font-bold border transition-all ${isSelected
+                          ? "bg-blue-600 border-blue-600 text-white"
                           : "bg-transparent border-white/20 text-white/60 hover:border-white/50"
-                      }`}
+                        }`}
                     >
                       {interest}
                     </button>
@@ -259,15 +257,15 @@ const PlanTrip = () => {
                   <div key={type} className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col items-center">
                     <span className="text-xs uppercase text-white/50 font-bold mb-3">{type}</span>
                     <div className="flex items-center gap-3">
-                      <button 
-                        type="button" 
-                        onClick={() => setTravelers({...travelers, [type]: Math.max(0, travelers[type] - 1)})}
+                      <button
+                        type="button"
+                        onClick={() => setTravelers({ ...travelers, [type]: Math.max(0, travelers[type] - 1) })}
                         className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 font-bold text-lg"
                       >-</button>
                       <span className="text-xl font-black w-6 text-center">{travelers[type]}</span>
-                      <button 
-                        type="button" 
-                        onClick={() => setTravelers({...travelers, [type]: travelers[type] + 1})}
+                      <button
+                        type="button"
+                        onClick={() => setTravelers({ ...travelers, [type]: travelers[type] + 1 })}
                         className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 font-bold text-lg"
                       >+</button>
                     </div>
@@ -282,7 +280,7 @@ const PlanTrip = () => {
             <button
               type="submit"
               disabled={isGenerating}
-              className="w-full bg-gradient-to-r from-[#E85D04] to-[#D05203] text-white py-5 rounded-2xl font-black text-xl flex items-center justify-center gap-3 hover:scale-[1.02] transition-all shadow-[0_10px_30px_rgba(232,93,4,0.3)] disabled:opacity-70 disabled:hover:scale-100"
+              className="w-full bg-linear-to-r from-[#E85D04] to-[#D05203] text-white py-5 rounded-2xl font-black text-xl flex items-center justify-center gap-3 hover:scale-[1.02] transition-all shadow-[0_10px_30px_rgba(232,93,4,0.3)] disabled:opacity-70 disabled:hover:scale-100"
             >
               {isGenerating ? (
                 <div className="flex items-center gap-3">

@@ -7,20 +7,20 @@ import { ROLES } from "../../../utils/constants";
 const Home = lazy(() => import("../../../features/public/pages/Home"));
 const States = lazy(() => import("../../../features/public/pages/States"));
 const Cities = lazy(() => import("../../../features/public/pages/Cities"));
-const StateDetails = lazy(() => import("../../../features/public/pages/StateDetails"));
+const StateDetails = lazy(() => import("../../../features/public/pages/state-details/StateDetails"));
 const Places = lazy(() => import("../../../features/public/pages/Places"));
-const PlaceDetails = lazy(() => import("../../../features/public/pages/PlaceDetails"));
-const CityDetails = lazy(() => import("../../../features/public/pages/CityDetails"));
+const PlaceDetails = lazy(() => import("../../../features/public/pages/place-details/PlaceDetails"));
+const CityDetails = lazy(() => import("../../../features/public/pages/city-details/CityDetails"));
 const Festivals = lazy(() => import("../../../features/public/pages/Festivals"));
-const FestivalDetails = lazy(() => import("../../../features/public/pages/FestivalDetails"));
+const FestivalDetails = lazy(() => import("../../../features/public/pages/festival-details/FestivalDetails"));
 
 const ManualPlanner = lazy(() => import("../../../features/plan-trip/pages/ManualPlanner"));
-const GeneratedItinerary = lazy(() => import("../../../features/public/pages/GeneratedItinerary"));
+const GeneratedItinerary = lazy(() => import("../../../features/plan-trip/pages/generated-itinerary/GeneratedItinerary"));
 
-const Blogs = lazy(() => import("../../../features/public/pages/Blogs"));
-const BlogDetails = lazy(() => import("../../../features/public/pages/BlogDetails"));
+const Blogs = lazy(() => import("../../../features/public/pages/blogs/Blogs"));
+const BlogDetails = lazy(() => import("../../../features/public/pages/blog-details/BlogDetails"));
 const About = lazy(() => import("../../../features/public/pages/About"));
-const ContactUs = lazy(() => import("../../../features/public/pages/ContactUs"));
+const ContactUs = lazy(() => import("../../../features/public/pages/contact-us/ContactUs"));
 const Privacypolicy = lazy(() => import("../../../features/public/pages/Privacypolicy"));
 const TermsOfService = lazy(() => import("../../../features/public/pages/TermsOfService"));
 const ForgotPassword = lazy(() => import("../../../features/auth/forms/ForgotPassword"));

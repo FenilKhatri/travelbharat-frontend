@@ -22,7 +22,7 @@ const PageNotFound = () => {
 
           {/* Subtext */}
           <p className="text-gray-500 dark:text-gray-400 mb-6 text-lg">
-            The page you’re looking for doesn’t exist or has been moved.
+            Oops! You're in wrong direction or place. Let's get you back to where you belong.
           </p>
 
           {/* Buttons */}

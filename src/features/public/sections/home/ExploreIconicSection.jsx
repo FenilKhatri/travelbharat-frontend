@@ -90,9 +90,9 @@ const ExploreIconicSection = ({
                 >
                   <div 
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                    style={{ backgroundImage: `url('${item.images?.thumbnail || item.images?.hero || 'https://images.unsplash.com/photo-1533227268428-f9ed0900f9bf?auto=format&fit=crop&q=80'}')` }}
+                    style={{ backgroundImage: `url('${item.images?.thumbnail?.url || item.images?.hero?.url || item.heroImage?.url || 'https://images.unsplash.com/photo-1533227268428-f9ed0900f9bf?auto=format&fit=crop&q=80'}')` }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
                   
                   {/* Badges */}
                   {item.featured && (

@@ -66,7 +66,7 @@ const PlaceDetails = () => {
             <div className="aspect-[4/3] bg-slate-100 dark:bg-slate-800 relative">
               {placeData.images?.hero || placeData.images?.thumbnail ? (
                 <img
-                  src={placeData.images.hero || placeData.images.thumbnail}
+                  src={(placeData.images.hero?.url || placeData.images.hero) || (placeData.images.thumbnail?.url || placeData.images.thumbnail)}
                   alt={placeData.name}
                   className="w-full h-full object-cover"
                 />

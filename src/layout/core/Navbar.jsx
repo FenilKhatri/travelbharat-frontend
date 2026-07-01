@@ -1,7 +1,6 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FiUser, FiMenu, FiX, FiMoon, FiSun, FiChevronDown, FiMapPin, FiBell } from "react-icons/fi";
 import { useState, useEffect, memo } from "react";
-// import Logo from "../../assets/logo.png"; // Using text logo for now until provided
 import { useAuth } from "../../context/AuthContext";
 import { navLinks } from "../../features/public/data/routes/public.routes";
 import Button from "../../components/ui/Button";
@@ -13,6 +12,7 @@ import logoDark from "../../assets/logo_dark.png";
 import logoLight from "../../assets/logo_light.png";
 import { useQuery } from "@tanstack/react-query";
 import http from "../../lib/axios";
+import { useTheme } from "../../hooks/useTheme";
 
 const Navbar = memo(() => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -20,6 +20,7 @@ const Navbar = memo(() => {
   const [scrolled, setScrolled] = useState(false);
   const { user, loading } = useAuth();
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   const { data: notifData } = useQuery({
     queryKey: ["userNotifications"],
@@ -48,8 +49,8 @@ const Navbar = memo(() => {
   }, [location.pathname]);
 
   const navClass = isHome && !scrolled && !menuOpen
-    ? "bg-transparent text-slate-800 dark:text-white"
-    : "glass text-slate-800 dark:text-white";
+    ? "bg-transparent text-primary"
+    : "glass text-primary";
 
   const activeLinks = ({ isActive }) =>
     `p-2 font-medium transition duration-300 ${isActive
@@ -188,14 +189,28 @@ const Navbar = memo(() => {
 
           {/* RIGHT ACTIONS */}
           <div className="hidden md:flex items-center gap-4">
+            <button 
+              onClick={toggleTheme} 
+              className={`p-2 rounded-full transition-colors cursor-pointer ${isHome && !scrolled ? 'text-white hover:bg-white/10' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <FiSun size={20} /> : <FiMoon size={20} />}
+            </button>
             <DesktopAuthButtons />
           </div>
 
           {/* MOBILE BUTTONS */}
           <div className="md:hidden flex items-center gap-3">
+            <button 
+              onClick={toggleTheme} 
+              className={isHome && !scrolled && !menuOpen ? 'text-primary' : 'text-primary'}
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <FiSun size={24} /> : <FiMoon size={24} />}
+            </button>
             <button
               onClick={() => setMenuOpen(true)}
-              className={isHome && !scrolled && !menuOpen ? 'text-slate-800 dark:text-white' : 'text-slate-800 dark:text-white'}
+              className={isHome && !scrolled && !menuOpen ? 'text-primary' : 'text-primary'}
             >
               <FiMenu size={28} />
             </button>
@@ -207,15 +222,15 @@ const Navbar = memo(() => {
       {menuOpen && (
         <div
           onClick={() => setMenuOpen(false)}
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] md:hidden transition-opacity"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-60 md:hidden transition-opacity"
         />
       )}
 
       {/* MOBILE DRAWER */}
       <div
         className={`
-          fixed top-0 right-0 h-full w-4/5 max-w-sm bg-white dark:bg-[#0A1628]
-          z-[70] shadow-2xl transform transition-transform duration-300 ease-in-out
+          fixed top-0 right-0 h-full w-4/5 max-w-sm bg-surface
+          z-70 shadow-2xl transform transition-transform duration-300 ease-in-out
           md:hidden flex flex-col
           ${menuOpen ? "translate-x-0" : "translate-x-full"}
         `}

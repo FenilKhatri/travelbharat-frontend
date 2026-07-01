@@ -57,7 +57,7 @@ const StepSummary = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         {/* Left Col: Details */}
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-[#0A0F1A] border border-white/10 rounded-3xl p-6 shadow-xl">
@@ -116,7 +116,7 @@ const StepSummary = () => {
 
         {/* Right Col: Budget & Save */}
         <div className="space-y-6">
-          <div className="bg-gradient-to-br from-emerald-900/30 to-green-900/10 border border-emerald-500/20 p-6 rounded-3xl">
+          <div className="bg-linear-to-br from-emerald-900/30 to-green-900/10 border border-emerald-500/20 p-6 rounded-3xl">
             <h3 className="font-black text-lg mb-4 flex items-center gap-2 text-emerald-400">
               <FiDollarSign /> Budget Overview
             </h3>
@@ -141,7 +141,7 @@ const StepSummary = () => {
           <button
             onClick={handleSaveTrip}
             disabled={isSaving}
-            className="w-full bg-gradient-to-r from-[#E85D04] to-[#D05203] text-white py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-3 hover:scale-[1.02] transition-all shadow-[0_10px_30px_rgba(232,93,4,0.3)] disabled:opacity-70 disabled:hover:scale-100"
+            className="w-full bg-linear-to-r from-[#E85D04] to-[#D05203] text-white py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-3 hover:scale-[1.02] transition-all shadow-[0_10px_30px_rgba(232,93,4,0.3)] disabled:opacity-70 disabled:hover:scale-100"
           >
             {isSaving ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

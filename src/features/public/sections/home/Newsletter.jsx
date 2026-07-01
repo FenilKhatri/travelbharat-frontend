@@ -38,7 +38,7 @@ const Newsletter = () => {
   };
 
   return (
-    <section className="relative py-28 overflow-hidden bg-gradient-to-b from-[#FFF7ED]/70 via-[#FFF1E6]/60 to-[#FFE4CC]/40 dark:from-[#050816] dark:via-[#08101F] dark:to-[#050816]">
+    <section className="relative py-28 overflow-hidden bg-linear-to-b from-[#FFF7ED]/70 via-[#FFF1E6]/60 to-[#FFE4CC]/40 dark:from-background dark:via-surface-elevated dark:to-background">
 
       {/* Background Image */}
       <div
@@ -90,7 +90,7 @@ const Newsletter = () => {
 
           <div className="relative z-10 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center px-4 sm:px-8 md:px-16 py-10 sm:py-16 md:py-20">
 
-            {/* LEFT CONTENT */}  
+            {/* LEFT CONTENT */}
             <div>
               {/* Badge */}
               <div className="inline-flex items-center gap-2 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-[#E85D04]/10 border border-[#E85D04]/20 mb-6 sm:mb-8">
@@ -103,7 +103,7 @@ const Newsletter = () => {
               {/* Heading */}
               <h2 className="text-2xl sm:text-5xl lg:text-6xl font-black leading-tight text-slate-900 dark:text-white">
                 Get Festival & Travel
-                <span className="block bg-gradient-to-r from-[#E85D04] via-[#FF9E00] to-[#FF6B00] bg-clip-text text-transparent">
+                <span className="block bg-linear-to-r from-[#E85D04] via-[#FF9E00] to-[#FF6B00] bg-clip-text text-transparent">
                   Inspiration Daily
                 </span>
               </h2>
@@ -142,7 +142,7 @@ const Newsletter = () => {
 
                 <div className="relative z-10">
 
-                  <div className="w-12 h-12 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#E85D04] to-[#FF9E00] flex items-center justify-center shadow-[0_10px_30px_rgba(232,93,4,0.35)] mb-6 sm:mb-8">
+                  <div className="w-12 h-12 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-linear-to-br from-[#E85D04] to-[#FF9E00] flex items-center justify-center shadow-[0_10px_30px_rgba(232,93,4,0.35)] mb-6 sm:mb-8">
                     <FiMail className="text-white" size={20} />
                   </div>
 
@@ -178,7 +178,7 @@ const Newsletter = () => {
                       type="submit"
                       size="lg"
                       disabled={loading}
-                      className="w-full h-14 sm:h-16 rounded-xl sm:rounded-2xl text-sm sm:text-lg font-semibold bg-gradient-to-r from-[#E85D04] to-[#FF7B00] hover:from-[#DC2F02] hover:to-[#E85D04] shadow-[0_10px_30px_rgba(232,93,4,0.35)] hover:scale-[1.02] transition-all duration-300"
+                      className="w-full h-14 sm:h-16 rounded-xl sm:rounded-2xl text-sm sm:text-lg font-semibold bg-linear-to-r from-[#E85D04] to-[#FF7B00] hover:from-[#DC2F02] hover:to-[#E85D04] shadow-[0_10px_30px_rgba(232,93,4,0.35)] hover:scale-[1.02] transition-all duration-300"
                     >
                       {loading ? "Subscribing..." : "Start Exploring Bharat"}
                       <FiSend size={18} className="ml-2" />
@@ -196,7 +196,7 @@ const Newsletter = () => {
       </div>
 
       {/* Bottom Gradient */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#FFF7ED] dark:from-[#050816] to-transparent"></div>
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-linear-to-t from-[#FFF7ED] dark:from-[#050816] to-transparent"></div>
     </section>
   );
 };

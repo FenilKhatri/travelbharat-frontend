@@ -8,8 +8,10 @@ import AdminPageLayout from "../components/ui/AdminPageLayout";
 import AdminPagination from "../components/ui/AdminPagination";
 import { toast } from "react-toastify";
 
+import { useAdminList } from "../hooks/useAdminList";
+import { useAdminMutations } from "../hooks/useAdminMutations";
+
 const Trips = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -20,40 +22,24 @@ const Trips = () => {
     localStorage.setItem("adminTripsViewMode", viewMode);
   }, [viewMode]);
 
-  const page = parseInt(searchParams.get("page") || "1");
-  const search = searchParams.get("search") || "";
-  const tripType = searchParams.get("tripType") || "";
+  const { data, isLoading, isError, error, searchParams, setSearchParams } = useAdminList({
+    queryKey: "adminTrips",
+    endpoint: "/trips/admin/all",
+    extractParams: (params) => ({
+      tripType: params.get("tripType") || ""
+    })
+  });
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["adminTrips", page, search, tripType],
-    queryFn: async () => {
-      const params = { page, limit: 10 };
-      if (search) params.search = search;
-      if (tripType) params.tripType = tripType;
-      const response = await http.get("/trips/admin/all", { params });
-      return response.data;
-    },
-    keepPreviousData: true
+  const { deleteMutation } = useAdminMutations({
+    queryKey: ["adminTrips"],
+    updateEndpoint: (id) => `/trips/admin/${id}`,
+    deleteEndpoint: (id) => `/trips/admin/${id}`,
+    successDeleteMsg: "Trip itinerary deleted successfully!"
   });
 
   const responseData = data || {};
   const trips = responseData.trips || data?.data?.trips || [];
   const pagination = responseData.pagination || data?.data?.pagination || { total: 0, pages: 1 };
-
-  const deleteMutation = useMutation({
-    mutationFn: async (id) => {
-      const response = await http.delete(`/trips/admin/${id}`);
-      return response.data;
-    },
-    onSuccess: () => {
-      toast.success("Trip itinerary deleted successfully!");
-      setConfirmDelete(null);
-      queryClient.invalidateQueries(["adminTrips"]);
-    },
-    onError: (err) => {
-      toast.error(err?.response?.data?.message || "Failed to delete trip");
-    }
-  });
 
   const handleRowClick = (trip) => {
     navigate(`/admin/trips/${trip._id}`);
@@ -158,7 +144,7 @@ const Trips = () => {
                       <div className="flex items-center gap-4">
                         {trip.coverImage ? (
                           <img
-                            src={trip.coverImage}
+                            src={trip.coverImage?.url || trip.coverImage}
                             alt={trip.name}
                             className="w-16 h-10 object-cover rounded-lg bg-slate-100 shrink-0"
                           />
@@ -180,7 +166,7 @@ const Trips = () => {
                         <div className="flex items-center gap-2">
                           {trip.userId.profileImage ? (
                             <img
-                              src={trip.userId.profileImage}
+                              src={trip.userId.profileImage?.url || trip.userId.profileImage}
                               alt={trip.userId.name}
                               className="w-7 h-7 rounded-full object-cover shrink-0"
                             />
@@ -259,7 +245,7 @@ const Trips = () => {
                 >
                   <div className="h-40 bg-slate-100 dark:bg-slate-800 relative">
                     {trip.coverImage ? (
-                      <img src={trip.coverImage} alt={trip.name} className="w-full h-full object-cover" />
+                      <img src={trip.coverImage?.url || trip.coverImage} alt={trip.name} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
                         <FiCompass size={32} className="mb-2" />
@@ -268,7 +254,7 @@ const Trips = () => {
                     )}
                     <div className="absolute top-3 left-3 bg-white/90 dark:bg-[#0A121F]/90 backdrop-blur-sm px-2.5 py-1 rounded-full flex items-center gap-2 shadow-sm">
                       {trip.userId?.profileImage ? (
-                        <img src={trip.userId.profileImage} alt={trip.userId.name} className="w-5 h-5 rounded-full object-cover" />
+                        <img src={trip.userId.profileImage?.url || trip.userId.profileImage} alt={trip.userId.name} className="w-5 h-5 rounded-full object-cover" />
                       ) : (
                         <div className="w-5 h-5 rounded-full bg-[#E85D04]/10 text-[#E85D04] text-[8px] font-bold flex items-center justify-center">
                           {trip.userId?.name ? trip.userId.name[0].toUpperCase() : <FiUser />}

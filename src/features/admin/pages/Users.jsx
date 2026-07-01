@@ -10,8 +10,10 @@ import AdminPageLayout from "../components/ui/AdminPageLayout";
 import AdminPagination from "../components/ui/AdminPagination";
 import { toast } from "react-toastify";
 
+import { useAdminList } from "../hooks/useAdminList";
+import { useAdminMutations } from "../hooks/useAdminMutations";
+
 const Users = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [confirmDelete, setConfirmDelete] = useState(null);
@@ -21,58 +23,29 @@ const Users = () => {
     localStorage.setItem("adminUsersViewMode", viewMode);
   }, [viewMode]);
 
-  const page = parseInt(searchParams.get("page") || "1");
-  const search = searchParams.get("search") || "";
-  const role = searchParams.get("role") || "";
-  const status = searchParams.get("status") || "";
-
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["adminUsers", page, search, role, status],
-    queryFn: async () => {
-      const params = { page, limit: 10 };
-      if (search) params.search = search;
-      if (role) params.role = role;
-      if (status) {
-        params.isActive = status === "active" ? "true" : "false";
-      }
-      const response = await http.get("/admin/users", { params });
-      return response.data;
-    },
-    keepPreviousData: true
+  const { data, isLoading, isError, error, searchParams, setSearchParams } = useAdminList({
+    queryKey: "adminUsers",
+    endpoint: "/admin/users",
+    extractParams: (params) => {
+      const status = params.get("status") || "";
+      return {
+        role: params.get("role") || "",
+        isActive: status ? (status === "active" ? "true" : "false") : undefined
+      };
+    }
   });
 
-  const responseData = data || {};
+  const { updateMutation, deleteMutation, toggleStatus } = useAdminMutations({
+    queryKey: ["adminUsers"],
+    updateEndpoint: (id) => `/admin/users/${id}`,
+    deleteEndpoint: (id) => `/admin/users/${id}`,
+    successUpdateMsg: "User status updated successfully!",
+    successDeleteMsg: "User removed permanently!"
+  });
+
+  const responseData = data?.data || {};
   const users = responseData.users || [];
   const pagination = responseData.pagination || { total: 0, pages: 1 };
-
-  const updateMutation = useMutation({
-    mutationFn: async ({ id, payload }) => {
-      const response = await http.put(`/admin/users/${id}`, payload);
-      return response.data;
-    },
-    onSuccess: (res) => {
-      toast.success(res?.message || "User status updated successfully!");
-      queryClient.invalidateQueries(["adminUsers"]);
-    },
-    onError: (err) => {
-      toast.error(err?.response?.data?.message || "Failed to update user");
-    }
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: async (id) => {
-      const response = await http.delete(`/admin/users/${id}`);
-      return response.data;
-    },
-    onSuccess: (res) => {
-      toast.success(res?.message || "User removed permanently!");
-      setConfirmDelete(null);
-      queryClient.invalidateQueries(["adminUsers"]);
-    },
-    onError: (err) => {
-      toast.error(err?.response?.data?.message || "Failed to delete user");
-    }
-  });
 
   const handleToggleActive = (e, userItem) => {
     e.stopPropagation();
@@ -191,7 +164,7 @@ const Users = () => {
                       <div className="flex items-center gap-3.5">
                         {userItem.profileImage ? (
                           <img
-                            src={userItem.profileImage}
+                            src={userItem.profileImage?.url || userItem.profileImage}
                             alt={userItem.name}
                             className="w-10 h-10 rounded-full object-cover border border-slate-200 dark:border-slate-800 shrink-0"
                           />
@@ -283,7 +256,7 @@ const Users = () => {
                   <div className="flex justify-between items-start mb-4">
                     <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-slate-100 dark:border-slate-800 shrink-0">
                       {userItem.profileImage ? (
-                        <img src={userItem.profileImage} alt={userItem.name} className="w-full h-full object-cover" />
+                        <img src={userItem.profileImage?.url || userItem.profileImage} alt={userItem.name} className="w-full h-full object-cover" />
                       ) : (
                         <div className="w-full h-full bg-[#E85D04]/10 text-[#E85D04] font-black text-xl flex items-center justify-center">
                           {userItem.name ? userItem.name[0].toUpperCase() : "?"}

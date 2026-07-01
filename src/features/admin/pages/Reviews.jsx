@@ -8,8 +8,10 @@ import AdminPageLayout from "../components/ui/AdminPageLayout";
 import AdminPagination from "../components/ui/AdminPagination";
 import { toast } from "react-toastify";
 
+import { useAdminList } from "../hooks/useAdminList";
+import { useAdminMutations } from "../hooks/useAdminMutations";
+
 const Reviews = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -22,21 +24,22 @@ const Reviews = () => {
     localStorage.setItem("adminReviewsViewMode", viewMode);
   }, [viewMode]);
 
-  const page = parseInt(searchParams.get("page") || "1");
-  const statusFilter = searchParams.get("status") || "";
-
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["adminReviews", page, statusFilter],
-    queryFn: async () => {
-      const params = { page, limit: 10 };
-      if (statusFilter) params.status = statusFilter;
-      const response = await http.get("/reviews/admin/all", { params });
-      return response.data;
-    },
-    keepPreviousData: true
+  const { data, isLoading, isError, error, searchParams, setSearchParams } = useAdminList({
+    queryKey: "adminReviews",
+    endpoint: "/reviews/admin/all",
+    extractParams: (params) => ({
+      status: params.get("status") || ""
+    })
   });
 
-  const responseData = data || {};
+  const { deleteMutation } = useAdminMutations({
+    queryKey: ["adminReviews"],
+    updateEndpoint: (id) => `/reviews/admin/${id}`,
+    deleteEndpoint: (id) => `/reviews/admin/${id}`,
+    successDeleteMsg: "Review deleted permanently!"
+  });
+
+  const responseData = data?.data || {};
   const reviews = responseData.reviews || [];
   const pagination = responseData.pagination || { total: 0, pages: 1 };
 
@@ -68,20 +71,7 @@ const Reviews = () => {
     }
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: async (id) => {
-      const response = await http.delete(`/reviews/admin/${id}`);
-      return response.data;
-    },
-    onSuccess: () => {
-      toast.success("Review deleted permanently!");
-      setConfirmDelete(null);
-      queryClient.invalidateQueries(["adminReviews"]);
-    },
-    onError: (err) => {
-      toast.error(err?.response?.data?.message || "Deletion failed");
-    }
-  });
+
 
   const respondMutation = useMutation({
     mutationFn: async ({ id, text }) => {
@@ -201,7 +191,7 @@ const Reviews = () => {
                       <div className="flex items-center gap-2.5">
                         {review.userId?.profileImage ? (
                           <img
-                            src={review.userId.profileImage}
+                            src={review.userId.profileImage?.url || review.userId.profileImage}
                             alt={review.userId.name}
                             className="w-8 h-8 rounded-full object-cover shrink-0 border border-slate-200 dark:border-slate-850"
                           />
@@ -323,7 +313,7 @@ const Reviews = () => {
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex items-center gap-2">
                       {review.userId?.profileImage ? (
-                        <img src={review.userId.profileImage} alt={review.userId.name} className="w-8 h-8 rounded-full object-cover shrink-0 border border-slate-200 dark:border-slate-850" />
+                        <img src={review.userId.profileImage?.url || review.userId.profileImage} alt={review.userId.name} className="w-8 h-8 rounded-full object-cover shrink-0 border border-slate-200 dark:border-slate-850" />
                       ) : (
                         <div className="w-8 h-8 rounded-full bg-[#E85D04]/10 text-[#E85D04] text-[10px] font-bold flex items-center justify-center shrink-0">
                           {review.userId?.name ? review.userId.name[0].toUpperCase() : <FiUser />}

@@ -9,8 +9,10 @@ import AdminPageLayout from "../components/ui/AdminPageLayout";
 import SearchAndFilter from "../../../components/ui/SearchAndFilter";
 import AdminPagination from "../components/ui/AdminPagination";
 
+import { useAdminList } from "../hooks/useAdminList";
+import { useAdminMutations } from "../hooks/useAdminMutations";
+
 const Blogs = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -21,33 +23,26 @@ const Blogs = () => {
     localStorage.setItem("adminViewMode", viewMode);
   }, [viewMode]);
 
-  const page = parseInt(searchParams.get("page") || "1");
-  const search = searchParams.get("search") || "";
+  const { data, isLoading, isError, searchParams, setSearchParams } = useAdminList({
+    queryKey: "adminBlogs",
+    endpoint: "/blogs/admin/all"
+  });
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["adminBlogs", page, search],
-    queryFn: async () => {
-      const params = { page, limit: 10 };
-      if (search) params.search = search;
-      return http.get("/blogs/admin/all", { params });
-    },
-    keepPreviousData: true,
+  const { deleteMutation, updateMutation } = useAdminMutations({
+    queryKey: ["adminBlogs"],
+    updateEndpoint: (id) => `/blogs/admin/${id}`,
+    deleteEndpoint: (id) => `/blogs/admin/${id}`,
+    successDeleteMsg: "Blog deleted!"
   });
 
   const blogs = data?.data?.data?.blogs || data?.data?.blogs || [];
   const pagination = data?.data?.data?.pagination || data?.data?.pagination || { total: 0, pages: 1 };
 
-  const deleteMutation = useMutation({
-    mutationFn: (id) => http.delete(`/blogs/admin/${id}`),
-    onSuccess: () => { toast.success("Blog deleted!"); setConfirmDelete(null); queryClient.invalidateQueries(["adminBlogs"]); },
-    onError: (err) => toast.error(err?.response?.data?.message || "Failed to delete blog"),
-  });
-
-  const togglePublish = useMutation({
-    mutationFn: ({ id, val }) => http.put(`/blogs/admin/${id}`, { isPublished: val }),
-    onSuccess: (_, { val }) => { toast.success(val ? "Blog published!" : "Blog unpublished!"); queryClient.invalidateQueries(["adminBlogs"]); },
-    onError: (err) => toast.error(err?.response?.data?.message || "Failed to update"),
-  });
+  const togglePublish = {
+    mutate: ({ id, val }) => updateMutation.mutate({ id, payload: { isPublished: val } }, {
+      onSuccess: () => toast.success(val ? "Blog published!" : "Blog unpublished!")
+    })
+  };
 
   const handleEditClick = (e, b) => {
     e.stopPropagation();
@@ -128,7 +123,7 @@ const Blogs = () => {
                       <td className="py-4 px-6">
                         <div className="flex items-center gap-3">
                           {b.images?.thumbnail ? (
-                            <img src={b.images.thumbnail} alt={b.title} className="w-10 h-10 rounded-lg object-cover shrink-0" />
+                            <img src={b.images.thumbnail?.url || b.images.thumbnail} alt={b.title} className="w-10 h-10 rounded-lg object-cover shrink-0" />
                           ) : (
                             <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0"><FiImage size={16} className="text-slate-400" /></div>
                           )}
@@ -183,7 +178,7 @@ const Blogs = () => {
                 >
                   <div className="h-40 bg-slate-100 dark:bg-slate-800 relative">
                     {b.images?.thumbnail ? (
-                      <img src={b.images.thumbnail} alt={b.title} className="w-full h-full object-cover" />
+                      <img src={b.images.thumbnail?.url || b.images.thumbnail} alt={b.title} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-slate-400">
                         <FiImage size={32} />

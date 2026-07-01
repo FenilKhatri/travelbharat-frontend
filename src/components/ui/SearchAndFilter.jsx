@@ -4,10 +4,6 @@ import { FiSearch, FiX } from "react-icons/fi";
 import { FaSlidersH, FaUndo } from "react-icons/fa";
 import CustomDropdown from "./CustomDropdown";
 
-/**
- * Reusable premium Search & Filter component.
- * Syncs seamlessly with React Router's search parameters.
- */
 const SearchAndFilter = ({
   searchPlaceholder = "Search...",
   filters = [],
@@ -18,7 +14,6 @@ const SearchAndFilter = ({
   const [searchParams, setSearchParams] = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
 
-  // Local state for search input to allow smooth typing before debounce
   const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
 
   // Debounced search logic
@@ -66,7 +61,7 @@ const SearchAndFilter = ({
   ).length;
 
   return (
-    <div className={`w-full space-y-4 ${className}`}>
+    <div className={`relative z-40 w-full space-y-4 ${className}`}>
       
       {/* Search Input and Collapsible Trigger */}
       <div className="flex flex-col md:flex-row gap-3">
@@ -77,7 +72,7 @@ const SearchAndFilter = ({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={searchPlaceholder}
-            className="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-hidden focus:ring-2 focus:ring-[#E85D04] transition duration-200 text-sm shadow-xs"
+            className="w-full pl-11 pr-4 py-3 bg-glass-bg backdrop-blur-md border border-glass-border rounded-xl text-primary placeholder:text-muted focus:outline-hidden focus:ring-2 focus:ring-accent transition duration-200 text-sm shadow-xs"
           />
           {searchTerm && (
             <button
@@ -95,8 +90,8 @@ const SearchAndFilter = ({
             onClick={() => setIsOpen(!isOpen)}
             className={`flex items-center justify-center gap-2 px-5 py-3 border rounded-xl text-sm font-semibold transition cursor-pointer ${
               isOpen || activeFiltersCount > 0
-                ? "bg-[#E85D04] border-[#E85D04] text-white shadow-md shadow-[#E85D04]/20"
-                : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+                ? "bg-accent border-accent text-white shadow-md shadow-accent/20"
+                : "bg-glass-bg backdrop-blur-md border border-glass-border text-secondary hover:bg-surface-elevated"
             }`}
           >
             <FaSlidersH size={16} />
@@ -113,7 +108,7 @@ const SearchAndFilter = ({
             <button
               onClick={handleClearAll}
               title="Reset Filters"
-              className="flex items-center justify-center p-3 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer"
+              className="flex items-center justify-center p-3 border border-glass-border bg-glass-bg backdrop-blur-md text-muted hover:text-primary rounded-xl hover:bg-surface-elevated transition cursor-pointer"
             >
               <FaUndo size={16} />
             </button>
@@ -123,7 +118,7 @@ const SearchAndFilter = ({
 
       {/* Filter panel (Desktop grid / Mobile drawer or dropdown) */}
       {isOpen && (
-        <div className="p-6 bg-white dark:bg-[#0A121F] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 animate-fadeIn">
+        <div className="p-6 bg-glass-bg backdrop-blur-2xl border border-glass-border rounded-2xl shadow-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 animate-fadeIn">
           
           {/* Dynamic Filters */}
           {filters.map((filter) => (

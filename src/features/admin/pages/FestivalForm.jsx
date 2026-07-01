@@ -6,6 +6,7 @@ import { FaCalendarCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
 import http from "../../../lib/axios";
 import CustomDropdown from "../../../components/ui/CustomDropdown";
+import BadgeSelector from "../components/BadgeSelector";
 import PageLoader from "../../../components/ui/PageLoader";
 
 /*  Constants  */
@@ -32,6 +33,8 @@ const INITIAL_FORM = {
   category: "cultural",
   featured: false,
   isActive: true,
+  badges: [],
+  primaryBadge: "",
   priority: 0,
   seo: { metaTitle: "", metaDescription: "", keywords: [] },
 };
@@ -145,6 +148,8 @@ const FestivalForm = () => {
         category: f.category || "cultural",
         featured: f.featured || false,
         isActive: f.isActive ?? true,
+        badges: f.badges || [],
+        primaryBadge: f.primaryBadge || "",
         priority: f.priority || 0,
         seo: {
           metaTitle: f.seo?.metaTitle || "",
@@ -410,15 +415,23 @@ const FestivalForm = () => {
                 <Toggle checked={form.isActive} onChange={(v) => set("isActive", v)} label="Publicly Active" accent="#22c55e" />
               </div>
             </div>
+
+            <Field label="Badges" span2>
+              <BadgeSelector 
+                selectedBadges={form.badges} 
+                primaryBadge={form.primaryBadge} 
+                onChange={(badges, primary) => setForm(prev => ({ ...prev, badges, primaryBadge: primary }))} 
+              />
+            </Field>
           </div>
         </Card>
 
         {/*  CARD 2: MEDIA  */}
         <Card title="Imagery" icon={FiImage}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <ImageTile src={form.images.hero} label="Hero Banner (Landscape)" aspect="aspect-video"
+            <ImageTile src={(form.images.hero?.url || form.images.hero)?.url || (form.images.hero?.url || form.images.hero)} label="Hero Banner (Landscape)" aspect="aspect-video"
               uploading={uploadingImage === "images.hero"} onUpload={(e) => handleImageUpload(e, "images.hero")} />
-            <ImageTile src={form.images.thumbnail} label="Thumbnail (Square)" aspect="aspect-square max-w-[220px]"
+            <ImageTile src={(form.images.thumbnail?.url || form.images.thumbnail)?.url || (form.images.thumbnail?.url || form.images.thumbnail)} label="Thumbnail (Square)" aspect="aspect-square max-w-[220px]"
               uploading={uploadingImage === "images.thumbnail"} onUpload={(e) => handleImageUpload(e, "images.thumbnail")} />
           </div>
 

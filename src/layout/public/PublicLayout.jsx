@@ -14,12 +14,8 @@ const pageVariants = {
 const PublicLayout = memo(() => {
   const location = useLocation();
 
-  useEffect(() => {
-    document.documentElement.classList.add("dark");
-  }, []);
-
   return (
-    <div className="dark flex flex-col min-h-screen bg-slate-950 text-white transition-colors duration-300">
+    <div className="flex flex-col min-h-screen bg-background text-primary transition-colors duration-300">
       <Navbar />
       <main className="flex-1">
         <AnimatePresence mode="popLayout">

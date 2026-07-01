@@ -53,7 +53,7 @@ const FestivalDetails = () => {
             <div className="aspect-[4/3] bg-slate-100 dark:bg-slate-800 relative">
               {festival.images?.hero || festival.images?.thumbnail ? (
                 <img
-                  src={festival.images.hero || festival.images.thumbnail}
+                  src={(festival.images.hero?.url || festival.images.hero) || (festival.images.thumbnail?.url || festival.images.thumbnail)}
                   alt={festival.name}
                   className="w-full h-full object-cover"
                 />

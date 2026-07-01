@@ -5,19 +5,10 @@ import { ToastContainer } from "react-toastify";
 import ScrollToTop from "../layout/core/ScrollToTop";
 import ScrollToTopButton from "../components/ui/ScrollToTopButton";
 import AppRoutes from "./routes/AppRoutes";
+import { useTheme } from "../hooks/useTheme";
 
 function App() {
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") || "dark"
-  );
-
-  useEffect(() => {
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <>

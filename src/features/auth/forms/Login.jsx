@@ -1,35 +1,22 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "../../../components/ui/Button";
 import FormFields from "../../../components/ui/FormFields";
 import GoogleAuthButton from "../../../components/ui/GoogleAuthButton";
 import { ROLES } from "../../../utils/constants";
-import { useAuth } from "../../../context/AuthContext";
 import { login } from "../../auth/api/auth.api";
 import { loginFields } from "./data/inputFields";
 import { stagger, fadeUp } from "../../../animations/motionVariants";
-import { handleChange } from "../../../utils/auth/handleChange";
-import { handleAuthSubmit } from "../../../utils/auth/handleAuthSubmit";
+import { useAuthSubmit } from "../../../utils/auth/useAuthSubmit";
 
 const Login = () => {
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const { fetchUser } = useAuth();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    await handleAuthSubmit({
-      apiCall: login,
-      form,
-      navigate,
-      setLoading,
-      fetchUser,
-      successMessage: "Login Successful",
-    });
-  };
+  const { form, loading, handleChange, handleSubmit } = useAuthSubmit({
+    apiCall: login,
+    initialForm: { email: "", password: "" },
+    successMessage: "Login Successful",
+    fetchUserOnSuccess: true,
+    navigateOnSuccess: true,
+  });
 
   return (
     <motion.form
@@ -42,7 +29,7 @@ const Login = () => {
       <FormFields
         fields={loginFields}
         form={form}
-        onChange={(e) => handleChange(e, setForm)}
+        onChange={handleChange}
       />
       
       <motion.div variants={fadeUp} className="flex justify-end -mt-3">

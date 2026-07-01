@@ -2,11 +2,8 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import CustomDropdown from "../../../../components/ui/CustomDropdown";
+import { useDebounce } from "../../../../hooks/useDebounce";
 
-/**
- * Reusable Sidebar Filter for Public Explore Pages.
- * Handles debounced search and dynamic dropdown filters syncing to URL params.
- */
 const SidebarFilter = ({
   searchPlaceholder = "Search...",
   searchLabel = "Search",
@@ -17,21 +14,19 @@ const SidebarFilter = ({
   
   // Local state for smooth typing before debouncing
   const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setSearchParams((prev) => {
-        if (searchTerm.trim()) {
-          prev.set("search", searchTerm.trim());
-        } else {
-          prev.delete("search");
-        }
-        prev.set("page", "1");
-        return prev;
-      });
-    }, 500);
-    return () => clearTimeout(handler);
-  }, [searchTerm, setSearchParams]);
+    setSearchParams((prev) => {
+      if (debouncedSearchTerm.trim()) {
+        prev.set("search", debouncedSearchTerm.trim());
+      } else {
+        prev.delete("search");
+      }
+      prev.set("page", "1");
+      return prev;
+    });
+  }, [debouncedSearchTerm, setSearchParams]);
 
   const urlSearch = searchParams.get("search") || "";
   useEffect(() => {

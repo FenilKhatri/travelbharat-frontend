@@ -39,7 +39,7 @@ const UserDetails = () => {
           <div className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-3xl overflow-hidden shadow-sm p-8 flex flex-col items-center text-center">
             <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-slate-100 dark:border-slate-800 mb-4 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[#E85D04] font-black text-3xl">
               {user.profileImage ? (
-                <img src={user.profileImage} alt={user.name} className="w-full h-full object-cover" />
+                <img src={user.profileImage?.url || user.profileImage} alt={user.name} className="w-full h-full object-cover" />
               ) : (
                 user.name ? user.name[0].toUpperCase() : <FiUser size={32} />
               )}

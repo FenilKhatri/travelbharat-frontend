@@ -53,7 +53,7 @@ const CityDetails = () => {
             <div className="aspect-[4/3] bg-slate-100 dark:bg-slate-800 relative">
               {cityData.images?.hero || cityData.images?.thumbnail ? (
                 <img
-                  src={cityData.images.hero || cityData.images.thumbnail}
+                  src={(cityData.images.hero?.url || cityData.images.hero) || (cityData.images.thumbnail?.url || cityData.images.thumbnail)}
                   alt={cityData.name}
                   className="w-full h-full object-cover"
                 />

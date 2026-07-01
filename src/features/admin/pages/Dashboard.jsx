@@ -138,7 +138,7 @@ const Dashboard = () => {
   const maxGrowthCount = Math.max(...userGrowth.map((g) => g.count), 1);
 
   return (
-    <motion.div 
+    <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="show"
@@ -183,7 +183,7 @@ const Dashboard = () => {
 
       {/* ANALYTICS GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         {/* User Growth Visual Representation */}
         <motion.div
           variants={itemVariants}
@@ -211,8 +211,8 @@ const Dashboard = () => {
                     <span className="opacity-0 group-hover:opacity-100 bg-slate-800 dark:bg-slate-900 text-white text-[10px] font-bold px-2 py-1 rounded-md mb-2 transition duration-250 absolute transform -translate-y-16">
                       {dataItem.count} users
                     </span>
-                    <div 
-                      className="w-full bg-gradient-to-t from-[#E85D04] to-[#FF9E00] rounded-t-lg group-hover:brightness-110 transition-all duration-300"
+                    <div
+                      className="w-full bg-linear-to-t from-[#E85D04] to-[#FF9E00] rounded-t-lg group-hover:brightness-110 transition-all duration-300"
                       style={{ height: `${Math.max(heightPercent, 8)}%` }}
                     />
                     <span className="text-[10px] sm:text-xs font-bold text-slate-400 mt-2.5">
@@ -246,7 +246,7 @@ const Dashboard = () => {
                 <div key={place._id} className="flex items-center gap-3.5 pb-3.5 border-b border-slate-100 dark:border-slate-800/30 last:border-b-0 last:pb-0">
                   {place.images?.thumbnail ? (
                     <img
-                      src={place.images.thumbnail}
+                      src={place.images.thumbnail?.url || place.images.thumbnail}
                       alt={place.name}
                       className="w-11 h-11 rounded-lg object-cover bg-slate-100 shrink-0"
                     />
@@ -282,7 +282,7 @@ const Dashboard = () => {
 
       {/* RECENT INQUIRIES & PLATFORM NOTIFICATIONS */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         {/* Support Inquiries Table */}
         <motion.div
           variants={itemVariants}
@@ -293,8 +293,8 @@ const Dashboard = () => {
               <h3 className="text-lg font-bold text-slate-900 dark:text-white">Recent Support Inquiries</h3>
               <p className="text-xs text-slate-400">Queries submitted via contact forms</p>
             </div>
-            <Link 
-              to="/admin/settings" 
+            <Link
+              to="/admin/settings"
               className="text-xs font-bold text-[#E85D04] hover:underline"
             >
               Manage Inquiries
@@ -321,11 +321,10 @@ const Dashboard = () => {
                       </td>
                       <td className="py-3 pr-4 max-w-[200px] truncate">{inquiry.subject}</td>
                       <td className="py-3 pr-4">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                          inquiry.status === "new" 
-                            ? "bg-red-500/10 text-red-650 dark:text-red-400" 
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${inquiry.status === "new"
+                            ? "bg-red-500/10 text-red-650 dark:text-red-400"
                             : "bg-slate-100 dark:bg-slate-800 text-slate-500"
-                        }`}>
+                          }`}>
                           {inquiry.status}
                         </span>
                       </td>
@@ -368,7 +367,7 @@ const Dashboard = () => {
           </div>
 
           <div className="pt-6">
-            <button 
+            <button
               onClick={() => setNewsletterModalOpen(true)}
               className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[#E85D04] hover:bg-[#D05203] text-white font-bold rounded-xl text-sm shadow-xs transition duration-200 cursor-pointer"
             >

@@ -62,14 +62,14 @@ const TripDetails = () => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
     if (files.length > 10) return toast.error("Maximum 10 files allowed at a time");
-    
+
     for (let f of files) {
       if (f.size > 25 * 1024 * 1024) return toast.error(`File ${f.name} exceeds 25MB limit`);
     }
 
     const formData = new FormData();
     files.forEach(f => formData.append("gallery", f));
-    
+
     setIsUploading(true);
     uploadGalleryMutation.mutate(formData, { onSettled: () => setIsUploading(false) });
   };
@@ -104,7 +104,7 @@ const TripDetails = () => {
   const firstPlace = trip.destinationId || trip.places?.[0]?.placeId;
   let coverImg = trip.coverImage || firstPlace?.heroImage || firstPlace?.images?.hero || firstPlace?.images?.thumbnail || firstPlace?.images?.gallery?.[0];
   const coverImage = (coverImg && coverImg.trim() !== "") ? coverImg : "https://images.unsplash.com/photo-1506461883276-594a12b11ac3?auto=format&fit=crop&q=80";
-  
+
   const TABS = [
     { id: "overview", label: "Overview", icon: FiFileText },
     { id: "itinerary", label: "Itinerary", icon: FiMapPin },
@@ -116,13 +116,13 @@ const TripDetails = () => {
   return (
     <div className="min-h-screen bg-[#020817] text-white pt-24 pb-20 selection:bg-[#FF7A00] selection:text-white">
       <div className="max-w-[1400px] mx-auto px-4 md:px-8">
-        
+
         {/* Top Back Link & Share */}
         <div className="flex justify-between items-center mb-6">
           <Link to="/user/trips" className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition">
             <FiChevronLeft /> Back to Trips
           </Link>
-          <button 
+          <button
             onClick={async () => {
               if (navigator.share) {
                 try {
@@ -143,13 +143,13 @@ const TripDetails = () => {
 
         {/* HERO SECTION */}
         <div className="relative w-full h-[300px] md:h-[400px] rounded-3xl overflow-hidden mb-8 border border-white/10">
-          <img 
-            src={coverImage} 
-            alt={trip.name} 
-            className="w-full h-full object-cover" 
+          <img
+            src={coverImage}
+            alt={trip.name}
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-          
+          <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
+
           <div className="absolute bottom-0 left-0 w-full p-8 md:p-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <div className="flex items-center gap-3 mb-3">
@@ -163,7 +163,7 @@ const TripDetails = () => {
               <h1 className="text-4xl md:text-5xl font-black text-white mb-2">{trip.name}</h1>
               <p className="text-white/70 max-w-2xl">{trip.description || firstPlace?.overview || "No description provided."}</p>
             </div>
-            
+
             <div className="flex flex-wrap gap-4 md:gap-6 bg-black/40 backdrop-blur-md p-4 rounded-2xl border border-white/10">
               <div>
                 <p className="text-white/50 text-[10px] uppercase tracking-wider font-bold mb-1">Duration</p>
@@ -183,7 +183,7 @@ const TripDetails = () => {
 
         {/* CONTENT GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          
+
           {/* LEFT: TABS SIDEBAR */}
           <div className="lg:col-span-1 relative z-50">
             <div className="bg-[#0A121F] border border-white/5 rounded-2xl p-2 sticky top-28 shadow-2xl">
@@ -212,20 +212,20 @@ const TripDetails = () => {
               transition={{ duration: 0.3 }}
               className="bg-[#0A121F] border border-white/5 rounded-3xl p-6 md:p-8 min-h-[500px]"
             >
-              
+
               {/* OVERVIEW TAB */}
               {activeTab === "overview" && (
                 <div className="space-y-8">
                   <h2 className="text-2xl font-black mb-6 flex items-center gap-2"><FiFileText className="text-[#FF7A00]" /> Trip Overview</h2>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-white/5 border border-white/10 p-5 rounded-2xl">
-                       <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Start Date</h3>
-                       <p className="font-bold text-lg">{trip.startDate ? new Date(trip.startDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "Not set"}</p>
+                      <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Start Date</h3>
+                      <p className="font-bold text-lg">{trip.startDate ? new Date(trip.startDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "Not set"}</p>
                     </div>
                     <div className="bg-white/5 border border-white/10 p-5 rounded-2xl">
-                       <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">End Date</h3>
-                       <p className="font-bold text-lg">{trip.endDate ? new Date(trip.endDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "Not set"}</p>
+                      <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">End Date</h3>
+                      <p className="font-bold text-lg">{trip.endDate ? new Date(trip.endDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "Not set"}</p>
                     </div>
                   </div>
 
@@ -238,36 +238,36 @@ const TripDetails = () => {
                           <FiMapPin /> {place.name}
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                           <div className="bg-white/5 border border-white/10 p-5 rounded-2xl">
-                              <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Location</h3>
-                              <p className="font-bold">{place.cityId?.name}, {place.stateId?.name}</p>
-                           </div>
-                           <div className="bg-white/5 border border-white/10 p-5 rounded-2xl">
-                              <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Category</h3>
-                              <p className="font-bold capitalize">{place.category}</p>
-                           </div>
-                           <div className="bg-white/5 border border-white/10 p-5 rounded-2xl">
-                              <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Best Time</h3>
-                              <p className="font-bold">{place.bestTimeToVisit || "Year round"}</p>
-                           </div>
-                           {place.entryFee && (
-                             <div className="bg-white/5 border border-white/10 p-5 rounded-2xl">
-                                <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Entry Fee</h3>
-                                <p className="font-bold">{place.entryFee?.indian !== "Free" ? `${place.entryFee.indian} (Indians)` : "Free"}</p>
-                             </div>
-                           )}
-                           {place.timings && (
-                             <div className="bg-white/5 border border-white/10 p-5 rounded-2xl">
-                                <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Timings</h3>
-                                <p className="font-bold">{place.timings}</p>
-                             </div>
-                           )}
-                           {place.location?.coordinates && place.location.coordinates.length === 2 && (
-                             <div className="bg-white/5 border border-white/10 p-5 rounded-2xl">
-                                <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Coordinates</h3>
-                                <p className="font-bold text-sm">{place.location.coordinates[1].toFixed(4)}° N, {place.location.coordinates[0].toFixed(4)}° E</p>
-                             </div>
-                           )}
+                          <div className="bg-white/5 border border-white/10 p-5 rounded-2xl">
+                            <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Location</h3>
+                            <p className="font-bold">{place.cityId?.name}, {place.stateId?.name}</p>
+                          </div>
+                          <div className="bg-white/5 border border-white/10 p-5 rounded-2xl">
+                            <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Category</h3>
+                            <p className="font-bold capitalize">{place.category}</p>
+                          </div>
+                          <div className="bg-white/5 border border-white/10 p-5 rounded-2xl">
+                            <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Best Time</h3>
+                            <p className="font-bold">{place.bestTimeToVisit || "Year round"}</p>
+                          </div>
+                          {place.entryFee && (
+                            <div className="bg-white/5 border border-white/10 p-5 rounded-2xl">
+                              <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Entry Fee</h3>
+                              <p className="font-bold">{place.entryFee?.indian !== "Free" ? `${place.entryFee.indian} (Indians)` : "Free"}</p>
+                            </div>
+                          )}
+                          {place.timings && (
+                            <div className="bg-white/5 border border-white/10 p-5 rounded-2xl">
+                              <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Timings</h3>
+                              <p className="font-bold">{place.timings}</p>
+                            </div>
+                          )}
+                          {place.location?.coordinates && place.location.coordinates.length === 2 && (
+                            <div className="bg-white/5 border border-white/10 p-5 rounded-2xl">
+                              <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider mb-2">Coordinates</h3>
+                              <p className="font-bold text-sm">{place.location.coordinates[1].toFixed(4)}° N, {place.location.coordinates[0].toFixed(4)}° E</p>
+                            </div>
+                          )}
                         </div>
 
                         {place.overview && (
@@ -284,7 +284,7 @@ const TripDetails = () => {
                             <h4 className="font-bold mb-3 text-lg">Highlights</h4>
                             <ul className="list-disc list-inside bg-white/5 border border-white/10 p-5 rounded-2xl text-white/70 space-y-2">
                               {place.highlights.map((item, idx) => (
-                                 <li key={idx}>{item.title}</li>
+                                <li key={idx}>{item.title}</li>
                               ))}
                             </ul>
                           </div>
@@ -295,7 +295,7 @@ const TripDetails = () => {
                             <h4 className="font-bold mb-3 text-lg">Travel Tips</h4>
                             <ul className="list-disc list-inside bg-white/5 border border-white/10 p-5 rounded-2xl text-white/70 space-y-2">
                               {place.travelTips.map((item, idx) => (
-                                 <li key={idx}>{item}</li>
+                                <li key={idx}>{item}</li>
                               ))}
                             </ul>
                           </div>
@@ -305,17 +305,17 @@ const TripDetails = () => {
                   })}
 
                   <div>
-                     <h3 className="font-bold mb-3 text-lg">Destinations ({trip.places?.length || 0})</h3>
-                     <div className="flex flex-wrap gap-3">
-                        {trip.places?.map((p, i) => (
-                          <div key={i} className="flex items-center gap-2 bg-[#FF7A00]/10 border border-[#FF7A00]/20 px-4 py-2 rounded-xl text-[#FF7A00] font-bold text-sm">
-                             <FiMapPin /> {p.placeId?.name || "Unknown Place"}
-                          </div>
-                        ))}
-                        {(!trip.places || trip.places.length === 0) && (
-                          <p className="text-white/50 text-sm">No destinations added yet.</p>
-                        )}
-                     </div>
+                    <h3 className="font-bold mb-3 text-lg">Destinations ({trip.places?.length || 0})</h3>
+                    <div className="flex flex-wrap gap-3">
+                      {trip.places?.map((p, i) => (
+                        <div key={i} className="flex items-center gap-2 bg-[#FF7A00]/10 border border-[#FF7A00]/20 px-4 py-2 rounded-xl text-[#FF7A00] font-bold text-sm">
+                          <FiMapPin /> {p.placeId?.name || "Unknown Place"}
+                        </div>
+                      ))}
+                      {(!trip.places || trip.places.length === 0) && (
+                        <p className="text-white/50 text-sm">No destinations added yet.</p>
+                      )}
+                    </div>
                   </div>
 
                   <div>
@@ -331,7 +331,7 @@ const TripDetails = () => {
               {activeTab === "itinerary" && (
                 <div>
                   <h2 className="text-2xl font-black mb-6 flex items-center gap-2"><FiMapPin className="text-[#FF7A00]" /> Itinerary</h2>
-                  
+
                   {/* Add Day Form */}
                   <form onSubmit={(e) => {
                     e.preventDefault();
@@ -348,31 +348,31 @@ const TripDetails = () => {
                   }} className="bg-white/5 border border-white/10 p-6 rounded-2xl mb-8">
                     <h3 className="font-bold mb-4 text-white">Plan Your Day</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                      <input 
+                      <input
                         type="number" placeholder="Day Number" min="1"
-                        value={newItineraryDay.dayNumber} onChange={e => setNewItineraryDay({...newItineraryDay, dayNumber: Number(e.target.value)})}
-                        className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00]" required 
+                        value={newItineraryDay.dayNumber} onChange={e => setNewItineraryDay({ ...newItineraryDay, dayNumber: Number(e.target.value) })}
+                        className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00]" required
                       />
-                      <input 
-                        type="text" placeholder="Day Title (e.g. Arrival & Beach)" 
-                        value={newItineraryDay.title} onChange={e => setNewItineraryDay({...newItineraryDay, title: e.target.value})}
-                        className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00]" required 
+                      <input
+                        type="text" placeholder="Day Title (e.g. Arrival & Beach)"
+                        value={newItineraryDay.title} onChange={e => setNewItineraryDay({ ...newItineraryDay, title: e.target.value })}
+                        className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00]" required
                       />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                      <input 
-                        type="time" 
-                        value={newItineraryDay.activityTime} onChange={e => setNewItineraryDay({...newItineraryDay, activityTime: e.target.value})}
-                        className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00]" required 
+                      <input
+                        type="time"
+                        value={newItineraryDay.activityTime} onChange={e => setNewItineraryDay({ ...newItineraryDay, activityTime: e.target.value })}
+                        className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00]" required
                       />
-                      <input 
-                        type="text" placeholder="Activity (e.g. Lunch at Cafe)" 
-                        value={newItineraryDay.activityDesc} onChange={e => setNewItineraryDay({...newItineraryDay, activityDesc: e.target.value})}
-                        className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00] md:col-span-2" required 
+                      <input
+                        type="text" placeholder="Activity (e.g. Lunch at Cafe)"
+                        value={newItineraryDay.activityDesc} onChange={e => setNewItineraryDay({ ...newItineraryDay, activityDesc: e.target.value })}
+                        className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00] md:col-span-2" required
                       />
                       <CustomDropdown
                         value={newItineraryDay.activityType}
-                        onChange={(val) => setNewItineraryDay({...newItineraryDay, activityType: val})}
+                        onChange={(val) => setNewItineraryDay({ ...newItineraryDay, activityType: val })}
                         options={[
                           { value: "place", label: "Place to Visit" },
                           { value: "food", label: "Food & Dining" },
@@ -388,7 +388,7 @@ const TripDetails = () => {
 
                   {/* Itinerary List */}
                   {trip.itinerary?.length > 0 ? (
-                    <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 md:before:ml-[2.25rem] before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
+                    <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 md:before:ml-[2.25rem] before:-translate-x-px before:h-full before:w-0.5 before:bg-linear-to-b before:from-transparent before:via-white/10 before:to-transparent">
                       {trip.itinerary.map((day, idx) => (
                         <div key={day._id || idx} className="relative flex items-start gap-6 group">
                           <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-[#0A121F] bg-white/10 text-white font-bold shadow shrink-0 z-10">
@@ -418,9 +418,9 @@ const TripDetails = () => {
                     </div>
                   ) : (
                     <div className="text-center py-16 border-2 border-dashed border-white/10 rounded-3xl">
-                       <FiMapPin className="mx-auto text-white/20 mb-3" size={40} />
-                       <p className="text-white/50 font-bold mb-2">Itinerary Builder</p>
-                       <p className="text-sm text-white/40">Plan your days by adding activities above.</p>
+                      <FiMapPin className="mx-auto text-white/20 mb-3" size={40} />
+                      <p className="text-white/50 font-bold mb-2">Itinerary Builder</p>
+                      <p className="text-sm text-white/40">Plan your days by adding activities above.</p>
                     </div>
                   )}
                 </div>
@@ -430,13 +430,13 @@ const TripDetails = () => {
               {activeTab === "expenses" && (
                 <div>
                   <h2 className="text-2xl font-black mb-6 flex items-center gap-2"><FaRupeeSign className="text-[#FF7A00]" /> Trip Expenses</h2>
-                  
+
                   {/* Total Expense Summary */}
                   <div className="bg-[#E85D04]/10 border border-[#E85D04]/20 p-6 rounded-2xl mb-8 flex justify-between items-center">
                     <div>
                       <p className="text-[#E85D04] text-sm font-bold uppercase tracking-wider mb-1">Total Spent</p>
                       <h3 className="text-4xl font-black text-white">
-                        <FaRupeeSign className="inline -mt-1 mr-1" size={24}/>
+                        <FaRupeeSign className="inline -mt-1 mr-1" size={24} />
                         {trip.expenses?.reduce((acc, curr) => acc + curr.amount, 0).toLocaleString() || 0}
                       </h3>
                     </div>
@@ -450,19 +450,19 @@ const TripDetails = () => {
                   }} className="bg-white/5 border border-white/10 p-6 rounded-2xl mb-8">
                     <h3 className="font-bold mb-4 text-white">Add New Expense</h3>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                      <input 
-                        type="text" placeholder="Expense Title (e.g. Dinner)" 
-                        value={newExpense.title} onChange={e => setNewExpense({...newExpense, title: e.target.value})}
-                        className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00]" required 
+                      <input
+                        type="text" placeholder="Expense Title (e.g. Dinner)"
+                        value={newExpense.title} onChange={e => setNewExpense({ ...newExpense, title: e.target.value })}
+                        className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00]" required
                       />
-                      <input 
-                        type="number" placeholder="Amount ()" 
-                        value={newExpense.amount} onChange={e => setNewExpense({...newExpense, amount: Number(e.target.value)})}
+                      <input
+                        type="number" placeholder="Amount ()"
+                        value={newExpense.amount} onChange={e => setNewExpense({ ...newExpense, amount: Number(e.target.value) })}
                         className="bg-[#0A121F] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#FF7A00]" required min="1"
                       />
                       <CustomDropdown
                         value={newExpense.category}
-                        onChange={(val) => setNewExpense({...newExpense, category: val})}
+                        onChange={(val) => setNewExpense({ ...newExpense, category: val })}
                         options={[
                           { value: "food", label: "Food" },
                           { value: "transport", label: "Transport" },
@@ -503,9 +503,9 @@ const TripDetails = () => {
                     </div>
                   ) : (
                     <div className="text-center py-12 border-2 border-dashed border-white/10 rounded-3xl">
-                       <FaRupeeSign className="mx-auto text-white/20 mb-3" size={40} />
-                       <p className="text-white/50 font-bold mb-2">No Expenses Yet</p>
-                       <p className="text-sm text-white/40">Track your budget by adding your first expense above.</p>
+                      <FaRupeeSign className="mx-auto text-white/20 mb-3" size={40} />
+                      <p className="text-white/50 font-bold mb-2">No Expenses Yet</p>
+                      <p className="text-sm text-white/40">Track your budget by adding your first expense above.</p>
                     </div>
                   )}
                 </div>
@@ -516,13 +516,13 @@ const TripDetails = () => {
                 <div>
                   <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-black flex items-center gap-2"><FiImage className="text-[#FF7A00]" /> Memories</h2>
-                    
+
                     <label className="cursor-pointer bg-[#FF7A00]/10 text-[#FF7A00] font-bold rounded-xl px-4 py-2 border border-[#FF7A00]/20 hover:bg-[#FF7A00] hover:text-white transition flex items-center gap-2">
                       {isUploading ? 'Uploading...' : <><FiUploadCloud /> Upload Media</>}
                       <input type="file" multiple accept="image/*,video/*" className="hidden" onChange={handleFileUpload} disabled={isUploading} />
                     </label>
                   </div>
-                  
+
                   {trip.gallery?.length > 0 ? (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                       {trip.gallery.map((media, idx) => (
@@ -540,13 +540,13 @@ const TripDetails = () => {
                     </div>
                   ) : (
                     <div className="text-center py-16 border-2 border-dashed border-white/10 rounded-3xl">
-                       <FiImage className="mx-auto text-white/20 mb-3" size={40} />
-                       <p className="text-white/50 font-bold mb-2">Empty Gallery</p>
-                       <p className="text-sm text-white/40 mb-4">Upload photos and videos to remember your journey. (Max 10 files, 25MB each)</p>
-                       <label className="cursor-pointer px-5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-bold transition text-sm inline-block">
-                         Browse Files
-                         <input type="file" multiple accept="image/*,video/*" className="hidden" onChange={handleFileUpload} disabled={isUploading} />
-                       </label>
+                      <FiImage className="mx-auto text-white/20 mb-3" size={40} />
+                      <p className="text-white/50 font-bold mb-2">Empty Gallery</p>
+                      <p className="text-sm text-white/40 mb-4">Upload photos and videos to remember your journey. (Max 10 files, 25MB each)</p>
+                      <label className="cursor-pointer px-5 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-bold transition text-sm inline-block">
+                        Browse Files
+                        <input type="file" multiple accept="image/*,video/*" className="hidden" onChange={handleFileUpload} disabled={isUploading} />
+                      </label>
                     </div>
                   )}
                 </div>
@@ -556,20 +556,20 @@ const TripDetails = () => {
               {activeTab === "timeline" && (
                 <div>
                   <h2 className="text-2xl font-black mb-6 flex items-center gap-2"><FiActivity className="text-[#FF7A00]" /> Activity Log</h2>
-                  <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
-                     
-                     <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                        <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-[#0A121F] bg-[#FF7A00] text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
-                           <FiClock size={16} />
+                  <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-linear-to-b before:from-transparent before:via-white/10 before:to-transparent">
+
+                    <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                      <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-[#0A121F] bg-[#FF7A00] text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                        <FiClock size={16} />
+                      </div>
+                      <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white/5 border border-white/10 p-4 rounded-xl shadow">
+                        <div className="flex items-center justify-between space-x-2 mb-1">
+                          <div className="font-bold text-white">Trip Created</div>
+                          <time className="font-caveat font-medium text-[#FF7A00]">{new Date(trip.createdAt).toLocaleDateString()}</time>
                         </div>
-                        <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white/5 border border-white/10 p-4 rounded-xl shadow">
-                           <div className="flex items-center justify-between space-x-2 mb-1">
-                              <div className="font-bold text-white">Trip Created</div>
-                              <time className="font-caveat font-medium text-[#FF7A00]">{new Date(trip.createdAt).toLocaleDateString()}</time>
-                           </div>
-                           <div className="text-white/60 text-sm">Started planning this trip.</div>
-                        </div>
-                     </div>
+                        <div className="text-white/60 text-sm">Started planning this trip.</div>
+                      </div>
+                    </div>
 
                   </div>
                 </div>
