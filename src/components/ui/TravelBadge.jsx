@@ -8,7 +8,6 @@ import {
 } from "react-icons/fa6";
 import { BADGES_CONFIG } from "../../config/badges.config";
 
-// Dynamic Icon rendering function based on string name
 const renderIcon = (iconName, size = 14) => {
   switch (iconName?.toLowerCase()) {
     case "crown": return <FaCrown size={size} />;

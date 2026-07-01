@@ -8,8 +8,6 @@ const FeaturedCollections = ({
 }) => {
   if (!collections || collections.length === 0) return null;
 
-  // Duplicate the collections multiple times to ensure the marquee has enough content to loop seamlessly
-  // (We create 8 copies total. The animation translates -50%, which equals exactly 4 copies).
   const marqueeItems = Array(8).fill(collections).flat();
 
   return (
@@ -21,9 +19,9 @@ const FeaturedCollections = ({
         <div className="h-px flex-1 bg-linear-to-r from-border-theme to-transparent ml-6 hidden sm:block" />
       </div>
 
-      <div className="relative w-full overflow-hidden pb-8 group">
+      <div className="relative w-full overflow-hidden pb-8">
         <div 
-          className="flex w-max gap-6 hover:[animation-play-state:paused]"
+          className="flex w-max gap-6 pause-on-hover"
           style={{ animation: "marquee 60s linear infinite" }}
         >
           {marqueeItems.map((collection, idx) => (
@@ -43,6 +41,9 @@ const FeaturedCollections = ({
           @keyframes marquee {
             0% { transform: translateX(0); }
             100% { transform: translateX(calc(-50% - 12px)); }
+          }
+          .pause-on-hover:hover {
+            animation-play-state: paused !important;
           }
         `}</style>
       </div>
