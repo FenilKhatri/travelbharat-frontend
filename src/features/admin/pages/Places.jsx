@@ -209,7 +209,7 @@ const Places = () => {
             <FiImage size={32} />
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0A121F] via-transparent to-transparent opacity-80" />
+        <div className="absolute inset-0 bg-linear-to-t from-[#0A121F] via-transparent to-transparent opacity-80" />
         <div className="absolute top-3 left-3 flex gap-2">
           {place.featured && (
             <span className="bg-amber-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm flex items-center gap-1">

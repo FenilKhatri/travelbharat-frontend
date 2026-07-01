@@ -8,7 +8,7 @@ const CollectionCard = ({ title, subtitle, image, onClick, badgeConfig }) => {
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className="relative shrink-0 w-64 sm:w-72 h-80 rounded-[28px] overflow-hidden group border border-border-glass shadow-xl shadow-black/20 text-left"
+      className="relative shrink-0 w-64 sm:w-72 h-80 rounded-[28px] overflow-hidden group border border-border-glass shadow-xl shadow-black/20 text-left cursor-pointer"
     >
       {/* Background Image */}
       <img
