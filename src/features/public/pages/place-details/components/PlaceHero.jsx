@@ -1,14 +1,12 @@
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useScroll, useTransform } from "framer-motion";
 import { FiCompass, FiArrowRight } from "react-icons/fi";
 import Reveal from "../../../../../components/ui/Reveal";
 import LikeButton from "../../../../../components/ui/LikeButton";
-
 const PlaceHero = ({ place, heroImage, validGallery, heroRef }) => {
   const { scrollY } = useScroll();
   const yHero = useTransform(scrollY, [0, 1000], [0, 300]);
   const opacityHero = useTransform(scrollY, [0, 800], [1, 0]);
-
   return (
     <section ref={heroRef} className="relative w-full h-screen flex flex-col justify-end overflow-hidden">
       <motion.div
@@ -27,7 +25,6 @@ const PlaceHero = ({ place, heroImage, validGallery, heroRef }) => {
         <div className="absolute inset-0 bg-linear-to-t from-[#050505] via-[#050505]/60 to-transparent" />
         <div className="absolute inset-0 bg-linear-to-b from-[#050505]/70 via-transparent to-transparent" />
       </motion.div>
-
       <div className="relative z-10 max-w-[1600px] mx-auto px-4 w-full pb-24 md:pb-32">
         <Reveal delay={0.2}>
           <div className="flex flex-wrap items-center gap-3 mb-6">
@@ -48,13 +45,11 @@ const PlaceHero = ({ place, heroImage, validGallery, heroRef }) => {
             )}
           </div>
         </Reveal>
-
         <Reveal delay={0.3}>
           <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-[7rem] font-black text-white mb-4 leading-[0.95] tracking-tight drop-shadow-2xl">
             {place.name}
           </h1>
         </Reveal>
-
         <Reveal delay={0.4}>
           <div className="flex items-center gap-3 text-white/80 text-lg md:text-2xl font-light mb-10 tracking-wide">
             <span className="font-bold text-white">{place.cityId?.name}</span>
@@ -68,7 +63,6 @@ const PlaceHero = ({ place, heroImage, validGallery, heroRef }) => {
             )}
           </div>
         </Reveal>
-
         <Reveal delay={0.5}>
           <div className="flex flex-wrap gap-4">
             <Link
@@ -85,12 +79,10 @@ const PlaceHero = ({ place, heroImage, validGallery, heroRef }) => {
                 Explore Photos <FiArrowRight />
               </a>
             )}
-
             <LikeButton entityId={place._id} entityType="destination" initialCount={place.likeCount} className="!px-8 !py-4 !text-base cursor-pointer" />
           </div>
         </Reveal>
       </div>
-
       <motion.div
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -102,5 +94,4 @@ const PlaceHero = ({ place, heroImage, validGallery, heroRef }) => {
     </section>
   );
 };
-
 export default PlaceHero;

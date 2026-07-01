@@ -51,5 +51,4 @@ export const authService = {
   // Change Password
   changePassword: async (passwordData) => {
     return http.put(`${PREFIX}/change-password`, passwordData);
-  },
-};
+  }};

@@ -1,10 +1,7 @@
-import { motion } from "framer-motion";
 import { FiInfo } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
-
 const CityQuickFacts = ({ quickFacts }) => {
   if (quickFacts.length === 0) return null;
-
   return (
     <section className="py-16 bg-[#0c1018] border-b border-white/5">
       <div className="max-w-[1600px] w-full mx-auto px-4">
@@ -31,5 +28,4 @@ const CityQuickFacts = ({ quickFacts }) => {
     </section>
   );
 };
-
 export default CityQuickFacts;

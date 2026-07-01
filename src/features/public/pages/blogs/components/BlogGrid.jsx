@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import { FiClock, FiCalendar, FiArrowRight, FiBookOpen } from "react-icons/fi";
 import { formatDate } from "../hooks/useBlogsData";
 import CardSkeleton from "../../../../../components/ui/CardSkeleton";
-
 const BlogGrid = ({ isLoading, filteredBlogs, gridBlogs, hasFilters, setSearchTerm, setSelectedCategory }) => {
   return (
     <div className="lg:col-span-8">
@@ -13,7 +11,6 @@ const BlogGrid = ({ isLoading, filteredBlogs, gridBlogs, hasFilters, setSearchTe
           <span className="text-sm text-slate-500 font-medium">{filteredBlogs.length} stories</span>
         )}
       </div>
-
       {isLoading ? (
         <CardSkeleton count={6} columns="grid-cols-1 md:grid-cols-2 lg:grid-cols-2" />
       ) : gridBlogs.length > 0 || (hasFilters && filteredBlogs.length > 0) ? (
@@ -39,7 +36,6 @@ const BlogGrid = ({ isLoading, filteredBlogs, gridBlogs, hasFilters, setSearchTe
                   {blog.category?.replace(/-/g, " ")}
                 </span>
               </Link>
-
               <div className="p-6 flex flex-col flex-1">
                 <div className="flex items-center gap-3 text-xs text-slate-500 font-medium mb-3">
                   <span className="flex items-center gap-1"><FiClock size={12} /> {blog.readTime || 5} min</span>
@@ -88,5 +84,4 @@ const BlogGrid = ({ isLoading, filteredBlogs, gridBlogs, hasFilters, setSearchTe
     </div>
   );
 };
-
 export default BlogGrid;

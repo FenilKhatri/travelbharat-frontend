@@ -2,7 +2,7 @@ import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import { FiX, FiSettings, FiLogOut, FiUser, FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { useQuery } from "@tanstack/react-query";
 import http from "../../lib/axios";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import { sidebarConfig } from "./sidebar.config";
 import { useAuth } from "../../context/AuthContext";
@@ -245,4 +245,4 @@ const Sidebar = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
   );
 };
 
-export default Sidebar;
+export default Sidebar;

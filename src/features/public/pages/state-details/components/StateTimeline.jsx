@@ -1,13 +1,9 @@
-import { motion } from "framer-motion";
 import { FiClock } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
-
 const StateTimeline = ({ timeline }) => {
   if (!timeline || timeline.length === 0) return null;
-
   // Sort by order field
   const sortedTimeline = [...timeline].sort((a, b) => (a.order || 0) - (b.order || 0));
-
   return (
     <section className="py-24 bg-[#0a0d14] relative border-b border-white/5">
       <div className="max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,11 +15,9 @@ const StateTimeline = ({ timeline }) => {
             Journey through the pivotal moments that shaped the cultural and historical landscape.
           </p>
         </div>
-
         <div className="relative">
           {/* Vertical Line */}
           <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-white/10 md:-translate-x-1/2" />
-
           <div className="space-y-12">
             {sortedTimeline.map((item, index) => {
               const isEven = index % 2 === 0;
@@ -36,7 +30,6 @@ const StateTimeline = ({ timeline }) => {
                   
                   {/* Empty space for alternating layout on desktop */}
                   <div className="hidden md:block md:w-1/2" />
-
                   {/* Content Card */}
                   <motion.div
                     initial={{ opacity: 0, y: 20, x: isEven ? 20 : -20 }}
@@ -57,7 +50,6 @@ const StateTimeline = ({ timeline }) => {
                       <p className="text-[#8fa3cc] leading-relaxed mb-6">
                         {item.description}
                       </p>
-
                       {item.image?.url && (
                         <div className="w-full h-48 rounded-xl overflow-hidden mt-4">
                           <img 
@@ -78,5 +70,4 @@ const StateTimeline = ({ timeline }) => {
     </section>
   );
 };
-
 export default StateTimeline;

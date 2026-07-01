@@ -5,7 +5,7 @@ import {
   FiGlobe, FiAward, FiNavigation, FiActivity, FiBookmark, FiShare2,
   FiMap, FiCheckCircle, FiClock, FiStar
 } from 'react-icons/fi';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import http from '../../../lib/axios';
@@ -49,8 +49,7 @@ const Profile = () => {
   const [form, setForm] = useState({
     name: user.name || '', phone: user.phone || '', bio: user.bio || '',
     city: user.city || '', state: user.state || '', country: user.country || '',
-    gender: user.gender || '', dob: user.dob ? user.dob.split('T')[0] : '',
-  });
+    gender: user.gender || '', dob: user.dob ? user.dob.split('T')[0] : ''});
 
   const updateMutation = useMutation({
     mutationFn: (payload) => http.put('/auth/profile', payload),
@@ -529,4 +528,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Profile;

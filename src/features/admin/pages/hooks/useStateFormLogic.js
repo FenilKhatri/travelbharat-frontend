@@ -17,8 +17,7 @@ export const useStateFormLogic = () => {
         ...s,
         mapCoordinates: {
           lat: s.mapCoordinates?.coordinates?.[1] || 0,
-          lng: s.mapCoordinates?.coordinates?.[0] || 0,
-        }
+          lng: s.mapCoordinates?.coordinates?.[0] || 0}
       };
     }
   });

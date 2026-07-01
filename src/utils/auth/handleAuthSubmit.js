@@ -8,8 +8,7 @@ export const handleAuthSubmit = async ({
     setLoading,
     fetchUser,
     validate,
-    successMessage,
-}) => {
+    successMessage}) => {
     try {
         // Validation
         if (validate) {

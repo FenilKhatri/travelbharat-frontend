@@ -5,7 +5,7 @@ import { FiCalendar, FiMapPin, FiTrash2, FiPlus, FiNavigation, FiCopy, FiShare2,
 import PageLoader from "../../../components/ui/PageLoader";
 import { toast } from "react-toastify";
 import http from "../../../lib/axios";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 const TABS = [
   { id: "upcoming", label: "Upcoming Trips" },
@@ -214,4 +214,4 @@ const Trips = () => {
   );
 };
 
-export default Trips;
+export default Trips;

@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { FiBookOpen, FiPlus, FiTrash2, FiImage, FiEye, FiEyeOff, FiList, FiGrid } from "react-icons/fi";
 import { FaPencilAlt } from "react-icons/fa";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import http from "../../../lib/axios";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import AdminPageLayout from "../components/ui/AdminPageLayout";
 import SearchAndFilter from "../../../components/ui/SearchAndFilter";
@@ -230,4 +229,4 @@ const Blogs = () => {
   );
 };
 
-export default Blogs;
+export default Blogs;

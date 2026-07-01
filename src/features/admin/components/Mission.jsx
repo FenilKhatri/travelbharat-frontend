@@ -1,5 +1,4 @@
 import { fadeUp, stagger, scaleIn } from "../../../animations/motionVariants";
-import { motion } from "framer-motion";
 import MissionImg from "../../../assets/images/aboutus/mission.avif";
 import TitleAndDescription from "../../../components/ui/TitleAndDescription";
 import { missionData } from "../../public/data/aboutData";
@@ -76,4 +75,4 @@ const Mission = ({ Title, Description, SubDescription }) => {
 
 export default Mission;
 
-
+

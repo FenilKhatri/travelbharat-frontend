@@ -4,8 +4,7 @@ import CollectionCard from "../ui/CollectionCard";
 const FeaturedCollections = ({
   collections,
   badgeConfig,
-  onCollectionClick,
-}) => {
+  onCollectionClick}) => {
   if (!collections || collections.length === 0) return null;
 
   const marqueeItems = Array(8).fill(collections).flat();

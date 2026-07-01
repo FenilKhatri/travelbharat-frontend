@@ -20,8 +20,7 @@ export const TripPlannerProvider = ({ children }) => {
     accommodations: [],
     attractions: [],
     itinerary: [],
-    estimatedCost: 0,
-  });
+    estimatedCost: 0});
 
   const updateTripData = (updates) => {
     setTripData((prev) => ({ ...prev, ...updates }));
@@ -39,8 +38,7 @@ export const TripPlannerProvider = ({ children }) => {
         updateTripData,
         nextStep,
         prevStep,
-        goToStep,
-      }}
+        goToStep}}
     >
       {children}
     </TripPlannerContext.Provider>

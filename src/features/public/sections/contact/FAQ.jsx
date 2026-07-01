@@ -1,9 +1,7 @@
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
-import { motion } from "framer-motion";
 import {
   containerVariants,
-  itemVariants,
-} from "../../../../animations/motionVariants";
+  itemVariants} from "../../../../animations/motionVariants";
 import TitleAndDescription from "../../../../components/ui/TitleAndDescription";
 import { faqs } from "../../data/faqData";
 
@@ -68,4 +66,4 @@ const FAQ = () => {
 export default FAQ;
 
 
-
+

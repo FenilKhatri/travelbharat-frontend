@@ -1,10 +1,7 @@
-import { motion } from "framer-motion";
 import { FiInfo } from "react-icons/fi";
 import Reveal from "../../../../../components/ui/Reveal";
-
 const PlaceTips = ({ place }) => {
   if (!place.tips?.length) return null;
-
   return (
     <section className="py-24 bg-[#0a0a0a] overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-4">
@@ -29,5 +26,4 @@ const PlaceTips = ({ place }) => {
     </section>
   );
 };
-
 export default PlaceTips;

@@ -19,8 +19,7 @@ export const usePlaceFormLogic = () => {
         cityId: p.cityId?._id || p.cityId || "",
         mapCoordinates: {
           lat: p.mapCoordinates?.coordinates?.[1] || 0,
-          lng: p.mapCoordinates?.coordinates?.[0] || 0,
-        }
+          lng: p.mapCoordinates?.coordinates?.[0] || 0}
       };
     }
   });

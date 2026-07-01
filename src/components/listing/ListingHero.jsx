@@ -1,12 +1,9 @@
-
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useScroll, useTransform } from "framer-motion";
 import { memo } from "react";
-
 const ListingHero = ({ heroImage, highlightText, title, subtitle, onScrollClick }) => {
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity1 = useTransform(scrollY, [0, 300], [1, 0]);
-
   return (
     <div className="relative h-[450px] md:h-[550px] flex flex-col items-center justify-center overflow-hidden">
       {/* Parallax Background Image */}
@@ -18,7 +15,6 @@ const ListingHero = ({ heroImage, highlightText, title, subtitle, onScrollClick 
       <div className="absolute inset-0 bg-black/40" />
       {/* Gradient Overlay for Text Readability and seamless fade to content */}
       <div className="absolute inset-0 bg-linear-to-b from-black/80 via-transparent to-background" />
-
       {/* Hero Content */}
       <motion.div
         style={{ opacity: opacity1 }}
@@ -38,7 +34,6 @@ const ListingHero = ({ heroImage, highlightText, title, subtitle, onScrollClick 
           </p>
         )}
       </motion.div>
-
       {/* Scroll Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -59,5 +54,4 @@ const ListingHero = ({ heroImage, highlightText, title, subtitle, onScrollClick 
     </div>
   );
 };
-
 export default memo(ListingHero);

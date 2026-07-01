@@ -1,13 +1,9 @@
-import { motion } from "framer-motion";
 import { FiHelpCircle, FiChevronDown } from "react-icons/fi";
 import { useState } from "react";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
-
 const StateFAQ = ({ faq }) => {
   const [openIndex, setOpenIndex] = useState(0);
-
   if (!faq || faq.length === 0) return null;
-
   return (
     <section className="py-24 bg-[#0a0d14] relative border-b border-white/5">
       <div className="max-w-[1000px] w-full mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,7 +14,6 @@ const StateFAQ = ({ faq }) => {
             Find answers to frequently asked questions to help you plan your perfect trip.
           </p>
         </div>
-
         <div className="space-y-4">
           {faq.map((item, index) => {
             const isOpen = openIndex === index;
@@ -65,5 +60,4 @@ const StateFAQ = ({ faq }) => {
     </section>
   );
 };
-
 export default StateFAQ;

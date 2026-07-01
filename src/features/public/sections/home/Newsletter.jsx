@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { FiSend, FiMap, FiMail } from "react-icons/fi";
 import { FaMagic } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -23,8 +22,7 @@ const Newsletter = () => {
 
       await http.post("/newsletter/subscribe", {
         email,
-        source: "homepage",
-      });
+        source: "homepage"});
 
       toast.success("Welcome to TravelBharat ✨");
       setEmail("");
@@ -45,8 +43,7 @@ const Newsletter = () => {
         className="absolute inset-0 opacity-[0.25] dark:opacity-[0.08] bg-cover bg-center"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=2070&auto=format&fit=crop')",
-        }}
+            "url('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=2070&auto=format&fit=crop')"}}
       />
 
       {/* Glow Effects */}

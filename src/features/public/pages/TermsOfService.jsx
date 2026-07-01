@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { MdSecurity } from "react-icons/md";
 import { FiEye, FiFileText, FiLock, FiCompass, FiPhoneCall, FiInfo } from "react-icons/fi";
 import { FaHammer, FaBalanceScale } from "react-icons/fa";
@@ -302,4 +301,4 @@ const TermsOfService = () => {
   );
 };
 
-export default TermsOfService;
+export default TermsOfService;

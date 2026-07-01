@@ -1,8 +1,6 @@
-import { motion } from "framer-motion";
 import { FiMapPin, FiGlobe, FiInfo, FiCalendar } from "react-icons/fi";
 import TravelBadge from "../../../../../components/ui/TravelBadge";
 import LikeButton from "../../../../../components/ui/LikeButton";
-
 const StateHero = ({ state }) => {
   return (
     <section className="relative w-full min-h-[85vh] flex flex-col justify-center">
@@ -17,7 +15,6 @@ const StateHero = ({ state }) => {
           <div className="absolute inset-0 bg-linear-to-r from-black/40 via-transparent to-transparent" />
         </div>
       )}
-
       <div className="relative z-10 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24">
         <div className="flex flex-col lg:flex-row justify-between items-end gap-10">
           {/* Overlay Illustration */}
@@ -27,7 +24,6 @@ const StateHero = ({ state }) => {
               style={{ backgroundImage: `url(${state.stateBranding.overlayImage})` }}
             />
           )}
-
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -50,7 +46,6 @@ const StateHero = ({ state }) => {
                 <TravelBadge key={badgeName} badgeName={badgeName} />
               ))}
             </div>
-
             {state.tagline && (
               <p className="text-sm md:text-base font-bold mb-6 tracking-[0.2em] uppercase text-white/60">
                 {state.tagline}
@@ -75,7 +70,6 @@ const StateHero = ({ state }) => {
               )}
             </div>
           </motion.div>
-
           {/* Right Info Card - Replaced with Quick Facts sidebar mapping */}
           {state.quickFacts?.length > 0 ? (
              <motion.div
@@ -112,7 +106,6 @@ const StateHero = ({ state }) => {
                   <img src={state.images?.thumbnail?.url || state.heroImage?.url} alt="Thumbnail" className="w-full h-full object-cover" />
                 </div>
               )}
-
               <div className="space-y-4">
                 {state.capital && (
                   <div className="flex items-center gap-4">
@@ -125,9 +118,7 @@ const StateHero = ({ state }) => {
                     </div>
                   </div>
                 )}
-
                 {state.capital && state.region && <hr className="border-white/8" />}
-
                 {state.region && (
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-xl bg-[#E85D04]/10 border border-[#E85D04]/20 flex items-center justify-center text-[#E85D04] shrink-0">
@@ -139,9 +130,7 @@ const StateHero = ({ state }) => {
                     </div>
                   </div>
                 )}
-
                 {(state.capital || state.region) && state.languages?.length > 0 && <hr className="border-white/8" />}
-
                 {state.languages?.length > 0 && (
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-xl bg-[#E85D04]/10 border border-[#E85D04]/20 flex items-center justify-center text-[#E85D04] shrink-0">
@@ -161,5 +150,4 @@ const StateHero = ({ state }) => {
     </section>
   );
 };
-
 export default StateHero;

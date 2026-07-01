@@ -9,5 +9,4 @@ export const tripPlannerService = {
   },
   getTrip: async (id) => {
     return http.get(`/trips/${id}`);
-  },
-};
+  }};

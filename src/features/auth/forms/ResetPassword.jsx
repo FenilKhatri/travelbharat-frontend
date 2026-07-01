@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FiArrowLeft, FiLock, FiEye, FiEyeOff, FiCheck } from "react-icons/fi";
 import Button from "../../../components/ui/Button";
@@ -7,7 +6,7 @@ import { authService } from "../../../services/authService";
 import logoDark from "../../../assets/logo_dark.png";
 import logoLight from "../../../assets/logo_light.png";
 import H2 from "../../../components/ui/H2";
-import { fadeUp, stagger } from "../../../animations/motionVariants";
+import { fadeUp } from "../../../animations/motionVariants";
 import { useAuthSubmit } from "../../../utils/auth/useAuthSubmit";
 
 const ResetPassword = () => {
@@ -34,8 +33,7 @@ const ResetPassword = () => {
     },
     onSuccessCallback: () => {
       setSuccess(true);
-    },
-  });
+    }});
 
   return (
     <div className="min-h-screen flex bg-slate-50 dark:bg-[#050B14]">
@@ -157,4 +155,4 @@ const ResetPassword = () => {
 };
 
 export default ResetPassword;
-
+

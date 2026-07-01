@@ -1,7 +1,6 @@
 import { useTripPlanner } from "../context/TripPlannerContext";
 import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { FaPlane, FaTrain, FaBus, FaCar, FaCarSide } from "react-icons/fa";
-import { motion } from "framer-motion";
 
 const transportOptions = [
   { id: "flight", name: "Flight", icon: FaPlane },
@@ -54,4 +53,4 @@ const StepTransport = () => {
   );
 };
 
-export default StepTransport;
+export default StepTransport;

@@ -10,40 +10,34 @@ export const useStateData = (slug) => {
   const { data: stateData, isLoading: stateLoading, isError: stateError } = useQuery({
     queryKey: ["stateBySlug", slug],
     queryFn: () => stateService.getStateBySlug(slug),
-    enabled: !!slug,
-  });
+    enabled: !!slug});
 
   const state = stateData?.data?.state;
 
   const { data: citiesData, isLoading: citiesLoading } = useQuery({
     queryKey: ["citiesByState", slug],
     queryFn: () => cityService.getCitiesByState(slug),
-    enabled: !!slug,
-  });
+    enabled: !!slug});
 
   const { data: festivalsData, isLoading: festivalsLoading } = useQuery({
     queryKey: ["festivalsByState", slug],
     queryFn: () => festivalService.getFestivalsByState(slug),
-    enabled: !!slug,
-  });
+    enabled: !!slug});
 
   const { data: placesData, isLoading: placesLoading } = useQuery({
     queryKey: ["placesByState", slug],
     queryFn: () => placeService.getPlacesByState(slug),
-    enabled: !!slug,
-  });
+    enabled: !!slug});
 
   const { data: foodsData, isLoading: foodsLoading } = useQuery({
     queryKey: ["foodsByState", state?._id],
     queryFn: () => foodService.getFoods({ stateId: state?._id, limit: 6 }),
-    enabled: !!state?._id,
-  });
+    enabled: !!state?._id});
 
   const { data: similarStatesData, isLoading: similarStatesLoading } = useQuery({
     queryKey: ["similarStates", slug],
     queryFn: () => http.get(`/states/${slug}/similar`).then(res => res.data),
-    enabled: !!slug,
-  });
+    enabled: !!slug});
 
   return {
     state,
@@ -58,6 +52,5 @@ export const useStateData = (slug) => {
     foods: foodsData?.data?.foods || [],
     foodsLoading,
     similarStates: similarStatesData?.data?.states || [],
-    similarStatesLoading,
-  };
+    similarStatesLoading};
 };

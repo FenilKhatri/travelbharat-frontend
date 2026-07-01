@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { FiClock, FiHeart, FiEye, FiBookmark } from "react-icons/fi";
@@ -86,4 +85,4 @@ const SavedBlogs = () => {
   );
 };
 
-export default SavedBlogs;
+export default SavedBlogs;

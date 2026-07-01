@@ -1,10 +1,7 @@
-import { motion } from "framer-motion";
 import { FiCamera } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
-
 const StateWildlife = ({ wildlifeHighlights }) => {
   if (!wildlifeHighlights || wildlifeHighlights.length === 0) return null;
-
   return (
     <section className="py-24 bg-[#0a0d14] relative border-b border-white/5">
       <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,7 +13,6 @@ const StateWildlife = ({ wildlifeHighlights }) => {
             Discover the rich biodiversity and majestic creatures in their natural habitat.
           </p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {wildlifeHighlights.map((highlight, index) => (
             <motion.div
@@ -51,5 +47,4 @@ const StateWildlife = ({ wildlifeHighlights }) => {
     </section>
   );
 };
-
 export default StateWildlife;

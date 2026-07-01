@@ -3,7 +3,6 @@ import { FiBell, FiCheckCircle, FiInfo, FiAlertCircle, FiTrash2, FiCheck, FiCloc
 import { Link } from "react-router-dom";
 import http from "../../lib/axios";
 import { toast } from "react-toastify";
-import { motion } from "framer-motion";
 
 const SharedNotifications = ({ endpoint, queryKey, title, subtitle, isAdmin = false }) => {
   const queryClient = useQueryClient();
@@ -177,4 +176,4 @@ const SharedNotifications = ({ endpoint, queryKey, title, subtitle, isAdmin = fa
   );
 };
 
-export default SharedNotifications;
+export default SharedNotifications;

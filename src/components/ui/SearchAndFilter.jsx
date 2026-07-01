@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FiSearch, FiX } from "react-icons/fi";
 import { FaSlidersH, FaUndo } from "react-icons/fa";
@@ -9,8 +9,7 @@ const SearchAndFilter = ({
   filters = [],
   sortOptions = [],
   showDateRange = false,
-  className = "",
-}) => {
+  className = ""}) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -190,4 +189,4 @@ const SearchAndFilter = ({
   );
 };
 
-export default SearchAndFilter;
+export default SearchAndFilter;

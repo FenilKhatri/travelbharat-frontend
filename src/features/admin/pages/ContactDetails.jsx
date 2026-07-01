@@ -2,7 +2,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import http from "../../../lib/axios";
 import { FiArrowLeft, FiUser, FiMail, FiCalendar, FiMessageSquare } from "react-icons/fi";
-import { motion } from "framer-motion";
 
 const ContactDetails = () => {
   const { id } = useParams();
@@ -107,4 +106,4 @@ const ContactDetails = () => {
   );
 };
 
-export default ContactDetails;
+export default ContactDetails;

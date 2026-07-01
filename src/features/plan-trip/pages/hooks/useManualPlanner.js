@@ -17,8 +17,7 @@ export const useManualPlanner = (slug) => {
     duration: 1,
     travelers: { adults: 2, children: 0, seniors: 0 },
     tripType: "family",
-    budget: 20000,
-  });
+    budget: 20000});
 
   const [isSaving, setIsSaving] = useState(false);
 

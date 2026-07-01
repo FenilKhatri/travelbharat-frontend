@@ -1,9 +1,8 @@
 import { useRef } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { useScroll, useSpring } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import {
-  FiMap, FiMapPin, FiCompass, FiCalendar, FiBookOpen, FiCamera,
-} from "react-icons/fi";
+  FiMap, FiMapPin, FiCompass, FiCalendar, FiBookOpen, FiCamera} from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { statsService } from "../../../../services/statsService";
 import journeyBg from "../../../../assets/images/journey_bg.png";
@@ -13,33 +12,27 @@ const milestones = [
   {
     id: 1, title: "Discover States",
     desc: "Explore India's diverse states, cultures, and landscapes.",
-    icon: FiCompass, cardIcon: FiCompass, align: "left", link: "/states",
-  },
+    icon: FiCompass, cardIcon: FiCompass, align: "left", link: "/states"},
   {
     id: 2, title: "Explore Cities",
     desc: "Find iconic cities, hidden gems, and local experiences.",
-    icon: FiMapPin, cardIcon: FiMapPin, align: "right", link: "/cities",
-  },
+    icon: FiMapPin, cardIcon: FiMapPin, align: "right", link: "/cities"},
   {
     id: 3, title: "Visit Destinations",
     desc: "Discover monuments, nature escapes, and must-visit attractions.",
-    icon: FiMap, cardIcon: FiMap, align: "left", link: "/places",
-  },
+    icon: FiMap, cardIcon: FiMap, align: "left", link: "/places"},
   {
     id: 4, title: "Experience Festivals",
     desc: "Immerse yourself in India's vibrant celebrations and traditions.",
-    icon: FiCalendar, cardIcon: FiCalendar, align: "right", link: "/festivals",
-  },
+    icon: FiCalendar, cardIcon: FiCalendar, align: "right", link: "/festivals"},
   {
     id: 5, title: "Plan Your Trip",
     desc: "Create personalized travel itineraries and save favorites.",
-    icon: FiBookOpen, cardIcon: FiBookOpen, align: "left", link: "/user/trips",
-  },
+    icon: FiBookOpen, cardIcon: FiBookOpen, align: "left", link: "/user/trips"},
   {
     id: 6, title: "Create Memories",
     desc: "Capture unforgettable experiences and share your journey.",
-    icon: FiCamera, cardIcon: FiCamera, align: "right", link: "/user/write-blog",
-  },
+    icon: FiCamera, cardIcon: FiCamera, align: "right", link: "/user/write-blog"},
 ];
 
 /* Desktop: serpentine S-curve through center (x=50) */
@@ -73,16 +66,14 @@ const JourneySection = () => {
   /* scroll-driven animated path */
   const { scrollYProgress } = useScroll({
     target: timelineRef,
-    offset: ["start center", "end center"],
-  });
+    offset: ["start center", "end center"]});
   const pathLength = useSpring(scrollYProgress, { stiffness: 40, damping: 18 });
 
   /* real counts from the backend */
   const { data: statsData } = useQuery({
     queryKey: ["publicStats"],
     queryFn: () => statsService.getPublicStats(),
-    staleTime: 5 * 60 * 1000,
-  });
+    staleTime: 5 * 60 * 1000});
   const stats = statsData?.data?.data || statsData?.data || {};
 
   return (
@@ -191,8 +182,7 @@ const JourneySection = () => {
                     background: isLeft
                       ? "linear-gradient(to left, #E85D04, transparent)"
                       : "linear-gradient(to right, #E85D04, transparent)",
-                    opacity: 0.5,
-                  }}
+                    opacity: 0.5}}
                 />
 
                 {/* mobile connector — small line from node to card */}
@@ -289,4 +279,4 @@ const JourneySection = () => {
   );
 };
 
-export default JourneySection;
+export default JourneySection;

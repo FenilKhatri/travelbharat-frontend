@@ -1,6 +1,5 @@
 import { useTripPlanner } from "../context/TripPlannerContext";
 import { FiCalendar, FiUsers, FiCompass, FiDollarSign, FiArrowRight, FiArrowLeft } from "react-icons/fi";
-import { motion } from "framer-motion";
 import { useEffect } from "react";
 
 const travelStyles = ["Solo", "Couple", "Family", "Friends", "Group", "Pilgrim"];
@@ -151,4 +150,4 @@ const StepDetails = () => {
   );
 };
 
-export default StepDetails;
+export default StepDetails;

@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { FiArrowRight, FiClock, FiUser } from "react-icons/fi";
@@ -97,4 +96,4 @@ const BlogsSection = () => {
 };
 
 export default BlogsSection;
-
+

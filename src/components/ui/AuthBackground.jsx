@@ -5,8 +5,7 @@ const AuthBackground = ({
   PersonName,
   AuthBG,
   Description,
-  PersonDesignation,
-}) => {
+  PersonDesignation}) => {
   return (
     <div className="hidden md:flex w-1/2 items-center justify-center">
       <div className="w-full h-full relative">

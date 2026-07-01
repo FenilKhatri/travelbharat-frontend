@@ -1,19 +1,15 @@
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { FiEdit, FiTrash2, FiImage, FiMapPin } from "react-icons/fi";
 import http from "../../../lib/axios";
-import { toast } from "react-toastify";
 import AdminDataExplorer from "../components/ui/AdminDataExplorer";
 import { useAdminList } from "../hooks/useAdminList";
 import { useAdminMutations } from "../hooks/useAdminMutations";
-
 const Cities = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-
   const [confirmDelete, setConfirmDelete] = useState(null);
-
   // Query states for the filter
   const { data: statesData } = useQuery({
     queryKey: ["adminStatesList"],
@@ -21,33 +17,27 @@ const Cities = () => {
       const res = await http.get("/states/admin/all?limit=100");
       return res?.data || res;
     },
-    staleTime: 60000,
-  });
+    staleTime: 60000});
   const statesList = statesData?.data?.items || [];
-
   const { data, isLoading, isError, error, searchParams, setSearchParams } = useAdminList({
     queryKey: "adminCities",
     endpoint: "/cities/admin/all",
     extractParams: (params) => ({ stateId: params.get("stateId") || "" })
   });
-
   const { deleteMutation, toggleStatus } = useAdminMutations({
     queryKey: ["adminCities"],
     updateEndpoint: (id) => `/cities/admin/${id}`,
     deleteEndpoint: (id) => `/cities/admin/${id}`,
     successDeleteMsg: "City deleted permanently!"
   });
-
   const cities = data?.data?.items || [];
   const pagination = {
     total: data?.data?.totalItems || 0,
     pages: data?.data?.totalPages || 1
   };
-
   const handleEditClick = (cityItem) => navigate(`/admin/cities/edit/${cityItem._id}`);
   const handleOpenCreate = () => navigate("/admin/cities/create");
   const handleToggleActive = (cityItem) => toggleStatus(cityItem._id, cityItem.isActive);
-
   const filters = [
     {
       key: "stateId",
@@ -55,7 +45,6 @@ const Cities = () => {
       options: statesList.map(s => ({ value: s._id, label: s.name }))
     }
   ];
-
   const renderHeader = () => (
     <>
       <th className="py-4 px-6">City / State</th>
@@ -64,7 +53,6 @@ const Cities = () => {
       <th className="py-4 px-6 text-right">Actions</th>
     </>
   );
-
   const renderRow = (cityItem) => (
     <tr 
       key={cityItem._id} 
@@ -94,13 +82,11 @@ const Cities = () => {
           </div>
         </div>
       </td>
-
       <td className="py-4 px-6 font-semibold">
         <span className="inline-flex items-center justify-center px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs">
           {cityItem.totalPlaces || 0} Places
         </span>
       </td>
-
       <td className="py-4 px-6">
         <button
           onClick={(e) => { e.stopPropagation(); handleToggleActive(cityItem); }}
@@ -113,7 +99,6 @@ const Cities = () => {
           {cityItem.isActive ? "Active" : "Hidden"}
         </button>
       </td>
-
       <td className="py-4 px-6 text-right">
         <div className="flex items-center justify-end gap-2">
           <button
@@ -132,7 +117,6 @@ const Cities = () => {
       </td>
     </tr>
   );
-
   const renderGridCard = (cityItem) => (
     <div 
       key={cityItem._id} 
@@ -192,7 +176,6 @@ const Cities = () => {
       </div>
     </div>
   );
-
   return (
     <>
       <AdminDataExplorer
@@ -212,7 +195,6 @@ const Cities = () => {
         renderGridCard={renderGridCard}
         emptyStateMessage="No cities registered."
       />
-
       {confirmDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white dark:bg-[#0A121F] border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 max-w-sm w-full shadow-2xl">
@@ -241,5 +223,4 @@ const Cities = () => {
     </>
   );
 };
-
 export default Cities;

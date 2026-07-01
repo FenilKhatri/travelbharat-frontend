@@ -1,6 +1,4 @@
-import { motion } from "framer-motion";
 import { FiClock, FiCalendar, FiWind, FiDollarSign, FiStar, FiTag } from "react-icons/fi";
-
 const PlaceSnapshot = ({ place }) => {
   const items = [
     { icon: FiClock, label: "Duration", value: place.duration },
@@ -10,9 +8,7 @@ const PlaceSnapshot = ({ place }) => {
     { icon: FiStar, label: "Rating", value: place.rating > 0 ? `${place.rating} / 5 (${place.reviewCount})` : null },
     { icon: FiTag, label: "Type", value: place.tripType?.[0] || place.category }
   ].filter(item => item.value && item.value !== "Free" && item.value !== "Open 24 Hours");
-
   if (items.length === 0) return null;
-
   return (
     <section className="relative z-20 -mt-10 mb-24 max-w-[1600px] mx-auto px-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
@@ -37,5 +33,4 @@ const PlaceSnapshot = ({ place }) => {
     </section>
   );
 };
-
 export default PlaceSnapshot;

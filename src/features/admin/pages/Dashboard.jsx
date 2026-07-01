@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { motion } from "framer-motion";
 import { FiUsers, FiMap, FiMapPin, FiStar, FiMail, FiInbox, FiTrendingUp, FiClock, FiCalendar, FiX, FiSend } from "react-icons/fi";
 import http from "../../../lib/axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -443,4 +442,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Dashboard;

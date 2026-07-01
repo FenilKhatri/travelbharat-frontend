@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useTripPlanner } from "../context/TripPlannerContext";
 import { FiArrowLeft, FiCheck, FiSave, FiMapPin, FiCalendar, FiUsers, FiDollarSign } from "react-icons/fi";
-import { motion } from "framer-motion";
 import http from "../../../lib/axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -162,4 +161,4 @@ const StepSummary = () => {
   );
 };
 
-export default StepSummary;
+export default StepSummary;

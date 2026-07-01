@@ -11,8 +11,7 @@ const UserDetails = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["adminUserDetails", id],
-    queryFn: () => http.get(`/admin/users/${id}`),
-  });
+    queryFn: () => http.get(`/admin/users/${id}`)});
 
   const user = data?.data?.user || data?.data;
 

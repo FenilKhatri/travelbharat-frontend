@@ -10,8 +10,7 @@ const ReviewDetails = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["adminReviewDetails", id],
-    queryFn: () => http.get(`/reviews/admin/${id}`),
-  });
+    queryFn: () => http.get(`/reviews/admin/${id}`)});
 
   const review = data?.data?.review || data?.data;
 

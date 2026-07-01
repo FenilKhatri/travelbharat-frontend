@@ -12,16 +12,14 @@ const ActionConfig = {
   VIEW_FESTIVAL: { icon: FiActivity, color: "text-pink-500", bg: "bg-pink-500/10", label: "Viewed Festival" },
   VIEW_BLOG: { icon: FiBookOpen, color: "text-green-500", bg: "bg-green-500/10", label: "Read Blog" },
   SEARCH: { icon: FiSearch, color: "text-orange-500", bg: "bg-orange-500/10", label: "Searched" },
-  PLAN_TRIP: { icon: FiMap, color: "text-red-500", bg: "bg-red-500/10", label: "Planned Trip" },
-};
+  PLAN_TRIP: { icon: FiMap, color: "text-red-500", bg: "bg-red-500/10", label: "Planned Trip" }};
 
 const History = () => {
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
     queryKey: ["userHistory"],
-    queryFn: () => historyService.getMyHistory(50),
-  });
+    queryFn: () => historyService.getMyHistory(50)});
 
   const clearMutation = useMutation({
     mutationFn: () => historyService.clearHistory(),
@@ -29,8 +27,7 @@ const History = () => {
       toast.success("History cleared successfully");
       queryClient.invalidateQueries(["userHistory"]);
     },
-    onError: () => toast.error("Failed to clear history"),
-  });
+    onError: () => toast.error("Failed to clear history")});
 
   const historyItems = data?.data?.data?.history || data?.data?.history || [];
 

@@ -16,8 +16,7 @@ export const useFestivalFormLogic = () => {
         ...INITIAL_FESTIVAL_FORM,
         ...f,
         stateId: f.stateId?._id || f.stateId || "",
-        cityId: f.cityId?._id || f.cityId || "",
-      };
+        cityId: f.cityId?._id || f.cityId || ""};
     }
   });
 };

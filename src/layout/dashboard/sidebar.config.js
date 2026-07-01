@@ -8,8 +8,7 @@ import { FaMale, FaMedkit, FaCalendarCheck, FaStethoscope, FaAddressBook, FaClip
 export const sidebarConfig = {
     [ROLES.ADMIN]: {
         title: "Admin Panel",
-        links: adminRoutes,
-    },
+        links: adminRoutes},
     [ROLES.USER]: {
         title: "User Dashboard",
         links: [
@@ -20,6 +19,5 @@ export const sidebarConfig = {
             { to: "/user/my-blogs", label: "My Blogs", icon: FiBookmark },
             { to: "/user/write-blog", label: "Write Blog", icon: FiEdit3 },
             { to: "/user/settings", label: "Settings", icon: FiSettings },
-        ],
-    }
+        ]}
 };

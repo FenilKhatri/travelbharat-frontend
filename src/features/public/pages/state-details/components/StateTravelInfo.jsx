@@ -1,15 +1,12 @@
-import { motion } from "framer-motion";
 import { FiNavigation, FiInfo } from "react-icons/fi";
 import { FaPlane, FaTrain, FaCar, FaBus } from "react-icons/fa";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
-
 const StateTravelInfo = ({ travelInfo }) => {
   if (!travelInfo) return null;
   
   // Check if any fields actually have content
   const hasContent = travelInfo.byAir || travelInfo.byTrain || travelInfo.byRoad || travelInfo.localTransport;
   if (!hasContent) return null;
-
   return (
     <section className="py-24 bg-[#0a0d14] relative border-b border-white/5">
       <div className="max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,7 +18,6 @@ const StateTravelInfo = ({ travelInfo }) => {
             Seamless travel options to help you plan your journey and navigate locally.
           </p>
         </div>
-
         {/* Major Hubs Banner */}
         {(travelInfo.airport || travelInfo.nearestMajorCity) && (
           <motion.div 
@@ -49,7 +45,6 @@ const StateTravelInfo = ({ travelInfo }) => {
             </div>
           </motion.div>
         )}
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {travelInfo.byAir && (
             <motion.div
@@ -67,7 +62,6 @@ const StateTravelInfo = ({ travelInfo }) => {
               <p className="text-[#8fa3cc] leading-relaxed">{travelInfo.byAir}</p>
             </motion.div>
           )}
-
           {travelInfo.byTrain && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -84,7 +78,6 @@ const StateTravelInfo = ({ travelInfo }) => {
               <p className="text-[#8fa3cc] leading-relaxed">{travelInfo.byTrain}</p>
             </motion.div>
           )}
-
           {travelInfo.byRoad && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -101,7 +94,6 @@ const StateTravelInfo = ({ travelInfo }) => {
               <p className="text-[#8fa3cc] leading-relaxed">{travelInfo.byRoad}</p>
             </motion.div>
           )}
-
           {travelInfo.localTransport && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -123,5 +115,4 @@ const StateTravelInfo = ({ travelInfo }) => {
     </section>
   );
 };
-
 export default StateTravelInfo;

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FiArrowLeft, FiMail } from "react-icons/fi";
 import Button from "../../../components/ui/Button";
@@ -24,8 +23,7 @@ const ForgotPassword = () => {
     },
     onSuccessCallback: () => {
       setSubmitted(true);
-    },
-  });
+    }});
 
   return (
     <div className="min-h-screen flex bg-slate-50 dark:bg-[#050B14]">
@@ -35,8 +33,7 @@ const ForgotPassword = () => {
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage:
-              "url('https://plus.unsplash.com/premium_photo-1661885523029-fc960a2bb4f3?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
-          }}
+              "url('https://plus.unsplash.com/premium_photo-1661885523029-fc960a2bb4f3?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"}}
         >
           <div className="absolute inset-0 bg-linear-to-r from-[#050B14]/80 to-transparent"></div>
         </div>
@@ -141,4 +138,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ForgotPassword;

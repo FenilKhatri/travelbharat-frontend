@@ -28,5 +28,4 @@ export const blogService = {
   toggleLike: (entityId, entityType) => http.post(`/likes/toggle`, { entityId, entityType: entityType.toLowerCase() }),
   addComment: (blogId, text) => http.post(`${PREFIX}/${blogId}/comments`, { text }),
   getComments: (blogId, params) => http.get(`${PREFIX}/${blogId}/comments`, { params }),
-  deleteComment: (id) => http.delete(`${PREFIX}/comments/${id}`),
-};
+  deleteComment: (id) => http.delete(`${PREFIX}/comments/${id}`)};

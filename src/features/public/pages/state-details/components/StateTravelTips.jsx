@@ -1,17 +1,13 @@
-import { motion } from "framer-motion";
 import { FiCheckCircle, FiAlertTriangle, FiInfo, FiHeart, FiStar } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
 import * as Icons from "react-icons/fi";
-
 const StateTravelTips = ({ travelTips }) => {
   if (!travelTips || travelTips.length === 0) return null;
-
   const getIcon = (iconName) => {
     if (!iconName) return <FiCheckCircle size={24} />;
     const IconComponent = Icons[iconName] || FiCheckCircle;
     return <IconComponent size={24} />;
   };
-
   return (
     <section className="py-24 bg-[#07090f] relative border-b border-white/5">
       <div className="max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,7 +19,6 @@ const StateTravelTips = ({ travelTips }) => {
             Local insights and practical advice to make the most of your journey.
           </p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {travelTips.map((tip, index) => (
             <motion.div
@@ -48,5 +43,4 @@ const StateTravelTips = ({ travelTips }) => {
     </section>
   );
 };
-
 export default StateTravelTips;

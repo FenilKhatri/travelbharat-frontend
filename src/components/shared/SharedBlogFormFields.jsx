@@ -23,8 +23,7 @@ export const INITIAL_BLOG_FORM = {
   priority: 0,
   featured: false,
   isPublished: false,
-  seo: { metaTitle: "", metaDescription: "", keywords: [] },
-};
+  seo: { metaTitle: "", metaDescription: "", keywords: [] }};
 
 const Section = ({ icon: Icon, title, action, children }) => (
   <div className="space-y-5 bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">

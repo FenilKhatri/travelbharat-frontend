@@ -24,38 +24,32 @@ export const cardData = [
         name: "Hidden Gems",
         description:
             "Discover lesser-known destinations that most tourists miss — from secluded valleys to forgotten temples.",
-        icon: FiCompass,
-    },
+        icon: FiCompass},
     {
         name: "Cultural Heritage",
         description:
             "Explore India's rich cultural tapestry — ancient traditions, art forms, and centuries-old customs.",
-        icon: FaLandmark,
-    },
+        icon: FaLandmark},
     {
         name: "State Guides",
         description:
             "Comprehensive state-by-state travel guides with local insights, itineraries, and practical tips.",
-        icon: FiMap,
-    },
+        icon: FiMap},
     {
         name: "Local Experiences",
         description:
             "Immerse yourself in authentic local experiences — from street food walks to village homestays.",
-        icon: FiHeart,
-    },
+        icon: FiHeart},
     {
         name: "Authentic Information",
         description:
             "Every piece of content is researched and verified to ensure you get reliable, authentic travel information.",
-        icon: FiBookOpen,
-    },
+        icon: FiBookOpen},
     {
         name: "Visual Stories",
         description:
             "Beautiful photography and immersive visual storytelling that brings every destination to life.",
-        icon: FiCamera,
-    },
+        icon: FiCamera},
 ];
 
 export const stats = [
@@ -70,26 +64,22 @@ export const visionItems = [
         title: "Explore",
         icon: FiCompass,
         iconClass:
-            "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400",
-    },
+            "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400"},
     {
         title: "Heritage",
         icon: FaLandmark,
         iconClass:
-            "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400",
-    },
+            "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400"},
     {
         title: "Nature",
         icon: FaMountain,
         iconClass:
-            "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400",
-    },
+            "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400"},
     {
         title: "Culture",
         icon: FiGlobe,
         iconClass:
-            "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400",
-    },
+            "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"},
 ];
 
 export const processSteps = [
@@ -97,24 +87,20 @@ export const processSteps = [
         number: "01",
         title: "Explore States",
         description: "Browse through India's diverse states and union territories.",
-        icon: FiMap,
-    },
+        icon: FiMap},
     {
         number: "02",
         title: "Discover Cities",
         description: "Find amazing cities within each state to plan your journey.",
-        icon: FiGlobe,
-    },
+        icon: FiGlobe},
     {
         number: "03",
         title: "Find Destinations",
         description: "Explore curated destinations with detailed travel information.",
-        icon: FiCompass,
-    },
+        icon: FiCompass},
     {
         number: "04",
         title: "Plan & Travel",
         description: "Use our guides and tips to plan the perfect trip.",
-        icon: FiStar,
-    },
+        icon: FiStar},
 ];

@@ -10,8 +10,7 @@ const TripDetails = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["adminTripDetails", id],
-    queryFn: () => http.get(`/trips/admin/${id}`),
-  });
+    queryFn: () => http.get(`/trips/admin/${id}`)});
 
   const trip = data?.data?.trip || data?.data;
 

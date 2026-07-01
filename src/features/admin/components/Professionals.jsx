@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { cardData } from "../../public/data/aboutData";
 import { fadeUp, stagger } from "../../../animations/motionVariants";
 import TitleText from "../../../components/ui/TitleText";
@@ -54,4 +53,4 @@ const Professionals = ({ Title, Description, SubDescription }) => {
 
 export default Professionals;
 
-
+

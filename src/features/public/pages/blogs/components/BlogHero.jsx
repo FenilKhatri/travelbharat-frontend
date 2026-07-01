@@ -1,6 +1,4 @@
-import { motion } from "framer-motion";
 import { FiBookOpen, FiSearch } from "react-icons/fi";
-
 const BlogHero = ({ searchTerm, setSearchTerm }) => {
   return (
     <section className="relative overflow-hidden">
@@ -9,7 +7,6 @@ const BlogHero = ({ searchTerm, setSearchTerm }) => {
         <div className="absolute top-10 left-10 w-72 h-72 bg-[#E85D04]/20 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
       </div>
-
       <div className="relative z-10 max-w-[1600px] w-full mx-auto px-4 py-16 md:py-24">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -26,7 +23,6 @@ const BlogHero = ({ searchTerm, setSearchTerm }) => {
           <p className="text-lg text-slate-300 max-w-2xl leading-relaxed mb-10">
             Curated stories, destination guides, and cultural insights from every corner of Incredible India.
           </p>
-
           <div className="relative max-w-xl">
             <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
             <input
@@ -42,5 +38,4 @@ const BlogHero = ({ searchTerm, setSearchTerm }) => {
     </section>
   );
 };
-
 export default BlogHero;

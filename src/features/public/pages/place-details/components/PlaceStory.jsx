@@ -1,6 +1,4 @@
-import { motion } from "framer-motion";
 import Reveal from "../../../../../components/ui/Reveal";
-
 const PlaceStory = ({ place, heroImage }) => {
   return (
     <section className="py-24 max-w-[1600px] mx-auto px-4">
@@ -34,5 +32,4 @@ const PlaceStory = ({ place, heroImage }) => {
     </section>
   );
 };
-
 export default PlaceStory;

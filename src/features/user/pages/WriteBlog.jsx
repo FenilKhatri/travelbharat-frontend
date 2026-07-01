@@ -16,8 +16,7 @@ import {
   FormToggle,
   FormHeader,
   FormSEO,
-  FormGallery,
-} from "../../admin/components/form";
+  FormGallery} from "../../admin/components/form";
 import CustomDropdown from "../../../components/ui/CustomDropdown";
 
 const CATEGORIES = [
@@ -40,8 +39,7 @@ const INITIAL_BLOG_FORM = {
   relatedDestinations: [],
   travelTips: [],
   faqs: [],
-  isPublished: false,
-};
+  isPublished: false};
 
 const WriteBlog = () => {
   const { id } = useParams();
@@ -79,16 +77,14 @@ const WriteBlog = () => {
         tags: blogToEdit.tags || [],
         images: { 
           hero: blogToEdit.images?.hero || "", 
-          thumbnail: blogToEdit.images?.thumbnail || "", 
-        },
+          thumbnail: blogToEdit.images?.thumbnail || ""},
         gallery: blogToEdit.images?.gallery || [],
         stateId: blogToEdit.stateId || "",
         relatedCities: blogToEdit.relatedCities || [],
         relatedDestinations: blogToEdit.relatedDestinations || [],
         travelTips: blogToEdit.travelTips || [],
         faqs: blogToEdit.faqs || [],
-        isPublished: blogToEdit.status === 'published',
-      });
+        isPublished: blogToEdit.status === 'published'});
     }
   }, [blogToEdit]);
 
@@ -99,8 +95,7 @@ const WriteBlog = () => {
       queryClient.invalidateQueries(["myBlogs"]);
       navigate("/user/profile"); // or some other page
     },
-    onError: (err) => toast.error(err?.response?.data?.message || (id ? "Failed to update blog" : "Failed to create blog")),
-  });
+    onError: (err) => toast.error(err?.response?.data?.message || (id ? "Failed to update blog" : "Failed to create blog"))});
 
   const uploadSingleImage = async (file, path) => {
     const formData = new FormData();

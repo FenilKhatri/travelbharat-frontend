@@ -10,8 +10,7 @@ const StateDetails = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["adminStateDetails", id],
-    queryFn: () => http.get(`/states/admin/${id}`),
-  });
+    queryFn: () => http.get(`/states/admin/${id}`)});
 
   const stateData = data?.data?.state || data?.data;
 

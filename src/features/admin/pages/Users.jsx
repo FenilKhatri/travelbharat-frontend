@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { FiUsers, FiTrash2, FiXCircle, FiMail, FiGrid, FiList } from "react-icons/fi";
 import { MdSecurity, MdVerified } from "react-icons/md";
-import http from "../../../lib/axios";
 import SearchAndFilter from "../../../components/ui/SearchAndFilter";
 import CustomDropdown from "../../../components/ui/CustomDropdown";
 import AdminPageLayout from "../components/ui/AdminPageLayout";
 import AdminPagination from "../components/ui/AdminPagination";
-import { toast } from "react-toastify";
 
 import { useAdminList } from "../hooks/useAdminList";
 import { useAdminMutations } from "../hooks/useAdminMutations";
@@ -339,4 +337,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Users;

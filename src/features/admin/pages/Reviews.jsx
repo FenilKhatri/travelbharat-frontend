@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { FiStar, FiCheck, FiX, FiTrash2, FiMessageSquare, FiMapPin, FiUser, FiClock, FiGrid, FiList } from "react-icons/fi";
 import http from "../../../lib/axios";
 import SearchAndFilter from "../../../components/ui/SearchAndFilter";
@@ -455,4 +455,4 @@ const Reviews = () => {
   );
 };
 
-export default Reviews;
+export default Reviews;

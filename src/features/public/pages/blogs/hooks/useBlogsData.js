@@ -17,19 +17,15 @@ export const useBlogsData = () => {
   const { data: blogsData, isLoading } = useQuery({
     queryKey: ["allBlogs", selectedCategory],
     queryFn: () => blogService.getAllBlogs({
-      category: selectedCategory ? selectedCategory.toLowerCase().replace(/ /g, "-") : undefined,
-    }),
-  });
+      category: selectedCategory ? selectedCategory.toLowerCase().replace(/ /g, "-") : undefined})});
 
   const { data: popularBlogsData } = useQuery({
     queryKey: ["popularBlogs"],
-    queryFn: () => blogService.getPopularBlogs(),
-  });
+    queryFn: () => blogService.getPopularBlogs()});
 
   const { data: tagsData } = useQuery({
     queryKey: ["blogTags"],
-    queryFn: () => blogService.getBlogTags(),
-  });
+    queryFn: () => blogService.getBlogTags()});
 
   const blogs = blogsData?.data?.data?.blogs || blogsData?.data?.blogs || [];
   const popularBlogsList = popularBlogsData?.data?.data?.blogs || popularBlogsData?.data?.blogs || [];

@@ -1,20 +1,14 @@
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { FiImage, FiEdit, FiTrash2, FiStar, FiMapPin } from "react-icons/fi";
-import http from "../../../lib/axios";
-import { toast } from "react-toastify";
 import AdminDataExplorer from "../components/ui/AdminDataExplorer";
-
 import { useAdminList } from "../hooks/useAdminList";
 import { useAdminMutations } from "../hooks/useAdminMutations";
-
 const States = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-
   const [confirmDelete, setConfirmDelete] = useState(null);
-
   // Query
   const { data, isLoading, isError, error, searchParams, setSearchParams } = useAdminList({
     queryKey: "adminStates",
@@ -24,29 +18,23 @@ const States = () => {
       featured: params.get("featured") || ""
     })
   });
-
   const { deleteMutation, toggleStatus, updateMutation } = useAdminMutations({
     queryKey: ["adminStates"],
     updateEndpoint: (id) => `/states/admin/${id}`,
     deleteEndpoint: (id) => `/states/admin/${id}`,
     successDeleteMsg: "State deleted permanently!"
   });
-
   const states = data?.data?.items || [];
   const pagination = {
     total: data?.data?.totalItems || 0,
     pages: data?.data?.totalPages || 1
   };
-
   const handleEditClick = (stateItem) => navigate(`/admin/states/edit/${stateItem._id}`);
   const handleOpenCreate = () => navigate("/admin/states/create");
-
   const handleToggleFeatured = (stateItem) => {
     updateMutation.mutate({ id: stateItem._id, payload: { featured: !stateItem.featured } });
   };
-
   const handleToggleActive = (stateItem) => toggleStatus(stateItem._id, stateItem.isActive);
-
   const renderHeader = () => (
     <>
       <th className="py-4 px-6">State / Tagline</th>
@@ -57,7 +45,6 @@ const States = () => {
       <th className="py-4 px-6 text-right">Actions</th>
     </>
   );
-
   const renderRow = (stateItem) => (
     <tr 
       key={stateItem._id} 
@@ -125,7 +112,6 @@ const States = () => {
       </td>
     </tr>
   );
-
   const renderGridCard = (stateItem) => (
     <div 
       key={stateItem._id} 
@@ -191,7 +177,6 @@ const States = () => {
       </div>
     </div>
   );
-
   return (
     <>
       <AdminDataExplorer
@@ -211,7 +196,6 @@ const States = () => {
         renderGridCard={renderGridCard}
         emptyStateMessage="No states registered."
       />
-
       {confirmDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white dark:bg-[#0A121F] border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 max-w-sm w-full shadow-2xl">
@@ -240,5 +224,4 @@ const States = () => {
     </>
   );
 };
-
 export default States;

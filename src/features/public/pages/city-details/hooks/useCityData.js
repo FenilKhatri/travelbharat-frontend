@@ -11,8 +11,7 @@ export const useCityData = (citySlug, stateSlug) => {
   const { data: cityData, isLoading: cityLoading, isError: cityError } = useQuery({
     queryKey: ["cityBySlug", citySlug],
     queryFn: () => cityService.getCityBySlug(citySlug),
-    enabled: !!citySlug,
-  });
+    enabled: !!citySlug});
 
   const city = cityData?.data?.city;
   const resolvedStateSlug = stateSlug || city?.stateId?.slug;
@@ -20,26 +19,22 @@ export const useCityData = (citySlug, stateSlug) => {
   const { data: placesData, isLoading: placesLoading } = useQuery({
     queryKey: ["placesByCity", citySlug],
     queryFn: () => placeService.getPlacesByCity(citySlug, { limit: 5 }),
-    enabled: !!citySlug,
-  });
+    enabled: !!citySlug});
 
   const { data: hotelsData, isLoading: hotelsLoading } = useQuery({
     queryKey: ["hotelsByCity", city?._id],
     queryFn: () => hotelService.getHotels({ cityId: city._id, limit: 6 }),
-    enabled: !!city?._id,
-  });
+    enabled: !!city?._id});
 
   const { data: restaurantsData, isLoading: restaurantsLoading } = useQuery({
     queryKey: ["restaurantsByCity", city?._id],
     queryFn: () => restaurantService.getRestaurants({ cityId: city._id, limit: 6 }),
-    enabled: !!city?._id,
-  });
+    enabled: !!city?._id});
 
   const { data: festivalsData, isLoading: festivalsLoading } = useQuery({
     queryKey: ["festivalsByState", resolvedStateSlug],
     queryFn: () => festivalService.getFestivalsByState(resolvedStateSlug),
-    enabled: !!resolvedStateSlug,
-  });
+    enabled: !!resolvedStateSlug});
 
   const places = placesData?.data?.places || [];
   const hotels = hotelsData?.data?.hotels || [];

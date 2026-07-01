@@ -12,9 +12,7 @@ export const useListingData = (endpoint, queryKeyPrefix, queryParams) => {
           limit: 12,
           ...Object.fromEntries(
             Object.entries(queryParams).filter(([_, v]) => v !== undefined && v !== "")
-          ),
-        },
-      });
+          )}});
       return res.data;
     },
     getNextPageParam: (lastPage) => {
@@ -23,6 +21,5 @@ export const useListingData = (endpoint, queryKeyPrefix, queryParams) => {
       }
       return undefined;
     },
-    staleTime: 5 * 60 * 1000,
-  });
+    staleTime: 5 * 60 * 1000});
 };

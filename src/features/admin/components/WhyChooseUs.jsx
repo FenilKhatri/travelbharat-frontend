@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { fadeUp, stagger } from "../../../animations/motionVariants";
 import { cardData } from "../../public/data/aboutData";
 import TitleText from "../../../components/ui/TitleText";
@@ -59,4 +58,4 @@ const WhyChooseUs = ({ loading, Title, Description, SubDescription }) => {
 
 export default WhyChooseUs;
 
-
+

@@ -35,16 +35,14 @@ export const state_filters = [
   {
     key: "region",
     label: "Region",
-    options: state_regions,
-  },
+    options: state_regions},
   {
     key: "featured",
     label: "Featured",
     options: [
       { value: "true", label: "Featured" },
       { value: "false", label: "Non-Featured" },
-    ],
-  },
+    ]},
 ];
 
 export const fest_categories = [
@@ -59,8 +57,7 @@ export const fest_filters = [
   {
     key: "category",
     label: "Category",
-    options: fest_categories,
-  },
+    options: fest_categories},
 ];
 
 export const places_category = [
@@ -86,8 +83,7 @@ export const places_filters = [
   {
     key: "category",
     label: "Category",
-    options: places_category,
-  },
+    options: places_category},
   {
     key: "budget",
     label: "Budget",
@@ -95,6 +91,5 @@ export const places_filters = [
       { value: "budget", label: "Budget Friendly" },
       { value: "moderate", label: "Moderate" },
       { value: "luxury", label: "Luxury" },
-    ],
-  },
+    ]},
 ];

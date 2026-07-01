@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { fadeUp } from "../../animations/motionVariants";
 
 const CareServiceCard = ({ Icon, Title, Description }) => {
@@ -21,4 +20,4 @@ const CareServiceCard = ({ Icon, Title, Description }) => {
 
 export default CareServiceCard;
 
-
+

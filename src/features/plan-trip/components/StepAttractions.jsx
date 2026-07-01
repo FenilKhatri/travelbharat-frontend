@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useTripPlanner } from "../context/TripPlannerContext";
 import { placeService } from "../../../services/placeService";
 import { FiArrowRight, FiArrowLeft, FiPlus, FiCheck } from "react-icons/fi";
-import { motion } from "framer-motion";
 import PageLoader from "../../../components/ui/PageLoader";
 
 const StepAttractions = () => {
@@ -101,4 +100,4 @@ const StepAttractions = () => {
   );
 };
 
-export default StepAttractions;
+export default StepAttractions;

@@ -1,6 +1,5 @@
 import { FaMagic } from "react-icons/fa";
-import { AnimatePresence, motion } from "framer-motion";
-
+import { AnimatePresence } from "framer-motion";
 const HeroContent = ({ currentBanner, currentSlide, statsData }) => {
   return (
     <div className="lg:col-span-7">
@@ -11,7 +10,6 @@ const HeroContent = ({ currentBanner, currentSlide, statsData }) => {
           Explore Incredible Bharat
         </span>
       </div>
-
       {/* TITLE */}
       <div className="min-h-[260px] flex flex-col justify-center">
         <AnimatePresence mode="wait">
@@ -32,7 +30,6 @@ const HeroContent = ({ currentBanner, currentSlide, statsData }) => {
           </motion.div>
         </AnimatePresence>
       </div>
-
       {/* STATS */}
       <div className="flex flex-wrap gap-8 mt-12 border-t border-border-theme pt-8">
         {[
@@ -51,5 +48,4 @@ const HeroContent = ({ currentBanner, currentSlide, statsData }) => {
     </div>
   );
 };
-
 export default HeroContent;

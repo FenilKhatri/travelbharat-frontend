@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import "../App.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
@@ -21,4 +20,4 @@ function App() {
 }
 
 export default App;
-
+

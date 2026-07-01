@@ -13,8 +13,7 @@ const FeaturedStates = () => {
   // Fetch real destination counts per state
   const { data: countsData } = useQuery({
     queryKey: ['statesDestinationCounts'],
-    queryFn: () => statsService.getStatesDestinationCounts(),
-  });
+    queryFn: () => statsService.getStatesDestinationCounts()});
 
   const destCounts = countsData?.data?.counts || {};
 
@@ -31,8 +30,7 @@ const FeaturedStates = () => {
     return fetchedStates.map((state) => ({
       ...state,
       featured: state.name.toLowerCase() === 'gujarat',
-      totalPlaces: destCounts[state._id] || state.totalPlaces || 0,
-    }));
+      totalPlaces: destCounts[state._id] || state.totalPlaces || 0}));
   }, [data, destCounts]);
 
   return (

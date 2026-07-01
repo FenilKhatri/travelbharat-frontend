@@ -6,5 +6,4 @@ export const statsService = {
   },
   getStatesDestinationCounts: async () => {
     return http.get("/stats/states-destination-counts");
-  },
-};
+  }};

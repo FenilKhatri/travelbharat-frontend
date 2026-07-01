@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import { motion } from "framer-motion";
 import Button from "../../../components/ui/Button";
 import TitleText from "../../../components/ui/TitleText";
 import TitleAndDescription from "../../../components/ui/TitleAndDescription";
@@ -55,4 +54,4 @@ const CTA = ({ Title, Description, SubDescription }) => {
   );
 }
 
-export default CTA
+export default CTA

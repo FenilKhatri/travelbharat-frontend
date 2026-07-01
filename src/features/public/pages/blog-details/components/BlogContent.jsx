@@ -1,15 +1,13 @@
 import { Link } from "react-router-dom";
 import { FiShare2, FiImage, FiInfo, FiMapPin, FiHelpCircle } from "react-icons/fi";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import LikeButton from "../../../../../components/ui/LikeButton";
-
 const BlogContent = ({ blog, handleShare, setSelectedImage, expandedFaq, setExpandedFaq }) => {
   return (
     <>
       <div className="text-xl md:text-2xl font-semibold text-slate-600 dark:text-slate-300 italic mb-12 leading-relaxed border-l-4 border-[#E85D04] pl-6 py-2">
         "{blog.excerpt}"
       </div>
-
       {/* Social Share Bar */}
       <div className="flex items-center justify-between py-6 border-y border-slate-200 dark:border-slate-800 mb-12">
         <div className="flex items-center gap-4">
@@ -20,12 +18,10 @@ const BlogContent = ({ blog, handleShare, setSelectedImage, expandedFaq, setExpa
           <LikeButton entityId={blog._id} entityType="blog" initialCount={blog.likeCount || blog.likes} />
         </div>
       </div>
-
       {/* Blog Content */}
       <div id="content" className="prose prose-lg dark:prose-invert max-w-none prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-headings:text-slate-900 dark:prose-headings:text-white prose-headings:font-bold prose-a:text-[#E85D04] hover:prose-a:text-[#D05203] prose-img:rounded-3xl prose-img:shadow-xl">
         <div dangerouslySetInnerHTML={{ __html: blog.content?.replace(/\n/g, '<br/>') }} />
       </div>
-
       {/* Gallery */}
       {blog.images?.gallery?.length > 0 && (
         <div id="gallery" className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
@@ -39,7 +35,6 @@ const BlogContent = ({ blog, handleShare, setSelectedImage, expandedFaq, setExpa
           </div>
         </div>
       )}
-
       {/* Travel Tips */}
       {blog.travelTips?.length > 0 && (
         <div id="travel-tips" className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
@@ -54,7 +49,6 @@ const BlogContent = ({ blog, handleShare, setSelectedImage, expandedFaq, setExpa
           </ul>
         </div>
       )}
-
       {/* FAQs */}
       {blog.faqs?.length > 0 && (
         <div id="faqs" className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
@@ -86,7 +80,6 @@ const BlogContent = ({ blog, handleShare, setSelectedImage, expandedFaq, setExpa
           </div>
         </div>
       )}
-
       {/* Tags */}
       {blog.tags?.length > 0 && (
         <div className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
@@ -103,5 +96,4 @@ const BlogContent = ({ blog, handleShare, setSelectedImage, expandedFaq, setExpa
     </>
   );
 };
-
 export default BlogContent;

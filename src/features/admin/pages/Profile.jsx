@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
-import { motion } from "framer-motion";
 import { FiUser, FiMail, FiPhone, FiCamera, FiShield, FiKey, FiSave, FiMapPin, FiFileText, FiActivity } from "react-icons/fi";
 import Button from "../../../components/ui/Button";
 import Input from "../../../components/ui/Input";
@@ -22,8 +21,7 @@ const Profile = () => {
     phone: user?.phone || "",
     bio: user?.bio || "",
     state: user?.state || "",
-    city: user?.city || "",
-  });
+    city: user?.city || ""});
 
   const [passwords, setPasswords] = useState({
     currentPassword: "",
@@ -365,4 +363,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Profile;

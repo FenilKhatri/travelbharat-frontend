@@ -20,5 +20,4 @@ export const contactService = {
   },
   deleteInquiry: async (id) => {
     return http.delete(`/contact/admin/${id}`);
-  },
-};
+  }};

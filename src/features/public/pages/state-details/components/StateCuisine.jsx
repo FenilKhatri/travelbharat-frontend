@@ -1,17 +1,12 @@
-import { motion } from "framer-motion";
 import { FaUtensils } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
-
 const StateCuisine = ({ featuredCuisine }) => {
   if (!featuredCuisine || featuredCuisine.length === 0) return null;
-
   // Filter out any missing populations
   const foods = featuredCuisine.filter(fc => fc.food).slice(0, 6);
-
   if (foods.length === 0) return null;
-
   return (
     <section className="py-24 bg-[#0a0d14] border-b border-white/5 relative">
       <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,7 +23,6 @@ const StateCuisine = ({ featuredCuisine }) => {
             </p>
           </div>
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {foods.map((item, index) => {
             const food = item.food;
@@ -70,7 +64,6 @@ const StateCuisine = ({ featuredCuisine }) => {
                     )}
                   </div>
                 </div>
-
                 <div className="p-6 relative">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-[#E85D04] text-xs font-bold tracking-widest uppercase">
@@ -94,5 +87,4 @@ const StateCuisine = ({ featuredCuisine }) => {
     </section>
   );
 };
-
 export default StateCuisine;

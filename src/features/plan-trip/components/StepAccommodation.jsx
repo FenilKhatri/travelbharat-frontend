@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useTripPlanner } from "../context/TripPlannerContext";
 import { accommodationService } from "../../../services/accommodationService";
 import { FiArrowRight, FiArrowLeft, FiStar, FiMapPin, FiCheck } from "react-icons/fi";
-import { motion } from "framer-motion";
 import PageLoader from "../../../components/ui/PageLoader";
 
 const StepAccommodation = () => {
@@ -103,4 +102,4 @@ const StepAccommodation = () => {
   );
 };
 
-export default StepAccommodation;
+export default StepAccommodation;

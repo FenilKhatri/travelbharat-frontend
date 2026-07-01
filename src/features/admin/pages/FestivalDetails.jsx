@@ -10,8 +10,7 @@ const FestivalDetails = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["adminFestivalDetails", id],
-    queryFn: () => http.get(`/festivals/admin/${id}`),
-  });
+    queryFn: () => http.get(`/festivals/admin/${id}`)});
 
   const festival = data?.data?.festival || data?.data;
 

@@ -1,10 +1,7 @@
-import { motion } from "framer-motion";
 import { FiBookOpen } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
-
 const StateDiscover = ({ discoverSections }) => {
   if (!discoverSections || discoverSections.length === 0) return null;
-
   return (
     <section className="py-24 bg-[#07090f] relative border-b border-white/5">
       <div className="max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
@@ -39,7 +36,6 @@ const StateDiscover = ({ discoverSections }) => {
                   </div>
                 )}
               </motion.div>
-
               {/* Content Side */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -66,5 +62,4 @@ const StateDiscover = ({ discoverSections }) => {
     </section>
   );
 };
-
 export default StateDiscover;

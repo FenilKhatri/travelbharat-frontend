@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { FiArrowUp } from "react-icons/fi";
 
 const ScrollToTop = () => {
@@ -17,8 +17,7 @@ const ScrollToTop = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
-    });
+      behavior: "smooth"});
   };
 
   useEffect(() => {
@@ -51,4 +50,4 @@ const ScrollToTop = () => {
 };
 
 export default ScrollToTop;
-
+

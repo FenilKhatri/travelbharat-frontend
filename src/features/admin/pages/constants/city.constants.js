@@ -24,5 +24,4 @@ export const INITIAL_CITY_FORM = {
   badges: [],
   primaryBadge: "",
   totalPlaces: 0,
-  seo: { metaTitle: "", metaDescription: "", keywords: [] },
-};
+  seo: { metaTitle: "", metaDescription: "", keywords: [] }};

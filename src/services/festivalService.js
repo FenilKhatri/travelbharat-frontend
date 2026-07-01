@@ -14,5 +14,4 @@ export const festivalService = {
   adminGetFestival: (id) => http.get(`${PREFIX}/admin/${id}`),
   adminCreateFestival: (data) => http.post(`${PREFIX}/admin/create`, data),
   adminUpdateFestival: (id, data) => http.put(`${PREFIX}/admin/${id}`, data),
-  adminDeleteFestival: (id) => http.delete(`${PREFIX}/admin/${id}`),
-};
+  adminDeleteFestival: (id) => http.delete(`${PREFIX}/admin/${id}`)};

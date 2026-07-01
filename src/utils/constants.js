@@ -1,7 +1,6 @@
 export const ROLES = {
   USER: "user",
-  ADMIN: "admin",
-};
+  ADMIN: "admin"};
 
 export const MAX_FAILED_ATTEMPTS = 5;
 

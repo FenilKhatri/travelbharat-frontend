@@ -8,8 +8,7 @@ const SidebarFilter = ({
   searchPlaceholder = "Search...",
   searchLabel = "Search",
   filters = [],
-  sortOptions = [],
-}) => {
+  sortOptions = []}) => {
   const [searchParams, setSearchParams] = useSearchParams();
   
   // Local state for smooth typing before debouncing

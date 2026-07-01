@@ -4,7 +4,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { FiCalendar, FiMapPin, FiUsers, FiClock, FiActivity, FiChevronLeft, FiImage, FiFileText, FiTrash2, FiPlus, FiUploadCloud, FiShare2 } from "react-icons/fi";
 import { FaRupeeSign } from "react-icons/fa";
-import { motion } from "framer-motion";
 import http from "../../../lib/axios";
 import PageLoader from "../../../components/ui/PageLoader";
 import CustomDropdown from "../../../components/ui/CustomDropdown";
@@ -128,8 +127,7 @@ const TripDetails = () => {
                 try {
                   await navigator.share({
                     title: 'Check out my Trip Plan!',
-                    url: window.location.href,
-                  });
+                    url: window.location.href});
                 } catch (err) {
                   console.error(err);
                 }
@@ -584,4 +582,4 @@ const TripDetails = () => {
   );
 };
 
-export default TripDetails;
+export default TripDetails;

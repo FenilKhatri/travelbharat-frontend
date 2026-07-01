@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { FiHeart } from 'react-icons/fi';
 import http from '../../lib/axios';
 import { toast } from 'react-toastify';
-import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useQueryClient } from '@tanstack/react-query';
@@ -93,4 +92,4 @@ const LikeButton = ({ entityId, entityType, initialCount = 0, className = "" }) 
   );
 };
 
-export default LikeButton;
+export default LikeButton;

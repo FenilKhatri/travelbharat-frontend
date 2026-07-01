@@ -6,8 +6,7 @@ export const getFirebase = async () => {
         apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
         authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
         projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-        appId: import.meta.env.VITE_FIREBASE_APP_ID,
-    };
+        appId: import.meta.env.VITE_FIREBASE_APP_ID};
 
     const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
     const auth = getAuth(app);
@@ -15,8 +14,7 @@ export const getFirebase = async () => {
 
     // Asking to choose to login with an account if there are multiple accounts
     provider.setCustomParameters({
-        prompt: "select_account",
-    });
+        prompt: "select_account"});
 
     return { auth, provider };
 };

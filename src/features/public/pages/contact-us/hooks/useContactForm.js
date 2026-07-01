@@ -19,8 +19,7 @@ export const useContactForm = () => {
     },
     onError: (err) => {
       toast.error(err?.message || "Failed to send message. Please try again.");
-    },
-  });
+    }});
 
   const validate = () => {
     const newErrors = {};
@@ -55,6 +54,5 @@ export const useContactForm = () => {
     errors,
     mutation,
     handleSubmit,
-    handleChange,
-  };
+    handleChange};
 };

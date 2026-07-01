@@ -47,8 +47,7 @@ const TravelBadge = ({ badgeName, className = "" }) => {
         border: "1px solid rgba(255, 255, 255, 0.10)",
         borderLeft: `4px solid ${config.color}`,
         minHeight: "32px",
-        boxShadow: `0 6px 18px ${config.glow || 'rgba(0,0,0,0.25)'}`,
-      }}
+        boxShadow: `0 6px 18px ${config.glow || 'rgba(0,0,0,0.25)'}`}}
       onMouseEnter={(e) => {
         e.currentTarget.style.backgroundColor = "rgba(20, 25, 35, 0.9)";
         e.currentTarget.style.boxShadow = `0 8px 24px ${config.glow || 'rgba(0,0,0,0.35)'}`;

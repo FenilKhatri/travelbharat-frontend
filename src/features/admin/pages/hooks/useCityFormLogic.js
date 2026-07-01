@@ -17,8 +17,7 @@ export const useCityFormLogic = () => {
         ...c,
         mapCoordinates: {
           lat: c.mapCoordinates?.coordinates?.[1] || 0,
-          lng: c.mapCoordinates?.coordinates?.[0] || 0,
-        }
+          lng: c.mapCoordinates?.coordinates?.[0] || 0}
       };
     }
   });

@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import Input from "./Input";
 import { fadeUp } from "../../animations/motionVariants";
 
@@ -28,4 +27,4 @@ const FormFields = ({ fields, form, onChange }) => {
   );
 };
 
-export default FormFields;
+export default FormFields;

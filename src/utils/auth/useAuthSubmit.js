@@ -13,8 +13,7 @@ export const useAuthSubmit = ({
   successMessage = "Success",
   fetchUserOnSuccess = false,
   navigateOnSuccess = false,
-  onSuccessCallback,
-}) => {
+  onSuccessCallback}) => {
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
   
@@ -79,6 +78,5 @@ export const useAuthSubmit = ({
     setForm,
     loading,
     handleChange,
-    handleSubmit,
-  };
+    handleSubmit};
 };

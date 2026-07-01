@@ -10,8 +10,7 @@ const BlogDetails = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["adminBlogDetails", id],
-    queryFn: () => http.get(`/blogs/admin/${id}`),
-  });
+    queryFn: () => http.get(`/blogs/admin/${id}`)});
 
   const blog = data?.data?.blog || data?.data;
 

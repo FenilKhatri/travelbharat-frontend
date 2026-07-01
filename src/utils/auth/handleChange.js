@@ -3,6 +3,5 @@ export const handleChange = (e, setForm) => {
 
     setForm((prev) => ({
         ...prev,
-        [name]: value,
-    }));
+        [name]: value}));
   };

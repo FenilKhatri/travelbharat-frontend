@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useTripPlanner } from "../context/TripPlannerContext";
 import { FiArrowRight, FiArrowLeft, FiPlus, FiTrash2, FiMapPin } from "react-icons/fi";
-import { motion } from "framer-motion";
 
 const TIMESLOTS = [
   { id: "morning", label: "Morning" },
@@ -166,4 +165,4 @@ const StepItinerary = () => {
   );
 };
 
-export default StepItinerary;
+export default StepItinerary;

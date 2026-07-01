@@ -11,8 +11,7 @@ const HeroSection = () => {
     currentBanner,
     currentSlide,
     setCurrentSlide,
-    setIsHovered,
-  } = useHeroData();
+    setIsHovered} = useHeroData();
 
   return (
     <section className="relative min-h-screen overflow-hidden flex items-center bg-background">

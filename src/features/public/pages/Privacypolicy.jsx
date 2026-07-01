@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { FiShield, FiEye, FiFileText, FiLock, FiUserCheck, FiDatabase, FiPhoneCall, FiInfo } from "react-icons/fi";
 
 const sections = [
@@ -322,4 +321,4 @@ const Privacypolicy = () => {
   );
 };
 
-export default Privacypolicy;
+export default Privacypolicy;

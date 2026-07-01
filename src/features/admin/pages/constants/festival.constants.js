@@ -19,5 +19,4 @@ export const INITIAL_FESTIVAL_FORM = {
   badges: [],
   primaryBadge: "",
   priority: 0,
-  seo: { metaTitle: "", metaDescription: "", keywords: [] },
-};
+  seo: { metaTitle: "", metaDescription: "", keywords: [] }};

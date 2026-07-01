@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { fadeUp, stagger } from "../../../animations/motionVariants";
 import { serviceItems } from "../../public/data/aboutData";
 import TitleText from "../../../components/ui/TitleText";
@@ -51,4 +50,4 @@ const Services = ({ Title, Description, SubDescription }) => {
 
 export default Services;
 
-
+

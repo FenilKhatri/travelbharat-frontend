@@ -11,8 +11,7 @@ const CustomDropdown = ({
   searchable = false,
   multiple = false,
   className = "",
-  id = "",
-}) => {
+  id = ""}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [focusedIndex, setFocusedIndex] = useState(-1);

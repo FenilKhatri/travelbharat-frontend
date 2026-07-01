@@ -22,8 +22,7 @@ const FestivalDetails = () => {
     festivalLoading,
     festivalError,
     places,
-    placesLoading,
-  } = useFestivalData(slug);
+    placesLoading} = useFestivalData(slug);
 
   useEffect(() => {
     window.scrollTo(0, 0);

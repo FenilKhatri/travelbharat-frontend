@@ -11,8 +11,6 @@ import {
   FormGallery,
   FormBadges
 } from '../../components/form';
-import { festival_categories } from '../../data/adminData';
-
 const FestivalFormFields = ({ form, set, handleArrayString, handleImgUpload, uploadingImage, uploadMultipleImages, statesList, citiesList }) => {
   return (
     <div className="space-y-5">
@@ -23,7 +21,6 @@ const FestivalFormFields = ({ form, set, handleArrayString, handleImgUpload, upl
             <FormField label="Festival Name" required>
               <FormInput required value={form.name} onChange={v => set("name", v)} placeholder="e.g. Diwali" />
             </FormField>
-
             <FormField label="Select State" required>
               <CustomDropdown
                 value={form.stateId}
@@ -33,36 +30,29 @@ const FestivalFormFields = ({ form, set, handleArrayString, handleImgUpload, upl
                 searchable
               />
             </FormField>
-
             <FormField label="Category">
               <select value={form.category} onChange={(e) => set("category", e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 text-sm capitalize">
                 {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </FormField>
-
             <FormField label="Month">
               <select value={form.month} onChange={(e) => set("month", e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 text-sm capitalize">
                 <option value="">Select Month</option>
                 {MONTHS.map(m => <option key={m} value={m}>{m}</option>)}
               </select>
             </FormField>
-
             <FormField label="Duration">
               <FormInput value={form.duration} onChange={v => set("duration", v)} placeholder="e.g. 5 days" />
             </FormField>
-
             <FormField label="Slug">
               <FormInput value={form.slug} onChange={v => set("slug", v)} placeholder="e.g. diwali (auto if empty)" />
             </FormField>
-
             <FormField label="Description" required span2>
               <FormTextarea required value={form.description} onChange={v => set("description", v)} placeholder="A compelling introduction to the festival…" rows={3} />
             </FormField>
-
             <FormField label="Extended Overview" span2>
               <FormTextarea value={form.overview} onChange={v => set("overview", v)} placeholder="Detailed overview…" rows={5} />
             </FormField>
-
             <div className="md:col-span-2">
               <div className="flex gap-6 flex-wrap p-4 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800">
                 <FormToggle checked={form.featured} onChange={v => set("featured", v)} label="Featured Festival" />
@@ -71,14 +61,12 @@ const FestivalFormFields = ({ form, set, handleArrayString, handleImgUpload, upl
             </div>
           </div>
         </FormCard>
-
         <FormBadges 
           badges={form.badges}
           primaryBadge={form.primaryBadge}
           onBadgesChange={(b) => set("badges", b)}
           onPrimaryBadgeChange={(b) => set("primaryBadge", b)}
         />
-
         {/* CARD 2: MEDIA */}
         <FormCard title="Imagery" icon={FiImage} defaultOpen={false}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
@@ -99,7 +87,6 @@ const FestivalFormFields = ({ form, set, handleArrayString, handleImgUpload, upl
             />
           </div>
         </FormCard>
-
         <FormGallery 
           images={form.gallery}
           onChange={(newGallery) => set("gallery", newGallery)}
@@ -109,28 +96,23 @@ const FestivalFormFields = ({ form, set, handleArrayString, handleImgUpload, upl
           }}
           uploading={uploadingImage === "gallery"}
         />
-
         {/* CARD 3: DETAILS */}
         <FormCard title="Cultural Details" icon={FaCalendarCheck} defaultOpen={false}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <FormField label="Significance" span2>
               <FormTextarea value={form.significance} onChange={v => set("significance", v)} placeholder="Cultural or religious significance…" rows={3} />
             </FormField>
-
             <FormField label="Celebrations" span2>
               <FormTextarea value={form.celebrations} onChange={v => set("celebrations", v)} placeholder="How is it celebrated? Rituals, food, events…" rows={3} />
             </FormField>
-
             <FormField label="Highlights (comma separated)">
               <FormInput value={form.highlights.join(", ")} onChange={v => handleArrayString("highlights", v)} placeholder="e.g. Diya lighting, Rangoli, Fireworks" />
             </FormField>
-
             <FormField label="Travel Tips (comma separated)">
               <FormInput value={form.travelTips.join(", ")} onChange={v => handleArrayString("travelTips", v)} placeholder="e.g. Book tickets early, Beware of crowds" />
             </FormField>
           </div>
         </FormCard>
-
         {/* CARD 4: BEST PLACES */}
         <FormCard title="Best Places To Celebrate" icon={FiMap} defaultOpen={false}>
           <ArrayEditor
@@ -145,10 +127,8 @@ const FestivalFormFields = ({ form, set, handleArrayString, handleImgUpload, upl
             )}
           />
         </FormCard>
-
         <FormSEO seo={form.seo} onChange={(seo) => set("seo", seo)} />
       </div>
   );
 };
-
 export default FestivalFormFields;

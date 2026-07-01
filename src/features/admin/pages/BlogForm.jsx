@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { FiSave, FiArrowLeft, FiUpload, FiPlus, FiTrash2, FiImage, FiSettings, FiAlignLeft, FiHelpCircle, FiFileText } from "react-icons/fi";
+import { FiSave, FiArrowLeft } from "react-icons/fi";
 import { toast } from "react-toastify";
 import http from "../../../lib/axios";
-import CustomDropdown from "../../../components/ui/CustomDropdown";
 
 import { SharedBlogFormFields, INITIAL_BLOG_FORM } from "../../../components/shared/SharedBlogFormFields";
 
@@ -31,8 +30,7 @@ const BlogForm = () => {
   const { data: queryData, isLoading: isFetching, isError } = useQuery({
     queryKey: ["adminBlog", id],
     queryFn: () => http.get(`/blogs/admin/${id}`),
-    enabled: isEditing,
-  });
+    enabled: isEditing});
 
   useEffect(() => {
     const b = queryData?.data?.data?.blog || queryData?.data?.blog;
@@ -47,8 +45,7 @@ const BlogForm = () => {
         images: {
           hero: b.images?.hero || "",
           thumbnail: b.images?.thumbnail || "",
-          gallery: b.images?.gallery || [],
-        },
+          gallery: b.images?.gallery || []},
         stateId: b.stateId || "",
         relatedCities: b.relatedCities || [],
         relatedDestinations: b.relatedDestinations || [],
@@ -60,9 +57,7 @@ const BlogForm = () => {
         seo: {
           metaTitle: b.seo?.metaTitle || "",
           metaDescription: b.seo?.metaDescription || "",
-          keywords: b.seo?.keywords || [],
-        },
-      });
+          keywords: b.seo?.keywords || []}});
     }
   }, [queryData]);
 
@@ -80,8 +75,7 @@ const BlogForm = () => {
       queryClient.invalidateQueries(["adminBlogs"]);
       navigate("/admin/blogs");
     },
-    onError: (err) => toast.error(err?.response?.data?.message || "Failed to create blog"),
-  });
+    onError: (err) => toast.error(err?.response?.data?.message || "Failed to create blog")});
 
   const updateMutation = useMutation({
     mutationFn: (payload) => http.put(`/blogs/admin/${id}`, payload),
@@ -90,8 +84,7 @@ const BlogForm = () => {
       queryClient.invalidateQueries(["adminBlogs"]);
       navigate("/admin/blogs");
     },
-    onError: (err) => toast.error(err?.response?.data?.message || "Failed to update blog"),
-  });
+    onError: (err) => toast.error(err?.response?.data?.message || "Failed to update blog")});
 
   const isSaving = createMutation.isPending || updateMutation.isPending;
 

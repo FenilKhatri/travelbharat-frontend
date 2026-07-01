@@ -2,8 +2,7 @@ import axios from "axios";
 
 const http = axios.create({
     baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000/api",
-    withCredentials: true,
-});
+    withCredentials: true});
 
 http.interceptors.response.use(
     (res) => res?.data,
@@ -22,8 +21,7 @@ http.interceptors.response.use(
             "Something went wrong!";
         return Promise.reject({
             ...error,
-            message,
-        });
+            message});
     }
 );
 

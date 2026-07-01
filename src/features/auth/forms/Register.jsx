@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import Button from "../../../components/ui/Button";
 import FormFields from "../../../components/ui/FormFields";
 import GoogleAuthButton from "../../../components/ui/GoogleAuthButton";
@@ -16,8 +15,7 @@ const Register = () => {
       email: "",
       phone: "",
       password: "",
-      confirmPassword: "",
-    },
+      confirmPassword: ""},
     successMessage: "Registered successfully!",
     fetchUserOnSuccess: true,
     navigateOnSuccess: true,
@@ -26,8 +24,7 @@ const Register = () => {
         return "Passwords do not match";
       }
       return null;
-    },
-  });
+    }});
 
   return (
     <motion.form
@@ -67,4 +64,4 @@ const Register = () => {
 };
 
 export default Register;
-
+

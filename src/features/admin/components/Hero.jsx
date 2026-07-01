@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import { motion } from "framer-motion";
 import { MdSecurity } from "react-icons/md";
 import Button from "../../../components/ui/Button";
 import HeroImg from "../../../assets/images/aboutus/hero.avif";
@@ -72,4 +71,4 @@ const Hero = ({ Slogan, Title, Description }) => {
 
 export default Hero;
 
-
+

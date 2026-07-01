@@ -1,6 +1,5 @@
 import { FiUser } from "react-icons/fi";
 import HeroBg from "../../../../assets/images/home/herobg.avif";
-import { motion } from "framer-motion";
 import { fadeUp, slideRight } from "../../../../animations/motionVariants";
 import { doctors } from "../../../public/data/homeData";
 
@@ -56,4 +55,4 @@ const HeroImage = () => {
 
 export default HeroImage;
 
-
+

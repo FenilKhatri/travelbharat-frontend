@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Button from "../../../components/ui/Button";
 import FormFields from "../../../components/ui/FormFields";
@@ -15,8 +14,7 @@ const Login = () => {
     initialForm: { email: "", password: "" },
     successMessage: "Login Successful",
     fetchUserOnSuccess: true,
-    navigateOnSuccess: true,
-  });
+    navigateOnSuccess: true});
 
   return (
     <motion.form
@@ -62,4 +60,4 @@ const Login = () => {
 };
 
 export default Login;
-
+

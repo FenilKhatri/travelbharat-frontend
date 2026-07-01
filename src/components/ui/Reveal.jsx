@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-
 const Reveal = ({ children, delay = 0, y = 30 }) => {
   return (
     <motion.div
@@ -12,5 +10,4 @@ const Reveal = ({ children, delay = 0, y = 30 }) => {
     </motion.div>
   );
 };
-
 export default Reveal;

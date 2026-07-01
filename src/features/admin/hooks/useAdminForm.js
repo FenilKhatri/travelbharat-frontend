@@ -52,8 +52,7 @@ export const useAdminForm = ({
       queryClient.invalidateQueries({ queryKey });
       navigate(listRoute);
     },
-    onError: (err) => toast.error(err?.response?.data?.message || "Creation failed"),
-  });
+    onError: (err) => toast.error(err?.response?.data?.message || "Creation failed")});
 
   const updateMutation = useMutation({
     mutationFn: (payload) => http.put(updateEndpoint(id), payload),
@@ -64,8 +63,7 @@ export const useAdminForm = ({
       queryClient.invalidateQueries({ queryKey: [queryKey, id] });
       navigate(listRoute);
     },
-    onError: (err) => toast.error(err?.response?.data?.message || "Update failed"),
-  });
+    onError: (err) => toast.error(err?.response?.data?.message || "Update failed")});
 
   const isSaving = createMutation.isPending || updateMutation.isPending;
 
@@ -79,8 +77,7 @@ export const useAdminForm = ({
       const fd = new FormData();
       fd.append("image", file);
       const res = await http.post("/upload/single", fd, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+        headers: { "Content-Type": "multipart/form-data" }});
       const url = res?.data?.data?.image?.url || res?.data?.image?.url || res?.data?.url;
       if (!url) throw new Error("URL missing in response");
       return url;
@@ -95,8 +92,7 @@ export const useAdminForm = ({
       const fd = new FormData();
       Array.from(files).forEach(file => fd.append("images", file));
       const res = await http.post("/upload/multiple", fd, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+        headers: { "Content-Type": "multipart/form-data" }});
       const urls = res?.data?.data?.images?.map(img => img.url) || res?.data?.images?.map(img => img.url);
       if (!urls || urls.length === 0) throw new Error("No image URLs returned from server");
       return urls;

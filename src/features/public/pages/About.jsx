@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import {
@@ -12,54 +11,46 @@ const fadeUp = {
   initial: { opacity: 0, y: 30 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true },
-  transition: { duration: 0.6 },
-};
+  transition: { duration: 0.6 }};
 
 const features = [
   {
     icon: FiCompass,
     title: "Hidden Gems",
     description: "Discover lesser-known destinations that most tourists miss — from secluded valleys to forgotten temples.",
-    color: "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400",
-  },
+    color: "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400"},
   {
     icon: FaLandmark,
     title: "Cultural Heritage",
     description: "Explore India's rich cultural tapestry — ancient traditions, art forms, and centuries-old customs.",
-    color: "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400",
-  },
+    color: "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400"},
   {
     icon: FiMap,
     title: "State Guides",
     description: "Comprehensive state-by-state travel guides with local insights, itineraries, and practical tips.",
-    color: "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400",
-  },
+    color: "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"},
   {
     icon: FiHeart,
     title: "Local Experiences",
     description: "Immerse yourself in authentic local experiences — from street food walks to village homestays.",
-    color: "bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400",
-  },
+    color: "bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400"},
   {
     icon: FiBookOpen,
     title: "Authentic Information",
     description: "Every piece of content is researched and verified to ensure you get reliable, authentic travel information.",
-    color: "bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400",
-  },
+    color: "bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400"},
   {
     icon: FiCamera,
     title: "Visual Stories",
     description: "Beautiful photography and immersive visual storytelling that brings every destination to life.",
-    color: "bg-cyan-100 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-400",
-  },
+    color: "bg-cyan-100 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-400"},
 ];
 
 const About = () => {
   const { data: statsData } = useQuery({
     queryKey: ["publicStats"],
     queryFn: () => statsService.getPublicStats(),
-    staleTime: 60_000,
-  });
+    staleTime: 60_000});
 
   const stats = statsData?.data || {};
 
@@ -280,4 +271,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default About;

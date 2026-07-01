@@ -3,7 +3,6 @@ import { placeService } from "../../../services/placeService";
 import { useTripPlanner } from "../context/TripPlannerContext";
 import PageLoader from "../../../components/ui/PageLoader";
 import { FiArrowLeft, FiArrowRight, FiMapPin } from "react-icons/fi";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const StepDestination = () => {
@@ -108,4 +107,4 @@ const StepDestination = () => {
   );
 };
 
-export default StepDestination;
+export default StepDestination;

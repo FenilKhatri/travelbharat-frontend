@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import FooterSection from "../../features/public/sections/footer/FooterSection";
 import { footerLinks } from "../../features/public/data/routes/footer.links";
 import logoDark from "../../assets/logo_dark.png";
@@ -30,8 +29,7 @@ const Footer = memo(() => {
         className="absolute inset-0 opacity-[0.15] dark:opacity-[0.05] bg-cover bg-center"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80')",
-        }}
+            "url('https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80')"}}
       />
 
       {/* Cultural Decorative Elements */}

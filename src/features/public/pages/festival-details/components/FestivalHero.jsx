@@ -1,7 +1,5 @@
-import { motion } from "framer-motion";
 import { FiMapPin, FiCalendar, FiClock, FiInfo } from "react-icons/fi";
 import LikeButton from "../../../../../components/ui/LikeButton";
-
 const FestivalHero = ({ festival }) => {
   return (
     <section className="relative w-full min-h-[85vh] flex flex-col justify-center">
@@ -16,10 +14,8 @@ const FestivalHero = ({ festival }) => {
           <div className="absolute inset-0 bg-linear-to-r from-black/40 via-transparent to-transparent" />
         </div>
       )}
-
       <div className="relative z-10 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 pb-24">
         <div className="flex flex-col lg:flex-row justify-between items-end gap-10">
-
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -52,7 +48,6 @@ const FestivalHero = ({ festival }) => {
               <LikeButton entityId={festival._id} entityType="festival" initialCount={festival.likeCount || 0} className="!px-6 !py-3 !text-sm" />
             </div>
           </motion.div>
-
           {/* Right Info Card */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
@@ -65,7 +60,6 @@ const FestivalHero = ({ festival }) => {
                 <img src={festival.images.thumbnail} alt="Thumbnail" className="w-full h-full object-cover" />
               </div>
             )}
-
             <div className="space-y-4">
               {festival.month && (
                 <div className="flex items-center gap-4">
@@ -78,9 +72,7 @@ const FestivalHero = ({ festival }) => {
                   </div>
                 </div>
               )}
-
               {festival.month && festival.duration && <hr className="border-white/8" />}
-
               {festival.duration && (
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-xl bg-[#E85D04]/10 border border-[#E85D04]/20 flex items-center justify-center text-[#E85D04] shrink-0">
@@ -92,9 +84,7 @@ const FestivalHero = ({ festival }) => {
                   </div>
                 </div>
               )}
-
               {(festival.month || festival.duration) && festival.category && <hr className="border-white/8" />}
-
               {festival.category && (
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-xl bg-[#E85D04]/10 border border-[#E85D04]/20 flex items-center justify-center text-[#E85D04] shrink-0">
@@ -113,5 +103,4 @@ const FestivalHero = ({ festival }) => {
     </section>
   );
 };
-
 export default FestivalHero;

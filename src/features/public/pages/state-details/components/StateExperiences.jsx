@@ -1,10 +1,7 @@
-import { motion } from "framer-motion";
 import { FiCompass } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
-
 const StateExperiences = ({ experiences }) => {
   if (!experiences || experiences.length === 0) return null;
-
   return (
     <section className="py-24 bg-[#07090f] relative border-b border-white/5">
       <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,7 +13,6 @@ const StateExperiences = ({ experiences }) => {
             Unforgettable activities and adventures handpicked for your journey.
           </p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {experiences.map((exp, index) => (
             <motion.div
@@ -57,5 +53,4 @@ const StateExperiences = ({ experiences }) => {
     </section>
   );
 };
-
 export default StateExperiences;

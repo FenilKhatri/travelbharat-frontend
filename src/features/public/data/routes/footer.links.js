@@ -18,5 +18,4 @@ export const footerLinks = {
         { path: "/contact", name: "Contact Us" },
         { path: "/privacy-policy", name: "Privacy Policy" },
         { path: "/terms-of-service", name: "Terms of Service" },
-    ],
-};
+    ]};

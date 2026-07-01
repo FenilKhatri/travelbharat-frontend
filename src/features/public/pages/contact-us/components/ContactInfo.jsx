@@ -1,6 +1,4 @@
-import { motion } from "framer-motion";
 import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
-
 const contactInfo = [
   {
     icon: FiMail,
@@ -8,26 +6,22 @@ const contactInfo = [
     value: "fenilkhatri931@gmail.com",
     href: "mailto:fenilkhatri931@gmail.com",
     description: "Send us your questions anytime.",
-    color: "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400",
-  },
+    color: "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"},
   {
     icon: FiPhone,
     title: "Call Us",
     value: "+91 93134 07400",
     href: "tel:+919313407400",
     description: "Available Mon–Sat, 9 AM – 7 PM.",
-    color: "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400",
-  },
+    color: "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400"},
   {
     icon: FiMapPin,
     title: "Visit Us",
     value: "Surat, Gujarat, India",
     href: null,
     description: "Our base of operations.",
-    color: "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400",
-  },
+    color: "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400"},
 ];
-
 const ContactInfo = () => {
   return (
     <section className="max-w-6xl mx-auto px-4 -mt-12 relative z-20">
@@ -66,5 +60,4 @@ const ContactInfo = () => {
     </section>
   );
 };
-
 export default ContactInfo;

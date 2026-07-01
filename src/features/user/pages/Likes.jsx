@@ -4,7 +4,6 @@ import { FiHeart, FiStar, FiImage } from "react-icons/fi";
 import PageLoader from "../../../components/ui/PageLoader";
 import { toast } from "react-toastify";
 import http from "../../../lib/axios";
-import { motion } from "framer-motion";
 
 const Likes = () => {
   const queryClient = useQueryClient();
@@ -103,4 +102,4 @@ const Likes = () => {
   );
 };
 
-export default Likes;
+export default Likes;

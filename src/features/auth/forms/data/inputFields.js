@@ -8,8 +8,7 @@ export const basicFields = [
         labelName: "Name",
         icon: FiUser,
         placeholder: "Enter your name...",
-        type: "text",
-    },
+        type: "text"},
     {
         name: "email",
         id: "email",
@@ -17,8 +16,7 @@ export const basicFields = [
         labelName: "Email",
         icon: FiMail,
         placeholder: "Enter your email...",
-        type: "email",
-    },
+        type: "email"},
     {
         name: "phone",
         id: "phone",
@@ -26,8 +24,7 @@ export const basicFields = [
         labelName: "Phone",
         icon: FiPhone,
         placeholder: "Enter your phone...",
-        type: "tel",
-    },
+        type: "tel"},
 ];
 
 export const passwordFields = [
@@ -39,8 +36,7 @@ export const passwordFields = [
         icon: FiLock,
         placeholder: "Enter your password...",
         type: "password",
-        isPassword: true,
-    },
+        isPassword: true},
     {
         name: "confirmPassword",
         id: "confirmPassword",
@@ -49,8 +45,7 @@ export const passwordFields = [
         icon: FiLock,
         placeholder: "Enter your confirm password...",
         type: "password",
-        isPassword: true,
-    },
+        isPassword: true},
 ];
 
 export const loginFields = [
@@ -61,11 +56,9 @@ export const loginFields = [
         labelName: "Email",
         icon: FiMail,
         placeholder: "Enter your email...",
-        type: "email",
-    },
+        type: "email"},
     {
-        ...passwordFields[0],
-    },
+        ...passwordFields[0]},
 ];
 
 // Register

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { FiChevronLeft, FiChevronRight, FiX } from 'react-icons/fi';
 
 // Scroll Reveal Wrapper
@@ -138,4 +138,4 @@ const GalleryCarousel = ({ images, name }) => {
   );
 };
 
-export default GalleryCarousel;
+export default GalleryCarousel;

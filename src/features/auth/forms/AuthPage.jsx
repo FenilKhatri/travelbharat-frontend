@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import Login from "../../auth/forms/Login";
 import Register from "../../auth/forms/Register";
@@ -126,4 +126,4 @@ const AuthPage = ({ role = "user" }) => {
 };
 
 export default AuthPage;
-
+

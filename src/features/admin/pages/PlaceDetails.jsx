@@ -10,8 +10,7 @@ const PlaceDetails = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["adminPlaceDetails", id],
-    queryFn: () => http.get(`/places/admin/${id}`),
-  });
+    queryFn: () => http.get(`/places/admin/${id}`)});
 
   const placeData = data?.data?.place || data?.data;
 

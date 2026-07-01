@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSearchParams, useNavigate, Link } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate, Link } from "react-router-dom";
 import { FiNavigation, FiTrash2, FiEye, FiCalendar, FiCompass, FiUser, FiGrid, FiList, FiMapPin } from "react-icons/fi";
-import http from "../../../lib/axios";
 import SearchAndFilter from "../../../components/ui/SearchAndFilter";
 import AdminPageLayout from "../components/ui/AdminPageLayout";
 import AdminPagination from "../components/ui/AdminPagination";
-import { toast } from "react-toastify";
 
 import { useAdminList } from "../hooks/useAdminList";
 import { useAdminMutations } from "../hooks/useAdminMutations";
@@ -321,4 +319,4 @@ const Trips = () => {
   );
 };
 
-export default Trips;
+export default Trips;

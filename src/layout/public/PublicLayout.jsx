@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
-import { Suspense, useEffect, memo } from "react";
+import { AnimatePresence } from "framer-motion";
+import { Suspense, memo } from "react";
 import Footer from "../core/Footer";
 import Navbar from "../core/Navbar";
 import GlobalLoader from "../../components/ui/GlobalLoader";
@@ -37,4 +37,4 @@ const PublicLayout = memo(() => {
   );
 });
 
-export default PublicLayout;
+export default PublicLayout;

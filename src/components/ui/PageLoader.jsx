@@ -1,18 +1,15 @@
-import { motion } from "framer-motion";
 import { FiMapPin } from "react-icons/fi";
 
 const sizeMap = {
   sm: { ring: "w-12 h-12", icon: 16, text: "text-xs" },
   md: { ring: "w-16 h-16", icon: 20, text: "text-sm" },
-  lg: { ring: "w-20 h-20", icon: 24, text: "text-sm" },
-};
+  lg: { ring: "w-20 h-20", icon: 24, text: "text-sm" }};
 
 const PageLoader = ({
   message = "Discovering India...",
   fullScreen = true,
   size = "lg",
-  className = "",
-}) => {
+  className = ""}) => {
   const dims = sizeMap[size] || sizeMap.lg;
 
   const content = (
@@ -74,4 +71,4 @@ const PageLoader = ({
   );
 };
 
-export default PageLoader;
+export default PageLoader;

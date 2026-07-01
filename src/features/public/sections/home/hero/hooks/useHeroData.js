@@ -12,8 +12,7 @@ const fallbackSlides = [
     image:
       "https://plus.unsplash.com/premium_photo-1661919589683-f11880119fb7?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     buttonText: "Explore Heritage",
-    buttonLink: "/destinations/gujarat/patan/rani-ki-vav",
-  },
+    buttonLink: "/destinations/gujarat/patan/rani-ki-vav"},
   {
     title: "Witness The Grandeur Of Jaipur",
     subtitle:
@@ -21,8 +20,7 @@ const fallbackSlides = [
     image:
       "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=1600&auto=format&fit=crop",
     buttonText: "Explore Jaipur",
-    buttonLink: "/states/rajasthan",
-  },
+    buttonLink: "/states/rajasthan"},
   {
     title: "Discover The Serenity Of Kerala",
     subtitle:
@@ -30,8 +28,7 @@ const fallbackSlides = [
     image:
       "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=1600&auto=format&fit=crop",
     buttonText: "Explore Kerala",
-    buttonLink: "/states/kerala",
-  },
+    buttonLink: "/states/kerala"},
   {
     title: "Adventure Through The Himalayas",
     subtitle:
@@ -39,8 +36,7 @@ const fallbackSlides = [
     image:
       "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1600&auto=format&fit=crop",
     buttonText: "Explore Himalayas",
-    buttonLink: "/states/himachal-pradesh",
-  },
+    buttonLink: "/states/himachal-pradesh"},
   {
     title: "Feel The Energy Of Mumbai",
     subtitle:
@@ -48,8 +44,7 @@ const fallbackSlides = [
     image:
       "https://images.unsplash.com/photo-1567157577867-05ccb1388e66?q=80&w=1600&auto=format&fit=crop",
     buttonText: "Explore Mumbai",
-    buttonLink: "/states/maharashtra",
-  },
+    buttonLink: "/states/maharashtra"},
 ];
 
 export const useHeroData = () => {
@@ -60,8 +55,7 @@ export const useHeroData = () => {
   const { data: statsData } = useQuery({
     queryKey: ["publicStats"],
     queryFn: () => statsService.getPublicStats(),
-    staleTime: 5 * 60 * 1000,
-  });
+    staleTime: 5 * 60 * 1000});
 
   const { data: banners } = useQuery({
     queryKey: ["activeBanners"],
@@ -70,8 +64,7 @@ export const useHeroData = () => {
       return res.data?.banners || [];
     },
     staleTime: 1000 * 60 * 5,
-    refetchOnWindowFocus: false,
-  });
+    refetchOnWindowFocus: false});
 
   const sliderData = useMemo(() => {
     if (
@@ -84,8 +77,7 @@ export const useHeroData = () => {
         subtitle: banner.subtitle,
         image: banner.image,
         buttonText: banner.buttonText || "Explore Now",
-        buttonLink: banner.targetUrl || "/states",
-      }));
+        buttonLink: banner.targetUrl || "/states"}));
     }
     return fallbackSlides;
   }, [banners]);
@@ -118,6 +110,5 @@ export const useHeroData = () => {
     currentSlide,
     setCurrentSlide,
     setIsHovered,
-    handleCTAClick,
-  };
+    handleCTAClick};
 };

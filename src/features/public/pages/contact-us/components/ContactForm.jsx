@@ -1,16 +1,11 @@
-import { motion } from "framer-motion";
 import { FiMessageCircle, FiSend, FiCheck } from "react-icons/fi";
-
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true },
-  transition: { duration: 0.6 },
-};
-
+  transition: { duration: 0.6 }};
 const inputCls =
   "w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/50 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#E85D04]/30 focus:border-[#E85D04]/60 transition";
-
 const ContactForm = ({ form, errors, mutation, handleSubmit, handleChange }) => {
   return (
     <section className="py-20">
@@ -28,7 +23,6 @@ const ContactForm = ({ form, errors, mutation, handleSubmit, handleChange }) => 
                 Fill out the form below and we'll get back to you within 24 hours.
               </p>
             </div>
-
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Name */}
@@ -45,7 +39,6 @@ const ContactForm = ({ form, errors, mutation, handleSubmit, handleChange }) => 
                   />
                   {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
                 </div>
-
                 {/* Email */}
                 <div>
                   <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">
@@ -61,7 +54,6 @@ const ContactForm = ({ form, errors, mutation, handleSubmit, handleChange }) => 
                   {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
                 </div>
               </div>
-
               {/* Subject */}
               <div>
                 <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">
@@ -76,7 +68,6 @@ const ContactForm = ({ form, errors, mutation, handleSubmit, handleChange }) => 
                 />
                 {errors.subject && <p className="text-xs text-red-500 mt-1">{errors.subject}</p>}
               </div>
-
               {/* Message */}
               <div>
                 <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">
@@ -91,7 +82,6 @@ const ContactForm = ({ form, errors, mutation, handleSubmit, handleChange }) => 
                 />
                 {errors.message && <p className="text-xs text-red-500 mt-1">{errors.message}</p>}
               </div>
-
               {/* Submit */}
               <button
                 type="submit"
@@ -120,5 +110,4 @@ const ContactForm = ({ form, errors, mutation, handleSubmit, handleChange }) => 
     </section>
   );
 };
-
 export default ContactForm;

@@ -1,4 +1,4 @@
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { FiUser, FiMenu, FiX, FiMoon, FiSun, FiChevronDown, FiMapPin, FiBell } from "react-icons/fi";
 import { useState, useEffect, memo } from "react";
 import { useAuth } from "../../context/AuthContext";
@@ -280,4 +280,4 @@ const Navbar = memo(() => {
 
 export default Navbar;
 
-
+

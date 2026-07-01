@@ -33,8 +33,7 @@ const ListingPage = ({ config }) => {
   // Extract all query params for the hook
   const queryParams = {
     search: searchParams.get("search") || "",
-    sort: searchParams.get("sort") || "",
-  };
+    sort: searchParams.get("sort") || ""};
   
   filters.forEach(f => {
     queryParams[f.key] = searchParams.get(f.key) || "";

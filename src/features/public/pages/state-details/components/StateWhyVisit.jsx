@@ -1,10 +1,7 @@
-import { motion } from "framer-motion";
 import { FiCheckCircle } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
-
 const StateWhyVisit = ({ whyVisit }) => {
   if (!whyVisit || whyVisit.length === 0) return null;
-
   return (
     <section className="py-24 bg-[#0a0d14] relative border-b border-white/5">
       <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,7 +13,6 @@ const StateWhyVisit = ({ whyVisit }) => {
             Discover the most compelling reasons to explore this incredible destination.
           </p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {whyVisit.map((highlight, index) => (
             <motion.div
@@ -47,5 +43,4 @@ const StateWhyVisit = ({ whyVisit }) => {
     </section>
   );
 };
-
 export default StateWhyVisit;

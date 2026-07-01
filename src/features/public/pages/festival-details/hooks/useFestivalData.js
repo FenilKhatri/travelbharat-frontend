@@ -6,8 +6,7 @@ export const useFestivalData = (slug) => {
   const { data: festivalData, isLoading: festivalLoading, isError: festivalError } = useQuery({
     queryKey: ["festivalBySlug", slug],
     queryFn: () => festivalService.getFestivalBySlug(slug),
-    enabled: !!slug,
-  });
+    enabled: !!slug});
 
   const festival = festivalData?.data?.festival;
   const stateSlug = festival?.stateId?.slug;
@@ -25,6 +24,5 @@ export const useFestivalData = (slug) => {
     festivalLoading,
     festivalError,
     places,
-    placesLoading,
-  };
+    placesLoading};
 };

@@ -7,67 +7,54 @@ export const adminRoutes = [
   {
     to: "/",
     label: "Home",
-    icon: FiHome,
-  },
+    icon: FiHome},
   {
     to: "/admin/dashboard",
     label: "Dashboard",
-    icon: MdDashboard,
-  },
+    icon: MdDashboard},
   {
     to: "/admin/states",
     label: "States",
-    icon: FiMap,
-  },
+    icon: FiMap},
   {
     to: "/admin/cities",
     label: "Cities",
-    icon: FaBuilding,
-  },
+    icon: FaBuilding},
   {
     to: "/admin/places",
     label: "Destinations",
-    icon: FiMapPin,
-  },
+    icon: FiMapPin},
   {
     to: "/admin/festivals",
     label: "Festivals",
-    icon: FaCalendarCheck,
-  },
+    icon: FaCalendarCheck},
   {
     to: "/admin/blogs",
     label: "Blogs",
-    icon: FiBookOpen,
-  },
+    icon: FiBookOpen},
   {
     to: "/admin/moderation",
     label: "Moderation",
-    icon: FiShield,
-  },
+    icon: FiShield},
   {
     to: "/admin/trips",
     label: "Trips",
-    icon: FiNavigation,
-  },
+    icon: FiNavigation},
   {
     to: "/admin/users",
     label: "Users",
-    icon: FiUsers,
-  },
+    icon: FiUsers},
   {
     to: "/admin/reviews",
     label: "Reviews",
-    icon: FiStar,
-  },
+    icon: FiStar},
   {
     to: "/admin/settings",
     label: "Settings",
-    icon: FiSettings,
-  },
+    icon: FiSettings},
   {
     to: "/admin/notifications",
     label: "Notifications",
-    icon: FiBell,
-  },
+    icon: FiBell},
 ];
 

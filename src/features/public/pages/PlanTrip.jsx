@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { FiMapPin, FiCalendar, FiDollarSign, FiUsers, FiCompass, FiArrowRight, FiCheck } from "react-icons/fi";
 import { placeService } from "../../../services/placeService";
 import { tripPlannerService } from "../../../services/tripPlannerService";
@@ -300,4 +300,4 @@ const PlanTrip = () => {
   );
 };
 
-export default PlanTrip;
+export default PlanTrip;
