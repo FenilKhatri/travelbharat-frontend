@@ -138,7 +138,7 @@ const Trips = () => {
                   <div className="absolute inset-0 bg-linear-to-t from-[#0A121F] via-transparent to-black/40 rounded-t-3xl" />
 
                   {/* Context Menu Button */}
-                  <button onClick={(e) => toggleMenu(e, trip._id)} className="absolute top-4 right-4 w-8 h-8 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-black/60 transition z-50 relative">
+                  <button onClick={(e) => toggleMenu(e, trip._id)} className="absolute top-4 right-4 w-8 h-8 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-black/60 transition z-50">
                     <FiMoreVertical />
                   </button>
 
@@ -149,7 +149,7 @@ const Trips = () => {
                         initial={{ opacity: 0, scale: 0.9, originTopRight: true }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
-                        className="absolute top-14 right-4 w-48 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden z-[60] py-1"
+                        className="absolute top-14 right-4 w-48 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden z-60 py-1"
                       >
                         <button onClick={(e) => { e.stopPropagation(); navigate(`/user/trips/${trip._id}`); }} className="w-full text-left px-4 py-2 text-sm font-bold flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800"><FiEdit2 /> View & Edit</button>
                         <button onClick={(e) => { e.stopPropagation(); duplicateMutation.mutate(trip._id); setOpenMenuId(null); }} className="w-full text-left px-4 py-2 text-sm font-bold flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800"><FiCopy /> Duplicate</button>

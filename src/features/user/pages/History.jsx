@@ -2,9 +2,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { FiClock, FiMapPin, FiBookOpen, FiSearch, FiMap, FiTrash2, FiActivity } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { historyService } from "../../../../services/historyService";
-import PageLoader from "../../../../components/ui/PageLoader";
-import H1 from "../../../../components/ui/H1";
+import { historyService } from "../../../services/historyService";
+import PageLoader from "../../../components/ui/PageLoader";
 
 const ActionConfig = {
   VIEW_PLACE: { icon: FiMapPin, color: "text-blue-500", bg: "bg-blue-500/10", label: "Viewed Place" },
@@ -62,7 +61,7 @@ const History = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div className="flex items-center gap-3">
           <FiClock className="text-[#E85D04]" size={32} />
-          <H1 className="text-slate-900 dark:text-white mb-0">Activity History</H1>
+          <h1 className="text-3xl font-black md:text-4xl text-slate-900 dark:text-white mb-0">Activity History</h1>
         </div>
         
         {historyItems.length > 0 && (

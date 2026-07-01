@@ -61,7 +61,7 @@ const PageLoader = ({
 
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-50/90 dark:bg-[#050B14]/90 backdrop-blur-md">
+      <div className="fixed inset-0 z-9999 flex items-center justify-center bg-slate-50/90 dark:bg-[#050B14]/90 backdrop-blur-md">
         {content}
       </div>
     );

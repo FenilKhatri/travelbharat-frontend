@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useBlogDetails } from "./hooks/useBlogDetails";
-import { useLogHistory } from "../../../../../utils/auth/useLogHistory";
+import { useLogHistory } from "../../../../utils/auth/useLogHistory";
 
 import BlogDetailsHero from "./components/BlogDetailsHero";
 import BlogContent from "./components/BlogContent";
