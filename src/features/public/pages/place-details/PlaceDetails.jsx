@@ -45,7 +45,7 @@ const PlaceDetails = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#050505]">
+      <div className="min-h-screen bg-slate-50 dark:bg-[#050505]">
         <PageLoader fullScreen={false} message="Loading destination..." size="md" />
       </div>
     );
@@ -53,9 +53,9 @@ const PlaceDetails = () => {
 
   if (isError || !place) {
     return (
-      <div className="min-h-screen bg-[#050505] flex flex-col justify-center items-center text-center p-4">
-        <h1 className="text-4xl font-black text-white mb-4">Destination Not Found</h1>
-        <p className="text-white/60 mb-8">This experience might have been removed or is temporarily unavailable.</p>
+      <div className="min-h-screen bg-slate-50 dark:bg-[#050505] flex flex-col justify-center items-center text-center p-4">
+        <h1 className="text-4xl font-black text-slate-900 dark:text-white mb-4">Destination Not Found</h1>
+        <p className="text-slate-600 dark:text-white/60 mb-8">This experience might have been removed or is temporarily unavailable.</p>
         <Link to="/places" className="bg-[#E85D04] text-white px-8 py-3 rounded-full font-bold hover:bg-[#D05203] transition-colors">
           Explore Other Destinations
         </Link>
@@ -68,7 +68,7 @@ const PlaceDetails = () => {
   const hasValidMap = !!(place.location?.coordinates?.lat && place.location?.coordinates?.lng);
 
   return (
-    <div className="bg-[#050505] font-sans overflow-x-hidden selection:bg-[#E85D04] selection:text-white text-white">
+    <div className="bg-slate-50 dark:bg-[#050505] font-sans overflow-x-hidden selection:bg-[#E85D04] selection:text-white text-slate-900 dark:text-white">
 
       <PlaceHero place={place} heroImage={heroImage} validGallery={validGallery} heroRef={heroRef} />
 
@@ -111,7 +111,7 @@ const PlaceDetails = () => {
 
       <PlaceMap place={place} hasValidMap={hasValidMap} />
 
-      <section className="py-24 bg-[#050505] border-t border-white/5">
+      <section className="py-24 bg-slate-50 dark:bg-[#050505] border-t border-slate-200 dark:border-white/5">
         <div className="max-w-4xl mx-auto px-4">
           <Reveal>
             <ReviewSection placeId={place._id} />

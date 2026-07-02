@@ -1,9 +1,21 @@
 import { Link } from "react-router-dom";
 import { useScroll, useTransform, motion } from "framer-motion";
-import { FiCompass, FiArrowRight } from "react-icons/fi";
+import { FiCompass, FiArrowRight, FiShare2 } from "react-icons/fi";
+import { toast } from "react-toastify";
 import Reveal from "../../../../../components/ui/Reveal";
 import LikeButton from "../../../../../components/ui/LikeButton";
 const PlaceHero = ({ place, heroImage, validGallery, heroRef }) => {
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: place.name,
+        url: window.location.href,
+      }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      toast.success("Link copied to clipboard!");
+    }
+  };
   const { scrollY } = useScroll();
   const yHero = useTransform(scrollY, [0, 1000], [0, 300]);
   const opacityHero = useTransform(scrollY, [0, 800], [1, 0]);
@@ -46,12 +58,12 @@ const PlaceHero = ({ place, heroImage, validGallery, heroRef }) => {
           </div>
         </Reveal>
         <Reveal delay={0.3}>
-          <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-[7rem] font-black text-white mb-4 leading-[0.95] tracking-tight drop-shadow-2xl">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 leading-tight tracking-tight drop-shadow-2xl">
             {place.name}
           </h1>
         </Reveal>
         <Reveal delay={0.4}>
-          <div className="flex items-center gap-3 text-white/80 text-lg md:text-2xl font-light mb-10 tracking-wide">
+          <div className="flex items-center gap-3 text-white/80 text-base md:text-lg font-light mb-10 tracking-wide">
             <span className="font-bold text-white">{place.cityId?.name}</span>
             <span className="w-1.5 h-1.5 rounded-full bg-[#E85D04]" />
             <span>{place.stateId?.name}</span>
@@ -64,22 +76,25 @@ const PlaceHero = ({ place, heroImage, validGallery, heroRef }) => {
           </div>
         </Reveal>
         <Reveal delay={0.5}>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             <Link
               to={`/plan/${place.slug}`}
-              className="bg-[#E85D04] text-white px-8 py-4 rounded-full font-black flex items-center gap-2 hover:bg-[#D05203] hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(232,93,4,0.4)]"
+              className="bg-[#E85D04] text-white px-6 py-3 rounded-full font-black flex items-center gap-2 hover:bg-[#D05203] hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(232,93,4,0.4)]"
             >
               Plan a Trip <FiCompass />
             </Link>
             {validGallery.length > 0 && (
               <a
                 href="#gallery"
-                className="bg-white text-[#050505] px-8 py-4 rounded-full font-semibold flex items-center gap-2 hover:bg-gray-200 hover:scale-105 transition-all duration-300"
+                className="bg-white text-[#050505] px-6 py-3 rounded-full font-semibold flex items-center gap-2 hover:bg-gray-200 hover:scale-105 transition-all duration-300"
               >
                 Explore Photos <FiArrowRight />
               </a>
             )}
-            <LikeButton entityId={place._id} entityType="destination" initialCount={place.likeCount} className="!px-8 !py-4 !text-base cursor-pointer" />
+            <LikeButton entityId={place._id} entityType="place" initialCount={place.likeCount} showCount={false} className="px-6! py-3! text-sm! cursor-pointer" />
+            <button onClick={handleShare} className="flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm bg-white/10 hover:bg-white/20 text-white backdrop-blur-md transition-colors cursor-pointer">
+              <FiShare2 /> Share
+            </button>
           </div>
         </Reveal>
       </div>

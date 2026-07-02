@@ -57,7 +57,7 @@ const BlogsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white dark:bg-[#0A121F] rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.2)] border border-slate-100 dark:border-white/5 hover:-translate-y-2 transition-all duration-300 group"
+              className="bg-white dark:bg-[#0A121F] rounded-2xl overflow-hidden shadow-xl shadow-slate-200/80 dark:shadow-[0_8px_30px_rgba(0,0,0,0.2)] border border-slate-200 dark:border-white/5 hover:-translate-y-2 hover:shadow-2xl hover:shadow-slate-300 transition-all duration-300 group"
             >
               <Link to={`/blogs/${blog.slug}`}>
                 <div className="relative h-56 overflow-hidden">

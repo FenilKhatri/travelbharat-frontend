@@ -176,10 +176,24 @@ const Navbar = memo(() => {
           {/* DESKTOP LINKS */}
           <ul className="hidden md:flex items-center gap-6 lg:gap-8">
             {navLinks?.map((link) => {
-              const isEnd = link.path === '/';
+              // Custom active logic to prevent multiple highlights on deep nested routes
+              const isActive = () => {
+                const path = location.pathname;
+                if (link.path === '/') return path === '/';
+                if (link.path === '/places') return path.includes('/places');
+                if (link.path === '/cities') return path.includes('/cities') && !path.includes('/places');
+                if (link.path === '/states') return path.includes('/states') && !path.includes('/cities') && !path.includes('/places');
+                if (link.path === '/festivals') return path.includes('/festivals');
+                if (link.path === '/blogs') return path.includes('/blog');
+                return path.startsWith(link.path);
+              };
+
               return (
               <li key={link.path}>
-                <NavLink to={link.path} className={activeLinks} end={isEnd}>
+                <NavLink 
+                  to={link.path} 
+                  className={({isActive: routerActive}) => activeLinks({isActive: isActive()})}
+                >
                   {link.name}
                 </NavLink>
               </li>
@@ -250,14 +264,24 @@ const Navbar = memo(() => {
 
         <div className="p-5 flex-1 overflow-y-auto flex flex-col gap-2">
           {navLinks?.map((link) => {
-            const isEnd = link.path === '/';
+            // Custom active logic to prevent multiple highlights on deep nested routes
+            const isActive = () => {
+              const path = location.pathname;
+              if (link.path === '/') return path === '/';
+              if (link.path === '/places') return path.includes('/places');
+              if (link.path === '/cities') return path.includes('/cities') && !path.includes('/places');
+              if (link.path === '/states') return path.includes('/states') && !path.includes('/cities') && !path.includes('/places');
+              if (link.path === '/festivals') return path.includes('/festivals');
+              if (link.path === '/blogs') return path.includes('/blog');
+              return path.startsWith(link.path);
+            };
+
             return (
             <NavLink
               key={link.path}
               to={link.path}
-              end={isEnd}
-              className={({ isActive }) =>
-                `px-4 py-3 rounded-lg text-lg font-medium transition-colors ${isActive
+              className={() =>
+                `px-4 py-3 rounded-lg text-lg font-medium transition-colors ${isActive()
                   ? "bg-[#E85D04]/10 text-[#E85D04] dark:bg-[#E85D04]/20"
                   : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
                 }`

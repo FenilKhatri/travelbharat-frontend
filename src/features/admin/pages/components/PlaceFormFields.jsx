@@ -1,4 +1,5 @@
 import React from 'react';
+import { FiMapPin, FiSettings, FiGrid, FiImage } from 'react-icons/fi';
 import {
   FormCard,
   FormField,

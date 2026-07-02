@@ -6,6 +6,7 @@ import GalleryCarousel from "../../../../components/ui/GalleryCarousel";
 // Components
 import StateDetailsSkeleton from "./components/StateDetailsSkeleton";
 import StateHero from "./components/StateHero";
+import StateQuickFacts from "./components/StateQuickFacts";
 import StateWhyVisit from "./components/StateWhyVisit";
 import StateDiscover from "./components/StateDiscover";
 import StateTimeline from "./components/StateTimeline";
@@ -21,6 +22,7 @@ import StateFAQ from "./components/StateFAQ";
 import StateNearby from "./components/StateNearby";
 import StateCities from "./components/StateCities";
 import StateDiscoverBanner from "./components/StateDiscoverBanner";
+import StateFunFacts from "./components/StateFunFacts";
 
 const StateDetails = () => {
   const { slug } = useParams();
@@ -47,7 +49,7 @@ const StateDetails = () => {
   const validGallery = state.gallery?.map(img => img.url).filter(Boolean) || state.images?.gallery?.map(img => img.url).filter(Boolean) || [];
 
   return (
-    <div className="min-h-screen bg-[#07090f] font-sans text-[#edf2ff] relative overflow-x-hidden">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#07090f] text-slate-900 dark:text-[#edf2ff] selection:bg-[#E85D04]/30 relative overflow-x-hidden">
       
       {/* State Branding Overlays */}
       {state.stateBranding?.leftBackground && (
@@ -71,6 +73,12 @@ const StateDetails = () => {
 
       {/* Hero Section */}
       <StateHero state={state} />
+
+      {/* Remaining Quick Facts */}
+      <StateQuickFacts quickFacts={state.quickFacts} />
+
+      {/* Fun Facts */}
+      {state.funFacts?.length > 0 && <StateFunFacts funFacts={state.funFacts} />}
 
       {/* Overview / Why Visit */}
       {state.whyVisit?.length > 0 && <StateWhyVisit whyVisit={state.whyVisit} />}
@@ -113,8 +121,8 @@ const StateDetails = () => {
       {state.travelInfo && <StateTravelInfo travelInfo={state.travelInfo} />}
 
       {/* Map */}
-      {state.mapCoordinates?.lat && state.mapCoordinates?.lng && (
-        <section className="h-[450px] w-full border-b border-white/5">
+      {state.mapCoordinates?.coordinates && state.mapCoordinates.coordinates.length === 2 && (
+        <section className="h-[450px] w-full border-b border-slate-200 dark:border-white/5">
           <iframe
             title={`${state.name} Map`}
             width="100%"
@@ -123,7 +131,7 @@ const StateDetails = () => {
             loading="lazy"
             allowFullScreen
             referrerPolicy="no-referrer-when-downgrade"
-            src={`https://maps.google.com/maps?q=${state.mapCoordinates.lat},${state.mapCoordinates.lng}&hl=en&z=7&output=embed`}
+            src={`https://maps.google.com/maps?q=${state.mapCoordinates.coordinates[1]},${state.mapCoordinates.coordinates[0]}&hl=en&z=7&output=embed`}
           />
         </section>
       )}

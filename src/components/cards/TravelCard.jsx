@@ -5,6 +5,7 @@ import {
   FiCompass,
   FiCalendar,
   FiStar,
+  FiHeart,
   FiArrowRight} from "react-icons/fi";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import TravelBadge from "../ui/TravelBadge";
@@ -20,12 +21,17 @@ const TravelCard = ({ data, type, stateSlug, citySlug, index = 0 }) => {
     case "state":
       url = `/states/${data.slug}`;
       break;
-    case "city":
-      url = `/states/${stateSlug}/cities/${data.slug}`;
+    case "city": {
+      const sSlug = stateSlug || data.stateId?.slug;
+      url = `/states/${sSlug}/cities/${data.slug}`;
       break;
-    case "place":
-      url = `/states/${stateSlug}/cities/${citySlug}/places/${data.slug}`;
+    }
+    case "place": {
+      const sSlug = stateSlug || data.stateId?.slug;
+      const cSlug = citySlug || data.cityId?.slug;
+      url = `/states/${sSlug}/cities/${cSlug}/places/${data.slug}`;
       break;
+    }
     case "festival":
       url = `/festivals/${data.slug}`;
       break;
@@ -46,15 +52,15 @@ const TravelCard = ({ data, type, stateSlug, citySlug, index = 0 }) => {
       <Link
         to={url}
         aria-label={name}
-        className=" relative flex flex-col h-full overflow-hidden rounded-[28px] bg-surface border border-border-theme shadow-lg shadow-slate-300/20 dark:shadow-black/40 hover:-translate-y-2 hover:border-orange-500/40 hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-500 "
+        className=" relative flex flex-col h-full overflow-hidden rounded-[28px] bg-surface border border-slate-200 dark:border-border-theme shadow-xl shadow-slate-200/80 dark:shadow-black/40 hover:-translate-y-2 hover:border-orange-500/40 hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-500 "
       >
-        <div className="relative h-[72%] overflow-hidden">
+        <div className="relative h-[60%] sm:h-[65%] shrink-0 overflow-hidden">
           {image ? (
             <img
               src={image}
               alt={name}
               loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-700group-hover:scale-110"
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-surface-elevated">
@@ -64,8 +70,8 @@ const TravelCard = ({ data, type, stateSlug, citySlug, index = 0 }) => {
               />
             </div>
           )}
-          <div className=" absolute inset-0 bg-linear-to-t from-black/75 via-black/20 to-black/10 group-hover:from-black/80 group-hover:via-black/15 transition-all duration-500 " />
-          <div className=" absolute inset-x-0 top-0 h-28 bg-linear-to-b from-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 dark:bg-black/20 dark:group-hover:bg-black/40 transition-all duration-500" />
+          <div className="absolute inset-x-0 top-0 h-28 bg-linear-to-b from-black/40 to-transparent opacity-60 dark:opacity-100" />
           <div className="absolute left-5 top-5 z-20">
             {data.primaryBadge || data.badge ? (
               <TravelBadge badgeName={data.primaryBadge || data.badge?.name} />
@@ -104,17 +110,25 @@ const TravelCard = ({ data, type, stateSlug, citySlug, index = 0 }) => {
               </div>
             )}
           </div>
-          {/* Rating Badge */}
-          {type === "place" && data.rating > 0 && (
-            <div className="absolute right-5 top-5 z-20">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/45 px-4 py-2 backdrop-blur-xl text-white">
+          {/* Rating & Likes */}
+          <div className="absolute right-5 top-5 z-20 flex gap-2">
+            {type === "place" && data.rating > 0 && (
+              <div className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-black/45 px-3 py-1.5 backdrop-blur-xl text-white">
                 <FiStar className="fill-orange-400 text-orange-400" size={13} />
                 <span className="font-bold text-xs">
                   {data.rating.toFixed(1)}
                 </span>
               </div>
-            </div>
-          )}
+            )}
+            {(data.likeCount > 0 || data.likes > 0) && (
+              <div className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-black/45 px-3 py-1.5 backdrop-blur-xl text-white">
+                <FiHeart className="fill-rose-500 text-rose-500" size={13} />
+                <span className="font-bold text-xs">
+                  {data.likeCount || data.likes || 0}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
         <div className="flex flex-1 flex-col justify-between p-6 bg-surface transition-colors duration-500">
           <div>

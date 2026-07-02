@@ -13,7 +13,7 @@ const FormHeader = ({
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-[#0A121F] p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm z-10 sticky top-4">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-[#0A121F] p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm z-10 top-4">
       <div className="flex items-center gap-3">
         <button
           type="button"

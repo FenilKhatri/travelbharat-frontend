@@ -6,7 +6,7 @@ const CollectionCard = ({ title, subtitle, image, onClick, badgeConfig }) => {
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className="relative shrink-0 w-64 sm:w-72 h-80 rounded-[28px] overflow-hidden group border border-border-glass shadow-xl shadow-black/20 text-left cursor-pointer"
+      className="relative shrink-0 w-64 sm:w-72 h-80 rounded-[28px] overflow-hidden group border border-slate-200 dark:border-border-glass shadow-xl shadow-slate-200/60 dark:shadow-black/20 text-left cursor-pointer"
     >
       {/* Background Image */}
       <img
@@ -16,7 +16,7 @@ const CollectionCard = ({ title, subtitle, image, onClick, badgeConfig }) => {
         loading="lazy"
       />
       {/* Dark overlay for readability */}
-      <div className="absolute inset-0 bg-linear-to-b from-transparent via-black/20 to-[#04060a]/90 transition-opacity duration-500 group-hover:opacity-100" />
+      <div className="absolute inset-0 bg-linear-to-b from-transparent via-black/10 to-black/60 dark:via-black/20 dark:to-[#04060a]/90 transition-opacity duration-500 group-hover:opacity-100" />
       {/* Glassmorphism Border/Hover Highlight */}
       <div className="absolute inset-0 border-2 border-transparent group-hover:border-white/20 rounded-[28px] transition-colors duration-500 pointer-events-none" />
       {/* Content */}

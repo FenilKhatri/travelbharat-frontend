@@ -51,7 +51,7 @@ export const useCityData = (citySlug, stateSlug) => {
     const tips = [];
     if (city?.bestTimeToVisit) tips.push(`Best time to visit: ${city.bestTimeToVisit}`);
     if (city?.transport?.local) tips.push(city.transport.local);
-    const stateTips = city?.stateId?.travelTips?.filter((t) => t?.trim()) || [];
+    const stateTips = city?.stateId?.travelTips?.map(t => typeof t === "string" ? t : t?.description)?.filter((t) => t?.trim()) || [];
     return [...tips, ...stateTips].slice(0, 6);
   }, [city]);
 

@@ -18,8 +18,8 @@ const CityEmergency = ({ city, validEmergency }) => {
           </div>
           <div className="flex flex-wrap gap-4">
             {[
-              { label: "Police", value: city.emergencyInfo.police },
-              { label: "Ambulance", value: city.emergencyInfo.ambulance },
+              { label: "Police", value: "100" },
+              { label: "Ambulance", value: "108" },
               { label: "Fire", value: city.emergencyInfo.fireBrigade },
               { label: "Hospital", value: city.emergencyInfo.hospital },
               { label: "Tourist Helpline", value: city.emergencyInfo.touristHelpline },

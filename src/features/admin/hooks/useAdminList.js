@@ -8,7 +8,6 @@ export const useAdminList = ({ queryKey, endpoint, defaultLimit = 10, extractPar
   const page = parseInt(searchParams.get("page") || "1");
   const search = searchParams.get("search") || "";
   
-  // Allow caller to extract their specific params (stateId, role, etc)
   const extraParams = extractParams(searchParams);
 
   const { data, isLoading, isError, error } = useQuery({
@@ -23,7 +22,7 @@ export const useAdminList = ({ queryKey, endpoint, defaultLimit = 10, extractPar
       });
       
       const response = await http.get(endpoint, { params });
-      return response?.data || response;
+      return response;
     },
     keepPreviousData: true
   });

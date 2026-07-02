@@ -5,6 +5,8 @@ import { FiImage, FiEdit, FiTrash2, FiStar, FiMapPin } from "react-icons/fi";
 import AdminDataExplorer from "../components/ui/AdminDataExplorer";
 import { useAdminList } from "../hooks/useAdminList";
 import { useAdminMutations } from "../hooks/useAdminMutations";
+import { state_filters, state_regions } from "../data/adminData";
+
 const States = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -185,7 +187,7 @@ const States = () => {
         onAddClick={handleOpenCreate}
         addButtonLabel="Add New State"
         searchPlaceholder="Search states by name..."
-        filters={filters}
+        filters={state_filters}
         isLoading={isLoading}
         isError={isError}
         error={error}

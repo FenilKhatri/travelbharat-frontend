@@ -12,7 +12,7 @@ export const INITIAL_CITY_FORM = {
   restaurants: [],
   shopping: [],
   transport: { local: "", fromAirport: "", fromStation: "", busStation: "" },
-  emergencyInfo: { police: "100", ambulance: "108", hospital: "", fireBrigade: "101", touristHelpline: "1363" },
+  emergencyInfo: { hospital: "", fireBrigade: "101", touristHelpline: "1363" },
   nearbyPlaces: [],
   mapCoordinates: { lat: 0, lng: 0 },
   bestTimeToVisit: "",

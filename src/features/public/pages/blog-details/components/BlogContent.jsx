@@ -43,7 +43,7 @@ const BlogContent = ({ blog, handleShare, setSelectedImage, expandedFaq, setExpa
             {blog.travelTips.map((tip, idx) => (
               <li key={idx} className="flex gap-4 p-5 bg-slate-100 dark:bg-slate-900 rounded-2xl border-l-4 border-[#E85D04]">
                 <FiMapPin className="text-[#E85D04] shrink-0 mt-1" />
-                <span className="text-slate-700 dark:text-slate-300 font-medium">{tip}</span>
+                <span className="text-slate-700 dark:text-slate-300 font-medium">{typeof tip === "string" ? tip : tip?.description}</span>
               </li>
             ))}
           </ul>

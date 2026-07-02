@@ -4,13 +4,13 @@ import SectionLabel from "../../../../../components/ui/SectionLabel";
 const StateExperiences = ({ experiences }) => {
   if (!experiences || experiences.length === 0) return null;
   return (
-    <section className="py-24 bg-[#07090f] relative border-b border-white/5">
+    <section className="py-24 bg-white dark:bg-[#07090f] relative border-b border-slate-200 dark:border-white/5">
       <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8">
         <SectionLabel icon={FiCompass} text="Experiences" />
         
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-16">
-          <h2 className="text-4xl md:text-5xl font-black text-white">Curated Experiences</h2>
-          <p className="text-[#8fa3cc] text-sm md:text-base max-w-md">
+          <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white">Curated Experiences</h2>
+          <p className="text-slate-600 dark:text-[#8fa3cc] text-sm md:text-base max-w-md">
             Unforgettable activities and adventures handpicked for your journey.
           </p>
         </div>
@@ -31,7 +31,7 @@ const StateExperiences = ({ experiences }) => {
                   className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition duration-700"
                 />
               ) : (
-                <div className="absolute inset-0 bg-[#121621]" />
+                <div className="absolute inset-0 bg-slate-100 dark:bg-[#121621]" />
               )}
               
               <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent transition duration-500 group-hover:from-black/95" />

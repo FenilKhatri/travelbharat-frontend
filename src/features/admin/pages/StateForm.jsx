@@ -66,8 +66,21 @@ const StateForm = () => {
   };
 
   const onSave = (asDraft) => {
+    // Convert quickFacts array back to object for Mongoose
+    const quickFactsObj = {};
+    if (Array.isArray(form.quickFacts)) {
+      form.quickFacts.forEach(fact => {
+        if (fact.title && fact.value) {
+          quickFactsObj[fact.title] = fact.value;
+        }
+      });
+    } else if (form.quickFacts && typeof form.quickFacts === "object") {
+        Object.assign(quickFactsObj, form.quickFacts);
+    }
+
     const payload = {
       ...form,
+      quickFacts: quickFactsObj,
       isActive: !asDraft,
       mapCoordinates: {
         type: "Point",

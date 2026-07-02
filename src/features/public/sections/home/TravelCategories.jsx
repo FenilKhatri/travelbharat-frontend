@@ -72,7 +72,7 @@ const TravelCategories = () => {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.05 }}
-                  className="bg-white dark:bg-[#0A121F] p-6 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.3)] border border-slate-100 dark:border-white/5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center group cursor-pointer relative overflow-hidden"
+                  className="bg-white dark:bg-[#0A121F] p-6 rounded-2xl shadow-xl shadow-slate-200/60 dark:shadow-[0_8px_30px_rgba(0,0,0,0.3)] border border-slate-200 dark:border-white/5 hover:shadow-2xl hover:shadow-slate-300 hover:-translate-y-1 transition-all duration-300 text-center group cursor-pointer relative overflow-hidden"
                 >
                   {/* Background image if exists */}
                   {category.image && (

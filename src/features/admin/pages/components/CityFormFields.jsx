@@ -1,4 +1,4 @@
-import React from 'react';
+import { FiBook, FiImage, FiMap, FiShoppingBag, FiNavigation, FiMapPin } from 'react-icons/fi';
 import {
   FormCard,
   FormField,
@@ -9,10 +9,11 @@ import {
   FormToggle,
   FormSEO,
   FormGallery,
-  FormBadges
+  FormBadges,
 } from '../../components/form';
+import { FaUtensils, FaBed } from 'react-icons/fa';
 
-const CityFormFields = ({ form, set, handleArrayString, handleImgUpload, uploadingImage, uploadMultipleImages, statesList, placesList, festivalsList, foodsList }) => {
+const CityFormFields = ({ form, set, handleImgUpload, uploadingImage, uploadMultipleImages, statesList }) => {
   return (
     <div className="space-y-5">
         
@@ -193,12 +194,6 @@ const CityFormFields = ({ form, set, handleArrayString, handleImgUpload, uploadi
             
             <div className="space-y-4">
               <h4 className="font-bold text-sm text-slate-700 dark:text-slate-300">Emergency Info</h4>
-              <FormField label="Police">
-                <FormInput value={form.emergencyInfo.police} onChange={v => set("emergencyInfo.police", v)} />
-              </FormField>
-              <FormField label="Ambulance">
-                <FormInput value={form.emergencyInfo.ambulance} onChange={v => set("emergencyInfo.ambulance", v)} />
-              </FormField>
               <FormField label="Fire Brigade">
                 <FormInput value={form.emergencyInfo.fireBrigade} onChange={v => set("emergencyInfo.fireBrigade", v)} />
               </FormField>

@@ -7,7 +7,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useQueryClient } from '@tanstack/react-query';
 import { motion } from "framer-motion";
 
-const LikeButton = ({ entityId, entityType, initialCount = 0, className = "" }) => {
+const LikeButton = ({ entityId, entityType, initialCount = 0, className = "", showCount = false }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -17,10 +17,6 @@ const LikeButton = ({ entityId, entityType, initialCount = 0, className = "" }) 
   const [isProcessing, setIsProcessing] = useState(false);
   
   const timeoutRef = useRef(null);
-
-  useEffect(() => {
-    setCount(initialCount);
-  }, [initialCount]);
 
   useEffect(() => {
     if (user && entityId) {
@@ -112,7 +108,7 @@ const LikeButton = ({ entityId, entityType, initialCount = 0, className = "" }) 
       <motion.div animate={isLiked ? { scale: [1, 1.4, 1] } : {}} transition={{ duration: 0.3 }}>
         <FiHeart className={isLiked ? 'fill-rose-500 text-rose-500' : ''} />
       </motion.div>
-      <span>{count > 0 ? count : 'Like'}</span>
+      <span>{showCount ? (count > 0 ? count : 'Like') : (isLiked ? 'Liked' : 'Like')}</span>
     </button>
   );
 };

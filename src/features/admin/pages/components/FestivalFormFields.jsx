@@ -1,4 +1,6 @@
 import React from 'react';
+import { FaCalendarCheck } from 'react-icons/fa';
+import { FiImage, FiMap } from 'react-icons/fi';
 import {
   FormCard,
   FormField,

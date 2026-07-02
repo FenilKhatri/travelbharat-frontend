@@ -2,7 +2,7 @@ import { FaLightbulb } from "react-icons/fa";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
 
 const FestivalTips = ({ festival }) => {
-  const tips = festival.travelTips?.filter(t => t.trim().length > 0) || [];
+  const tips = festival.travelTips?.map(t => typeof t === "string" ? t : t?.description)?.filter(t => t?.trim().length > 0) || [];
   if (tips.length === 0) return null;
 
   return (

@@ -9,21 +9,21 @@ const CityHero = ({ city, stateName, resolvedStateSlug, avgRating, totalPlaces }
         <div className="absolute inset-0">
           <img src={city.images.hero} alt={city.name} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/55" />
-          <div className="absolute inset-0 bg-linear-to-t from-[#07090f] via-black/30 to-black/50" />
+          <div className="absolute inset-0 bg-linear-to-t from-slate-50 dark:from-[#07090f] via-black/30 to-black/50" />
         </div>
       )}
       <div className="relative z-10 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <nav className="flex items-center gap-2 text-sm text-white/60 mb-8 flex-wrap">
-          <Link to="/" className="hover:text-[#E85D04] transition">Home</Link>
-          <span>/</span>
-          <Link to="/states" className="hover:text-[#E85D04] transition">States</Link>
+          <Link to="/" className="text-white hover:text-[#E85D04] transition">Home</Link>
+          <span className="text-white/60">/</span>
+          <Link to="/states" className="text-white hover:text-[#E85D04] transition">States</Link>
           {resolvedStateSlug && (
             <>
-              <span>/</span>
-              <Link to={`/states/${resolvedStateSlug}`} className="hover:text-[#E85D04] transition">{stateName}</Link>
+              <span className="text-white/60">/</span>
+              <Link to={`/states/${resolvedStateSlug}`} className="text-white hover:text-[#E85D04] transition">{stateName}</Link>
             </>
           )}
-          <span>/</span>
+          <span className="text-white/60">/</span>
           <span className="text-white font-semibold">{city.name}</span>
         </nav>
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>

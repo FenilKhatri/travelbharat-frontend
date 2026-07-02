@@ -28,17 +28,17 @@ const GalleryCarousel = ({ images, name }) => {
   return (
     <>
       {/*  SECTION 4: VISUAL JOURNEY  */}
-      <section className="py-24 bg-[#0a0a0a]">
+      <section className="py-24 bg-slate-50 dark:bg-[#0a0a0a]">
         <div className="max-w-[1600px] mx-auto px-4">
           <Reveal>
             <div className="flex justify-between items-end mb-12">
               <div>
-                <h2 className="text-4xl md:text-5xl font-black mb-2 text-white">Visual Journey</h2>
-                <p className="text-white/50 text-sm font-black tracking-[0.2em] uppercase">Glimpses of {name}</p>
+                <h2 className="text-4xl md:text-5xl font-black mb-2 text-slate-900 dark:text-white">Visual Journey</h2>
+                <p className="text-slate-500 dark:text-white/50 text-sm font-black tracking-[0.2em] uppercase">Glimpses of {name}</p>
               </div>
               <button
                 onClick={() => { setActivePhoto(0); setModalOpen(true); }}
-                className="hidden md:block bg-white/5 hover:bg-white/10 border border-white/10 text-white px-6 py-3 rounded-full font-bold transition-all text-sm uppercase tracking-wider cursor-pointer"
+                className="hidden md:block bg-slate-200/50 dark:bg-white/5 hover:bg-slate-300/50 dark:hover:bg-white/10 border border-slate-300 dark:border-white/10 text-slate-800 dark:text-white px-6 py-3 rounded-full font-bold transition-all text-sm uppercase tracking-wider cursor-pointer"
               >
                 View All Photos
               </button>
@@ -77,7 +77,7 @@ const GalleryCarousel = ({ images, name }) => {
 
           <button
             onClick={() => { setActivePhoto(0); setModalOpen(true); }}
-            className="mt-6 w-full md:hidden bg-white/5 border border-white/10 text-white py-4 rounded-xl font-bold uppercase tracking-widest text-sm"
+            className="mt-6 w-full md:hidden bg-slate-200/50 dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-800 dark:text-white py-4 rounded-xl font-bold uppercase tracking-widest text-sm"
           >
             View All Photos
           </button>

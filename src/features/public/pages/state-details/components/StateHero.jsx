@@ -4,13 +4,18 @@ import LikeButton from "../../../../../components/ui/LikeButton";
 import { motion } from "framer-motion";
 
 const StateHero = ({ state }) => {
+  const quickFactsEntries = state.quickFacts ? Object.entries(state.quickFacts).filter(([key]) => key !== "_id" && key !== "id") : [];
+  const displayedFacts = quickFactsEntries.slice(0, 4);
+
   return (
     <section className="relative w-full min-h-[85vh] flex flex-col justify-center">
       {/* Background Image */}
       {(state.images?.hero?.url || state.heroImage?.url) && (
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${state.images?.hero?.url || state.heroImage?.url})` }}
+          style={{
+            backgroundImage: `url(${state.images?.hero?.url || state.heroImage?.url})`,
+          }}
         >
           <div className="absolute inset-0 bg-black/60" />
           <div className="absolute inset-0 bg-linear-to-t from-[#07090f] via-black/20 to-black/40" />
@@ -23,7 +28,9 @@ const StateHero = ({ state }) => {
           {state.stateBranding?.overlayImage && (
             <div
               className="absolute right-0 bottom-0 w-full max-w-[600px] h-full bg-contain bg-no-repeat bg-bottom-right opacity-40 pointer-events-none mix-blend-screen z-[-1]"
-              style={{ backgroundImage: `url(${state.stateBranding.overlayImage})` }}
+              style={{
+                backgroundImage: `url(${state.stateBranding.overlayImage})`,
+              }}
             />
           )}
           {/* Left Content */}
@@ -40,11 +47,13 @@ const StateHero = ({ state }) => {
                 </span>
               )}
             </div>
-            <h1 className="text-6xl md:text-8xl font-black mb-4 drop-shadow-xl leading-none">{state.name}</h1>
-            
+            <h1 className="text-6xl md:text-8xl font-black mb-4 drop-shadow-xl leading-none">
+              {state.name}
+            </h1>
+
             {/* Badges Under Title */}
             <div className="flex items-center flex-wrap gap-3 mb-6">
-              {state.badges?.map(badgeName => (
+              {state.badges?.map((badgeName) => (
                 <TravelBadge key={badgeName} badgeName={badgeName} />
               ))}
             </div>
@@ -53,17 +62,22 @@ const StateHero = ({ state }) => {
                 {state.tagline}
               </p>
             )}
-            
+
             {/* New heroDescription instead of description */}
             {(state.heroDescription || state.description) && (
-              <p className="text-sm md:text-base text-white/75 mb-10 leading-relaxed max-w-xl">
+              <p className="text-sm md:text-base text-white/90 mb-10 leading-relaxed max-w-xl">
                 {state.heroDescription || state.description}
               </p>
             )}
-            
+
             <div className="flex gap-4">
-              <LikeButton entityId={state._id} entityType="state" initialCount={state.likeCount} className="px-6! py-3! text-sm!" />
-              
+              <LikeButton
+                entityId={state._id}
+                entityType="state"
+                initialCount={state.likeCount}
+                className="px-6! py-3! text-sm!"
+              />
+
               {/* Optional CTA */}
               {state.ctaLabel && (
                 <button className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white text-sm font-bold rounded-xl backdrop-blur-md transition border border-white/20">
@@ -72,40 +86,65 @@ const StateHero = ({ state }) => {
               )}
             </div>
           </motion.div>
-          {/* Right Info Card - Replaced with Quick Facts sidebar mapping */}
-          {state.quickFacts?.length > 0 ? (
-             <motion.div
+
+          {/* Right Info Card */}
+          {state.quickFacts && Object.keys(state.quickFacts).length > 0 ? (
+            <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="hidden lg:block bg-[#0c1018]/80 backdrop-blur-xl p-6 rounded-2xl w-80 shrink-0 border border-white/10 shadow-2xl space-y-4"
-             >
-                {state.quickFacts.map((fact, index) => (
-                  <div key={index}>
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-[#E85D04]/10 border border-[#E85D04]/20 flex items-center justify-center text-[#E85D04] shrink-0">
-                        {/* We use FiInfo as a fallback if dynamic icon is not mapped or passed */}
-                        <FiInfo size={17} />
+              className="hidden lg:block bg-white/90 dark:bg-[#0c1018]/80 backdrop-blur-xl p-6 rounded-2xl w-80 shrink-0 border border-slate-200 dark:border-white/10 shadow-2xl space-y-4"
+            >
+              {(state.images?.thumbnail?.url || state.heroImage?.url) && (
+                <div className="w-full h-48 lg:h-56 rounded-xl overflow-hidden mb-6 border border-slate-200 dark:border-white/10 shadow-inner">
+                  <img
+                    src={state.images?.thumbnail?.url || state.heroImage?.url}
+                    alt={`${state.name} Thumbnail`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              
+              <div className="flex flex-col space-y-4">
+                {displayedFacts.map(([key, value], index) => {
+                  const title = key.replace(/([A-Z])/g, " $1").trim();
+                  return (
+                    <div key={index} className="flex flex-col">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-xl bg-[#E85D04]/10 border border-[#E85D04]/20 flex items-center justify-center text-[#E85D04] shrink-0">
+                          <FiInfo size={17} />
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-slate-500 dark:text-[#4b607a] font-bold uppercase tracking-widest">
+                            {title}
+                          </p>
+                          <p className="text-sm font-bold text-slate-800 dark:text-[#edf2ff] mt-0.5 line-clamp-2">
+                            {value}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-[10px] text-[#4b607a] font-bold uppercase tracking-widest">{fact.title}</p>
-                        <p className="text-sm font-bold text-[#edf2ff] mt-0.5">{fact.value}</p>
-                      </div>
+                      {index < displayedFacts.length - 1 && (
+                        <hr className="border-slate-200 dark:border-white/8 my-4" />
+                      )}
                     </div>
-                    {index < state.quickFacts.length - 1 && <hr className="border-white/8" />}
-                  </div>
-                ))}
-             </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
           ) : (
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="hidden lg:block bg-[#0c1018]/80 backdrop-blur-xl p-6 rounded-2xl w-80 shrink-0 border border-white/10 shadow-2xl"
+              className="hidden lg:block bg-white/90 dark:bg-[#0c1018]/80 backdrop-blur-xl p-6 rounded-2xl w-80 shrink-0 border border-slate-200 dark:border-white/10 shadow-2xl"
             >
               {(state.images?.thumbnail?.url || state.heroImage?.url) && (
-                <div className="w-full h-64 rounded-xl overflow-hidden mb-6 border border-white/10">
-                  <img src={state.images?.thumbnail?.url || state.heroImage?.url} alt="Thumbnail" className="w-full h-full object-cover" />
+                <div className="w-full h-64 rounded-xl overflow-hidden mb-6 border border-slate-200 dark:border-white/10">
+                  <img
+                    src={state.images?.thumbnail?.url || state.heroImage?.url}
+                    alt="Thumbnail"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               )}
               <div className="space-y-4">
@@ -115,32 +154,49 @@ const StateHero = ({ state }) => {
                       <FiMapPin size={17} />
                     </div>
                     <div>
-                      <p className="text-[10px] text-[#4b607a] font-bold uppercase tracking-widest">Capital</p>
-                      <p className="text-sm font-bold text-[#edf2ff] mt-0.5">{state.capital}</p>
+                      <p className="text-[10px] text-slate-500 dark:text-[#4b607a] font-bold uppercase tracking-widest">
+                        Capital
+                      </p>
+                      <p className="text-sm font-bold text-slate-800 dark:text-[#edf2ff] mt-0.5">
+                        {state.capital}
+                      </p>
                     </div>
                   </div>
                 )}
-                {state.capital && state.region && <hr className="border-white/8" />}
+                {state.capital && state.region && (
+                  <hr className="border-slate-200 dark:border-white/8 my-4" />
+                )}
                 {state.region && (
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-xl bg-[#E85D04]/10 border border-[#E85D04]/20 flex items-center justify-center text-[#E85D04] shrink-0">
                       <FiGlobe size={17} />
                     </div>
                     <div>
-                      <p className="text-[10px] text-[#4b607a] font-bold uppercase tracking-widest">Region</p>
-                      <p className="text-sm font-bold text-[#edf2ff] mt-0.5">{state.region}</p>
+                      <p className="text-[10px] text-slate-500 dark:text-[#4b607a] font-bold uppercase tracking-widest">
+                        Region
+                      </p>
+                      <p className="text-sm font-bold text-slate-800 dark:text-[#edf2ff] mt-0.5">
+                        {state.region}
+                      </p>
                     </div>
                   </div>
                 )}
-                {(state.capital || state.region) && state.languages?.length > 0 && <hr className="border-white/8" />}
+                {(state.capital || state.region) &&
+                  state.languages?.length > 0 && (
+                    <hr className="border-slate-200 dark:border-white/8 my-4" />
+                  )}
                 {state.languages?.length > 0 && (
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-xl bg-[#E85D04]/10 border border-[#E85D04]/20 flex items-center justify-center text-[#E85D04] shrink-0">
                       <FiInfo size={17} />
                     </div>
                     <div>
-                      <p className="text-[10px] text-[#4b607a] font-bold uppercase tracking-widest">Language</p>
-                      <p className="text-sm font-bold text-[#edf2ff] mt-0.5">{state.languages.join(", ")}</p>
+                      <p className="text-[10px] text-slate-500 dark:text-[#4b607a] font-bold uppercase tracking-widest">
+                        Language
+                      </p>
+                      <p className="text-sm font-bold text-slate-800 dark:text-[#edf2ff] mt-0.5">
+                        {state.languages.join(", ")}
+                      </p>
                     </div>
                   </div>
                 )}

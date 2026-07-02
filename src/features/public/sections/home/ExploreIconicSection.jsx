@@ -29,7 +29,7 @@ const ExploreIconicSection = ({
   if (data.length === 0) return null;
 
   return (
-    <section className={`py-20 ${type === 'festival' ? 'bg-[#060D18]' : 'bg-white dark:bg-[#060D18]'} relative overflow-hidden`}>
+    <section className="py-20 bg-slate-50 dark:bg-[#060D18] relative overflow-hidden">
       {/* Decorative element for festivals */}
       {type === 'festival' && (
         <motion.img 
@@ -38,17 +38,17 @@ const ExploreIconicSection = ({
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
           src="/mandala.svg" 
           alt="Mandala"
-          className="absolute left-[-20%] top-[-20%] w-[800px] z-0 pointer-events-none"
+          className="absolute left-[-20%] top-[-20%] w-[800px] z-0 pointer-events-none dark:invert-0 invert"
         />
       )}
 
       <div className="max-w-[1600px] w-full mx-auto px-4 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-[#E85D04] font-bold uppercase tracking-wider text-sm mb-2 block">{highlightText}</span>
-          <h2 className={`text-3xl md:text-5xl font-bold mb-6 ${type === 'festival' ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-slate-900 dark:text-white">
             {title}
           </h2>
-          <p className={`text-lg ${type === 'festival' ? 'text-slate-400' : 'text-slate-600 dark:text-slate-400'}`}>
+          <p className="text-lg text-slate-600 dark:text-slate-400">
             {subtitle}
           </p>
         </div>
@@ -86,13 +86,13 @@ const ExploreIconicSection = ({
               >
                 <Link 
                   to={link}
-                  className={`group relative block ${isState ? 'h-80' : 'h-96'} rounded-[1.25rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(232,93,4,0.2)] transition-all cursor-pointer focus:outline-none focus:ring-4 focus:ring-[#E85D04]/50`}
+                  className={`group relative block ${isState ? 'h-80' : 'h-96'} rounded-[1.25rem] overflow-hidden shadow-xl shadow-slate-200/80 dark:shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:shadow-2xl hover:shadow-slate-300 dark:hover:shadow-[0_8px_30px_rgba(232,93,4,0.2)] border border-slate-200 dark:border-white/5 transition-all cursor-pointer focus:outline-none focus:ring-4 focus:ring-[#E85D04]/50`}
                 >
                   <div 
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                     style={{ backgroundImage: `url('${item.images?.thumbnail?.url || item.images?.hero?.url || item.heroImage?.url || 'https://images.unsplash.com/photo-1533227268428-f9ed0900f9bf?auto=format&fit=crop&q=80'}')` }}
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 dark:from-black/90 dark:via-black/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
                   
                   {/* Badges */}
                   {item.featured && (

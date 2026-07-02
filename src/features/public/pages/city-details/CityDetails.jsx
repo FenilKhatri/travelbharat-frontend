@@ -59,9 +59,9 @@ const CityDetails = () => {
 
   if (cityError || !city) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#07090f] gap-4">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-[#07090f] gap-4">
         <FaMapMarkerAlt size={56} className="text-[#E85D04]" />
-        <h1 className="text-2xl font-bold text-white">City Not Found</h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">City Not Found</h1>
         <p className="text-[#8fa3cc]">We couldn't find details for "{citySlug}".</p>
         <Link to="/states" className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-[#E85D04] text-white rounded-xl font-semibold text-sm hover:bg-[#D05203] transition">
           <FiArrowLeft size={16} /> Back to States
@@ -75,7 +75,7 @@ const CityDetails = () => {
   const validEmergency = city.emergencyInfo && Object.values(city.emergencyInfo).some((v) => v?.trim());
 
   return (
-    <div className="min-h-screen bg-[#07090f] font-sans text-[#edf2ff]">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#07090f] font-sans text-slate-900 dark:text-[#edf2ff]">
       <CityHero
         city={city}
         stateName={stateName}

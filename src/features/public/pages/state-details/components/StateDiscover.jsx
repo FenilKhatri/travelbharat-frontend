@@ -4,7 +4,7 @@ import SectionLabel from "../../../../../components/ui/SectionLabel";
 const StateDiscover = ({ discoverSections }) => {
   if (!discoverSections || discoverSections.length === 0) return null;
   return (
-    <section className="py-24 bg-[#07090f] relative border-b border-white/5">
+    <section className="py-24 bg-white dark:bg-[#07090f] relative border-b border-slate-200 dark:border-white/5">
       <div className="max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
         {discoverSections.map((section, index) => {
           const isEven = index % 2 === 0;
@@ -20,7 +20,7 @@ const StateDiscover = ({ discoverSections }) => {
                 className="w-full lg:w-1/2"
               >
                 {section.image?.url ? (
-                  <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-4/5 border border-white/10 group">
+                  <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-4/5 border border-slate-200 dark:border-white/10 group">
                     <img 
                       src={section.image.url} 
                       alt={section.image.altText || section.title}
@@ -29,10 +29,10 @@ const StateDiscover = ({ discoverSections }) => {
                     <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
                   </div>
                 ) : (
-                  <div className="relative rounded-3xl bg-[#121621] border border-white/5 shadow-2xl aspect-4/5 flex items-center justify-center p-12 text-center">
+                  <div className="relative rounded-3xl bg-slate-100 dark:bg-[#121621] border border-slate-200 dark:border-white/5 shadow-2xl aspect-4/5 flex items-center justify-center p-12 text-center">
                     <div>
                       <FiBookOpen size={48} className="text-white/10 mx-auto mb-6" />
-                      <h3 className="text-2xl font-bold text-white/50">{section.title}</h3>
+                      <h3 className="text-2xl font-bold text-slate-400 dark:text-white/50">{section.title}</h3>
                     </div>
                   </div>
                 )}
@@ -46,11 +46,11 @@ const StateDiscover = ({ discoverSections }) => {
                 className="w-full lg:w-1/2 space-y-6"
               >
                 <SectionLabel icon={FiBookOpen} text={section.subtitle || "Discover"} />
-                <h2 className="text-4xl md:text-5xl font-black text-white leading-tight">
+                <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight">
                   {section.title}
                 </h2>
                 
-                <div className="prose prose-invert max-w-none text-[#8fa3cc] leading-relaxed">
+                <div className="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-[#8fa3cc] leading-relaxed">
                   {section.description?.split('\n\n').map((paragraph, pIdx) => (
                     <p key={pIdx} className="mb-4 last:mb-0">{paragraph}</p>
                   ))}

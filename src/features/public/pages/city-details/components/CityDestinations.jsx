@@ -5,13 +5,13 @@ import DestinationSkeleton from "../../../../../components/ui/DestinationSkeleto
 
 const CityDestinations = ({ city, places, placesLoading, resolvedStateSlug }) => {
   return (
-    <section id="destinations" className="py-24 bg-[#07090f] border-b border-white/5">
+    <section id="destinations" className="py-24 bg-slate-50 dark:bg-[#07090f] border-b border-slate-200 dark:border-white/5">
       <div className="max-w-[1600px] w-full mx-auto px-4">
         <SectionLabel icon={FiCompass} text="Must Visit" />
-        <h2 className="text-4xl font-black text-[#edf2ff] mb-4">
+        <h2 className="text-4xl font-black text-slate-900 dark:text-[#edf2ff] mb-4">
           Top Places to Visit in <span className="text-[#E85D04]">{city.name}</span>
         </h2>
-        <p className="text-[#8fa3cc] mb-12 max-w-2xl">
+        <p className="text-slate-500 dark:text-[#8fa3cc] mb-12 max-w-2xl">
           Explore curated destinations handpicked for an unforgettable experience in {city.name}.
         </p>
 
@@ -31,9 +31,9 @@ const CityDestinations = ({ city, places, placesLoading, resolvedStateSlug }) =>
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 rounded-3xl border border-white/10 bg-[#111827]/50">
+          <div className="text-center py-16 rounded-3xl border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-[#111827]/50">
             <FiCompass className="mx-auto text-[#E85D04]/50 mb-4" size={40} />
-            <p className="text-[#8fa3cc] font-medium">Destinations for {city.name} are coming soon.</p>
+            <p className="text-slate-500 dark:text-[#8fa3cc] font-medium">Destinations for {city.name} are coming soon.</p>
           </div>
         )}
       </div>

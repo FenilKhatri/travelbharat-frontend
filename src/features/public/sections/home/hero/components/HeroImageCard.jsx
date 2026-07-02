@@ -15,7 +15,7 @@ const HeroImageCard = ({ currentBanner, currentSlide, setIsHovered }) => {
           duration: 5,
           repeat: Infinity,
           ease: "easeInOut"}}
-        className="absolute -top-6 -left-6 bg-surface-elevated/90 backdrop-blur-xl border border-slate-200 dark:border-slate-600 rounded-2xl p-4 shadow-xl z-20 flex items-center gap-3"
+        className="absolute -top-6 -left-6 bg-surface-elevated/90 backdrop-blur-xl border border-slate-200 dark:border-slate-600 rounded-2xl p-4 shadow-xl shadow-slate-200/80 dark:shadow-black/20 z-20 flex items-center gap-3"
       >
         <div className="p-2 bg-orange-500/10 rounded-lg text-accent">
           <FaMountain size={16} />
@@ -36,7 +36,7 @@ const HeroImageCard = ({ currentBanner, currentSlide, setIsHovered }) => {
           duration: 5,
           repeat: Infinity,
           ease: "easeInOut"}}
-        className="absolute -bottom-5 -right-6 bg-surface-elevated/90 backdrop-blur-xl border border-border-theme rounded-2xl px-5 py-4 shadow-xl z-20 flex items-center gap-3"
+        className="absolute -bottom-5 -right-6 bg-surface-elevated/90 backdrop-blur-xl border border-slate-200 dark:border-border-theme rounded-2xl px-5 py-4 shadow-xl shadow-slate-200/80 dark:shadow-black/20 z-20 flex items-center gap-3"
       >
         <div className="p-2 bg-orange-500/10 rounded-lg text-accent">
           <FiCamera size={16} />
@@ -51,7 +51,7 @@ const HeroImageCard = ({ currentBanner, currentSlide, setIsHovered }) => {
         </div>
       </motion.div>
       {/* IMAGE CARD */}
-      <div className="relative overflow-hidden rounded-[38px] border border-white/20 dark:border-white/70 shadow-2xl z-10 w-full aspect-4/5 md:h-[600px] md:w-[480px] bg-white/10 backdrop-blur-xl">
+      <div className="relative overflow-hidden rounded-[38px] border border-slate-200/50 dark:border-white/70 shadow-2xl shadow-slate-300/60 dark:shadow-black/40 z-10 w-full aspect-4/5 md:h-[600px] md:w-[480px] bg-white/10 backdrop-blur-xl">
         <AnimatePresence mode="wait">
           <motion.img
             key={currentSlide}

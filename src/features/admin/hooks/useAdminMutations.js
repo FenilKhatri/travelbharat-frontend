@@ -15,7 +15,7 @@ export const useAdminMutations = ({
     mutationFn: async ({ id, payload }) => {
       const endpoint = updateEndpoint(id);
       const res = await http.put(endpoint, payload);
-      return res?.data || res;
+      return res;
     },
     onSuccess: (res) => {
       toast.success(res?.message || successUpdateMsg);
@@ -30,7 +30,7 @@ export const useAdminMutations = ({
     mutationFn: async (id) => {
       const endpoint = deleteEndpoint(id);
       const res = await http.delete(endpoint);
-      return res?.data || res;
+      return res;
     },
     onSuccess: (res) => {
       toast.success(res?.message || successDeleteMsg);
