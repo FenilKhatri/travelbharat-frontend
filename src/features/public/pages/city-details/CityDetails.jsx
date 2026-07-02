@@ -72,7 +72,7 @@ const CityDetails = () => {
 
   const validGallery = city.images?.gallery?.filter(Boolean) || [];
   const stateName = city.stateId?.name;
-  const validEmergency = city.emergencyInfo && Object.values(city.emergencyInfo).some((v) => v?.trim());
+  const validEmergency = city.emergencyInfo && Object.values(city.emergencyInfo).some((v) => typeof v === 'string' ? v.trim() : Boolean(v));
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#07090f] font-sans text-slate-900 dark:text-[#edf2ff]">
