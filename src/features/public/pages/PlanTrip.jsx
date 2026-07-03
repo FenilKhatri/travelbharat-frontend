@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
 import { FiMapPin, FiCalendar, FiDollarSign, FiUsers, FiCompass, FiArrowRight, FiCheck } from "react-icons/fi";
+import PageContainer from "../../../components/layout/PageContainer";
+import ContentContainer from "../../../components/layout/ContentContainer";
 import { placeService } from "../../../services/placeService";
 import { tripPlannerService } from "../../../services/tripPlannerService";
 import PageLoader from "../../../components/ui/PageLoader";
@@ -121,7 +123,7 @@ const PlanTrip = () => {
           <img src={heroImage} alt={place.name} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-linear-to-t from-[#050505] via-[#050505]/80 to-black/30" />
         </div>
-        <div className="relative z-10 max-w-[1600px] mx-auto w-full px-4 pb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <PageContainer className="relative z-10 pb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <span className="bg-[#E85D04]/20 text-[#E85D04] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest border border-[#E85D04]/30 mb-4 inline-block">
               AI Trip Planner
@@ -146,11 +148,11 @@ const PlanTrip = () => {
               <p className="font-bold text-sm capitalize">{place.category?.replace("-", " ")}</p>
             </div>
           </div>
-        </div>
+        </PageContainer>
       </section>
 
       {/* PLANNER FORM */}
-      <section className="max-w-4xl mx-auto px-4 -mt-6 relative z-20">
+      <ContentContainer as="section" className="-mt-6 relative z-20">
         <form onSubmit={handleGenerate} className="bg-[#0A0F1A] border border-white/10 rounded-3xl p-6 md:p-10 shadow-2xl">
 
           <div className="space-y-10">
@@ -295,7 +297,7 @@ const PlanTrip = () => {
             </button>
           </div>
         </form>
-      </section>
+      </ContentContainer>
     </div>
   );
 };

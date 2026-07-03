@@ -1,10 +1,11 @@
 import Reveal from "../../../../../components/ui/Reveal";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
 
 const PlaceFoods = ({ place }) => {
   if (!place.foodSpecialities?.length) return null;
 
   return (
-    <section className="py-24 bg-[#050505]">
+    <SectionContainer className="bg-[#050505]">
       <div className="max-w-[1600px] mx-auto px-4">
         <Reveal>
           <h2 className="text-4xl md:text-5xl font-black mb-12">Culinary Delights</h2>
@@ -28,7 +29,7 @@ const PlaceFoods = ({ place }) => {
           ))}
         </div>
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 

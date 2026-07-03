@@ -1,9 +1,10 @@
 import { FiClock, FiDollarSign, FiInfo } from "react-icons/fi";
 import Reveal from "../../../../../components/ui/Reveal";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
 
 const PlacePlanner = ({ place }) => {
   return (
-    <section className="py-24 bg-[#0a0a0a]">
+    <SectionContainer className="bg-[#0a0a0a]">
       <div className="max-w-[1600px] mx-auto px-4">
         <Reveal>
           <h2 className="text-4xl md:text-5xl font-black mb-12">Travel Planner</h2>
@@ -51,7 +52,7 @@ const PlacePlanner = ({ place }) => {
           )}
         </div>
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 

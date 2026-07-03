@@ -14,12 +14,14 @@ import AdminDataExplorer from "../components/ui/AdminDataExplorer";
 import { useAdminList } from "../hooks/useAdminList";
 import { useAdminMutations } from "../hooks/useAdminMutations";
 import { places_filters } from "../data/adminData";
+import Checkbox from "../../../components/ui/Checkbox";
 
 const Places = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]);
 
   // Queries
   const { data, isLoading, isError, error } = useAdminList({
@@ -58,22 +60,28 @@ const Places = () => {
 
   const handleToggleActive = (place) => toggleStatus(place._id, place.isActive);
 
-  const renderHeader = () => (
+  const renderHeader = ({ isAllSelected, toggleSelectAll }) => (
     <>
-      <th className="py-4 px-6">Destination</th>
+      <th className="py-4 px-6 w-12">
+        <Checkbox checked={isAllSelected || false} onChange={toggleSelectAll} />
+      </th>
+      <th className="py-4 px-6">Place Info</th>
       <th className="py-4 px-6">Location</th>
-      <th className="py-4 px-6">Badges</th>
-      <th className="py-4 px-6">Status</th>
+      <th className="py-4 px-6">Category / Ratings</th>
+      <th className="py-4 px-6">Status / Tags</th>
       <th className="py-4 px-6 text-right">Actions</th>
     </>
   );
 
-  const renderRow = (place) => (
-    <tr 
-      key={place._id} 
+  const renderRow = (place, { isSelected, toggleSelection }) => (
+    <tr
+      key={place._id}
       onClick={() => navigate(`/admin/places/${place._id}`)}
-      className="hover:bg-slate-50/50 dark:hover:bg-slate-900/70 transition cursor-pointer"
+      className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800/30 cursor-pointer"
     >
+      <td className="py-4 px-6" onClick={(e) => e.stopPropagation()}>
+        <Checkbox checked={isSelected || false} onChange={() => toggleSelection(place._id)} />
+      </td>
       <td className="py-4 px-6">
         <div className="flex items-center gap-4">
           {place.images?.thumbnail ? (
@@ -91,9 +99,6 @@ const Places = () => {
             <h4 className="font-bold text-slate-800 dark:text-slate-200">
               {place.name}
             </h4>
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mt-0.5">
-              {place.category?.replace(/-/g, " ") || "Other"}
-            </span>
           </div>
         </div>
       </td>
@@ -101,33 +106,9 @@ const Places = () => {
         <span className="text-slate-700 dark:text-slate-300 font-semibold text-sm">
           {place.cityId?.name || place.stateId?.name || "Unknown"}
         </span>
-        <span className="block text-xs text-slate-400">
-          {place.stateId?.name && place.cityId?.name ? place.stateId.name : ""}
-        </span>
       </td>
-      <td className="py-4 px-6">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={(e) => { e.stopPropagation(); handleToggleFeatured(place); }}
-            className={`p-1.5 rounded-lg border transition duration-200 cursor-pointer ${place.featured
-                ? "bg-amber-500/10 border-amber-500/20 text-amber-500"
-                : "border-slate-200 dark:border-slate-800 text-slate-300 hover:text-slate-500"
-              }`}
-            title="Toggle Featured"
-          >
-            <FiStar size={14} className={place.featured ? "fill-amber-500" : ""} />
-          </button>
-          <button
-            onClick={(e) => { e.stopPropagation(); handleToggleTrending(place); }}
-            className={`p-1.5 rounded-lg border transition duration-200 cursor-pointer ${place.trending
-                ? "bg-rose-500/10 border-rose-500/20 text-rose-500"
-                : "border-slate-200 dark:border-slate-800 text-slate-300 hover:text-slate-500"
-              }`}
-            title="Toggle Trending"
-          >
-            <FiTrendingUp size={14} />
-          </button>
-        </div>
+      <td className="py-4 px-6 text-sm text-slate-600 dark:text-slate-400">
+        {place.category?.replace(/-/g, " ") || "Other"} / {place.rating || "N/A"}
       </td>
       <td className="py-4 px-6">
         <button
@@ -160,13 +141,19 @@ const Places = () => {
     </tr>
   );
 
-  const renderGridCard = (place) => (
-    <div 
-      key={place._id} 
-      onClick={() => navigate(`/admin/places/${place._id}`)}
-      className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition flex flex-col group cursor-pointer relative"
+  const renderGridCard = (place, { isSelected, toggleSelection }) => (
+    <div
+      key={place._id}
+      className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer relative"
     >
-      <div className="h-44 bg-slate-100 dark:bg-slate-800 relative">
+      <div className="absolute top-4 left-4 z-20">
+        <Checkbox checked={isSelected || false} onChange={(e) => { e.stopPropagation(); toggleSelection(place._id); }} />
+      </div>
+
+      <div 
+        onClick={() => navigate(`/admin/places/${place._id}`)}
+        className="h-40 bg-slate-100 dark:bg-slate-800 relative"
+      >
         {place.images?.thumbnail ? (
           <img
             src={place.images.thumbnail?.url || place.images.thumbnail}
@@ -179,73 +166,48 @@ const Places = () => {
           </div>
         )}
         <div className="absolute inset-0 bg-linear-to-t from-[#0A121F] via-transparent to-transparent opacity-80" />
-        <div className="absolute top-3 left-3 flex gap-2">
-          {place.featured && (
-            <span className="bg-amber-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm flex items-center gap-1">
-              <FiStar size={10} className="fill-current" /> FEATURED
-            </span>
-          )}
-          {place.trending && (
-            <span className="bg-rose-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm flex items-center gap-1">
-              <FiTrendingUp size={10} /> TRENDING
-            </span>
-          )}
-          {!place.isActive && (
-            <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm">
-              HIDDEN
-            </span>
-          )}
-        </div>
-        <div className="absolute bottom-3 left-4 right-4 text-white">
-          <span className="inline-block px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-white/20 backdrop-blur-md border border-white/20 mb-1.5">
-            {place.category?.replace(/-/g, " ") || "Other"}
-          </span>
-          <h4 className="font-bold text-lg leading-tight mb-0.5 line-clamp-1">{place.name}</h4>
-          <p className="text-xs text-white/80 capitalize flex items-center gap-1">
-            <FiMapPin size={10} /> {place.cityId?.name || place.stateId?.name || "Unknown"}
-          </p>
-        </div>
       </div>
-      <div className="p-4 flex flex-col flex-1">
-        <div className="flex-1">
-          <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
-            {place.description || "No description provided."}
-          </p>
-          <div className="mt-3 flex items-center gap-2">
-            <span className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">
-              Budget: {place.budget || "N/A"}
-            </span>
-            <span className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">
-              Rating: {place.rating || "N/A"}
-            </span>
-          </div>
-        </div>
-        <div className="flex gap-2 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/60">
-          <button
-            onClick={(e) => { e.stopPropagation(); handleEditClick(place); }}
-            className="flex-1 flex items-center justify-center gap-1 py-2 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-bold transition cursor-pointer"
-          >
-            <FiEdit size={14} /> Edit
-          </button>
-          <button
-            onClick={(e) => { e.stopPropagation(); setConfirmDelete(place._id); }}
-            className="flex items-center justify-center p-2 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 text-red-600 dark:text-red-450 rounded-lg transition cursor-pointer"
-          >
-            <FiTrash2 size={16} />
-          </button>
-        </div>
+      <div className="p-4" onClick={() => navigate(`/admin/places/${place._id}`)}>
+        <h4 className="font-bold text-lg leading-tight mb-1 line-clamp-1">{place.name}</h4>
+        <p className="text-xs text-slate-500 flex items-center gap-1">
+          <FiMapPin size={10} /> {place.cityId?.name || "Unknown"}
+        </p>
       </div>
     </div>
   );
 
+  const bulkActions = [
+    {
+      label: "Delete",
+      icon: <FiTrash2 />,
+      variant: "danger",
+      onClick: async (ids, clearSelection) => {
+        const results = await Promise.allSettled(
+          ids.map(id => deleteMutation.mutateAsync(id))
+        );
+        const failed = results.filter(r => r.status === 'rejected');
+        if (failed.length > 0) {
+          import("react-toastify").then(({ toast }) => {
+            toast.error(`Failed to delete ${failed.length} items`);
+          });
+        } else {
+          import("react-toastify").then(({ toast }) => {
+            toast.success(`Successfully deleted ${ids.length} items`);
+          });
+        }
+        clearSelection();
+      }
+    }
+  ];
+
   return (
     <>
       <AdminDataExplorer
-        title="Destinations Directory"
-        subtitle="Review, create, and manage registered tourist places across states."
+        title="Places Directory"
+        subtitle="Manage all tourist attractions, monuments, and places of interest."
         onAddClick={handleOpenCreate}
-        addButtonLabel="Add New Destination"
-        searchPlaceholder="Search destinations..."
+        addButtonLabel="Add New Place"
+        searchPlaceholder="Search places by name or city..."
         filters={places_filters}
         isLoading={isLoading}
         isError={isError}
@@ -255,7 +217,10 @@ const Places = () => {
         renderHeader={renderHeader}
         renderRow={renderRow}
         renderGridCard={renderGridCard}
-        emptyStateMessage="No destinations registered."
+        selectedIds={selectedIds}
+        onSelectionChange={setSelectedIds}
+        bulkActions={bulkActions}
+        emptyStateMessage="No places registered."
       />
 
       {confirmDelete && (

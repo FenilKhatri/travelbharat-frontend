@@ -1,12 +1,16 @@
 import React from 'react';
 import { FiClock, FiMapPin, FiStar, FiUser, FiCheck, FiX, FiMessageSquare, FiTrash2 } from 'react-icons/fi';
+import Checkbox from "../../../../../components/ui/Checkbox";
 
-const ReviewRow = ({ review, onApprove, onReject, onRespondClick, onDeleteClick, onRowClick }) => {
+const ReviewRow = ({ review, onApprove, onReject, onRespondClick, onDeleteClick, onRowClick, isSelected, toggleSelection }) => {
   return (
     <tr 
       onClick={() => onRowClick(review)}
-      className="hover:bg-slate-50/50 dark:hover:bg-slate-850/5 transition cursor-pointer"
+      className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800/30 cursor-pointer"
     >
+      <td className="py-4 px-6" onClick={(e) => e.stopPropagation()}>
+        <Checkbox checked={isSelected || false} onChange={() => toggleSelection(review._id)} />
+      </td>
       <td className="py-4 px-6">
         <div className="flex items-center gap-2.5">
           {review.userId?.profileImage ? (

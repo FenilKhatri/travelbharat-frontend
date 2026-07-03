@@ -2,12 +2,14 @@ import { motion } from "framer-motion";
 import { FiHelpCircle, FiChevronDown } from "react-icons/fi";
 import { useState } from "react";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
+import PageContainer from "../../../../../components/layout/PageContainer";
 const StateFAQ = ({ faq }) => {
   const [openIndex, setOpenIndex] = useState(0);
   if (!faq || faq.length === 0) return null;
   return (
-    <section className="py-24 bg-[#0a0d14] relative border-b border-white/5">
-      <div className="max-w-[1000px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionContainer className="bg-[#0a0d14] relative border-b border-white/5">
+      <PageContainer className="max-w-[1000px]">
         <div className="text-center mb-16 flex flex-col items-center">
           <SectionLabel icon={FiHelpCircle} text="FAQ" />
           <h2 className="text-4xl md:text-5xl font-black text-white mb-4 mt-4">Common Questions</h2>
@@ -57,8 +59,8 @@ const StateFAQ = ({ faq }) => {
             );
           })}
         </div>
-      </div>
-    </section>
+      </PageContainer>
+    </SectionContainer>
   );
 };
 export default StateFAQ;

@@ -1,8 +1,10 @@
 import { FiMapPin } from "react-icons/fi";
 
+import PageContainer from "../../../../../components/layout/PageContainer";
+
 const StateDiscoverBanner = ({ state }) => {
   return (
-    <section className="max-w-[1600px] w-full mx-auto px-4 pb-24 pt-12">
+    <PageContainer as="section" className="pb-24 pt-12">
       <div className="relative rounded-4xl overflow-hidden bg-[#0c1018] p-12 md:p-20 text-center flex flex-col items-center justify-center border border-white/6">
         {(state.images?.hero?.url || state.heroImage?.url) && (
           <img src={state.images?.hero?.url || state.heroImage?.url} className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-luminosity" alt="Discover" />
@@ -24,7 +26,7 @@ const StateDiscoverBanner = ({ state }) => {
           <p className="text-base text-[#8fa3cc] mb-10">Begin your journey today and create memories that will last a lifetime.</p>
         </div>
       </div>
-    </section>
+    </PageContainer>
   );
 };
 

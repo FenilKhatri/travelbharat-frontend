@@ -1,11 +1,12 @@
 import { FaPlane, FaTrain, FaCar, FaBus } from "react-icons/fa";
 import Reveal from "../../../../../components/ui/Reveal";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
 
 const PlaceTransport = ({ place }) => {
   if (!place.howToReach) return null;
 
   return (
-    <section className="py-24 bg-[#050505] border-t border-white/5">
+    <SectionContainer className="bg-[#050505] border-t border-white/5">
       <div className="max-w-[1600px] mx-auto px-4">
         <Reveal>
           <h2 className="text-4xl md:text-5xl font-black mb-12">How To Reach</h2>
@@ -29,7 +30,7 @@ const PlaceTransport = ({ place }) => {
           ))}
         </div>
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 

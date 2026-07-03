@@ -6,11 +6,14 @@ import AdminDataExplorer from "../components/ui/AdminDataExplorer";
 import { useAdminList } from "../hooks/useAdminList";
 import { useAdminMutations } from "../hooks/useAdminMutations";
 import { state_filters, state_regions } from "../data/adminData";
+import Checkbox from "../../../components/ui/Checkbox";
 
 const States = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]);
+  
   // Query
   const { data, isLoading, isError, error, searchParams, setSearchParams } = useAdminList({
     queryKey: "adminStates",
@@ -37,8 +40,11 @@ const States = () => {
     updateMutation.mutate({ id: stateItem._id, payload: { featured: !stateItem.featured } });
   };
   const handleToggleActive = (stateItem) => toggleStatus(stateItem._id, stateItem.isActive);
-  const renderHeader = () => (
+  const renderHeader = ({ isAllSelected, toggleSelectAll }) => (
     <>
+      <th className="py-4 px-6 w-12">
+        <Checkbox checked={isAllSelected || false} onChange={toggleSelectAll} />
+      </th>
       <th className="py-4 px-6">State / Tagline</th>
       <th className="py-4 px-6">Capital</th>
       <th className="py-4 px-6">Region</th>
@@ -47,12 +53,15 @@ const States = () => {
       <th className="py-4 px-6 text-right">Actions</th>
     </>
   );
-  const renderRow = (stateItem) => (
+  const renderRow = (stateItem, { isSelected, toggleSelection }) => (
     <tr 
       key={stateItem._id} 
       onClick={() => navigate(`/admin/states/${stateItem._id}`)}
-      className="hover:bg-slate-50/50 dark:hover:bg-slate-900/70 transition cursor-pointer"
+      className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800/30 cursor-pointer"
     >
+      <td className="py-4 px-6" onClick={(e) => e.stopPropagation()}>
+        <Checkbox checked={isSelected || false} onChange={() => toggleSelection(stateItem._id)} />
+      </td>
       <td className="py-4 px-6">
         <div className="flex items-center gap-4">
           {stateItem.images?.thumbnail ? (
@@ -114,42 +123,41 @@ const States = () => {
       </td>
     </tr>
   );
-  const renderGridCard = (stateItem) => (
-    <div 
-      key={stateItem._id} 
-      onClick={() => navigate(`/admin/states/${stateItem._id}`)}
-      className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition flex flex-col group cursor-pointer relative"
-    >
-      <div className="h-40 bg-slate-100 dark:bg-slate-800 relative">
-        {stateItem.images?.thumbnail ? (
-          <img
-            src={stateItem.images.thumbnail?.url || stateItem.images.thumbnail}
-            alt={stateItem.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-slate-300">
-            <FiImage size={32} />
+  const renderGridCard = (stateItem, { isSelected, toggleSelection }) => (
+    <div key={stateItem._id} className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+      <div className="absolute top-4 left-4 z-20">
+        <Checkbox checked={isSelected || false} onChange={(e) => { e.stopPropagation(); toggleSelection(stateItem._id); }} />
+      </div>
+      <div 
+        onClick={() => navigate(`/admin/states/${stateItem._id}`)}
+        className="cursor-pointer"
+      >
+        <div className="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
+          {stateItem.images?.thumbnail ? (
+            <img
+              src={stateItem.images.thumbnail?.url || stateItem.images.thumbnail}
+              alt={stateItem.name}
+              className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-slate-300">
+              <FiImage size={32} />
+            </div>
+          )}
+          <div className="absolute inset-0 bg-linear-to-t from-[#0A121F] to-transparent opacity-60" />
+          <div className="absolute top-3 right-3 flex gap-2">
+            {stateItem.featured && (
+              <span className="bg-amber-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm">
+                FEATURED
+              </span>
+            )}
           </div>
-        )}
-        <div className="absolute inset-0 bg-linear-to-t from-[#0A121F] to-transparent opacity-60" />
-        <div className="absolute top-3 left-3 flex gap-2">
-          {stateItem.featured && (
-            <span className="bg-amber-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm">
-              FEATURED
-            </span>
-          )}
-          {!stateItem.isActive && (
-            <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm">
-              HIDDEN
-            </span>
-          )}
-        </div>
-        <div className="absolute bottom-3 left-4 right-4 text-white">
-          <h4 className="font-bold text-lg leading-tight mb-1">{stateItem.name}</h4>
-          <p className="text-xs text-white/80 capitalize flex items-center gap-1">
-            <FiMapPin size={10} /> {stateItem.region} India
-          </p>
+          <div className="absolute bottom-3 left-4 right-4 text-white">
+            <h4 className="font-bold text-lg leading-tight mb-1">{stateItem.name}</h4>
+            <p className="text-xs text-white/80 capitalize flex items-center gap-1">
+              <FiMapPin size={10} /> {stateItem.region} India
+            </p>
+          </div>
         </div>
       </div>
       <div className="p-4 flex flex-col flex-1">
@@ -157,10 +165,6 @@ const States = () => {
           <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
             {stateItem.tagline || "No description provided."}
           </p>
-          <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between text-xs font-semibold">
-            <span className="text-slate-600 dark:text-slate-300">{stateItem.totalPlaces || 0} Places</span>
-            <span className="text-slate-600 dark:text-slate-300">{stateItem.capital || "N/A"}</span>
-          </div>
         </div>
         <div className="flex gap-2 mt-4">
           <button
@@ -179,15 +183,34 @@ const States = () => {
       </div>
     </div>
   );
+  const bulkActions = [
+    {
+      label: "Delete",
+      icon: <FiTrash2 />,
+      variant: "danger",
+      onClick: async (ids, clearSelection) => {
+        const results = await Promise.allSettled(
+          ids.map(id => deleteMutation.mutateAsync(id))
+        );
+        const failed = results.filter(r => r.status === 'rejected');
+        if (failed.length > 0) {
+          toast.error(`Failed to delete ${failed.length} items`);
+        } else {
+          toast.success(`Successfully deleted ${ids.length} items`);
+        }
+        clearSelection();
+      }
+    }
+  ];
   return (
     <>
       <AdminDataExplorer
-        title="States Directory"
-        subtitle="Create, edit and manage Indian states registered for TravelBharat explorer guides."
+        title="States Management"
+        subtitle="Manage all state pages, regions, and featured destinations"
         onAddClick={handleOpenCreate}
-        addButtonLabel="Add New State"
-        searchPlaceholder="Search states by name..."
-        filters={state_filters}
+        addButtonLabel="Add State"
+        searchPlaceholder="Search states by name or tagline..."
+        filters={[{ key: "region", label: "All Regions", options: state_regions }, { key: "featured", label: "All Status", options: [{ value: "true", label: "Featured" }, { value: "false", label: "Standard" }] }]}
         isLoading={isLoading}
         isError={isError}
         error={error}
@@ -196,6 +219,9 @@ const States = () => {
         renderHeader={renderHeader}
         renderRow={renderRow}
         renderGridCard={renderGridCard}
+        selectedIds={selectedIds}
+        onSelectionChange={setSelectedIds}
+        bulkActions={bulkActions}
         emptyStateMessage="No states registered."
       />
       {confirmDelete && (

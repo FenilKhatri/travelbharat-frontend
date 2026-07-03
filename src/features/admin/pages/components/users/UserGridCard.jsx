@@ -2,13 +2,15 @@ import React from 'react';
 import { FiMail, FiTrash2, FiXCircle } from 'react-icons/fi';
 import { MdVerified } from 'react-icons/md';
 import CustomDropdown from '../../../../../components/ui/CustomDropdown';
+import Checkbox from "../../../../../components/ui/Checkbox";
 
-const UserGridCard = ({ userItem, onToggleActive, onRoleChange, onDeleteClick, onRowClick }) => {
+const UserGridCard = ({ userItem, onToggleActive, onRoleChange, onDeleteClick, onRowClick, isSelected, toggleSelection }) => {
   return (
-    <div 
-      onClick={() => onRowClick(userItem)}
-      className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition flex flex-col group cursor-pointer p-5 relative"
-    >
+    <div className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm hover:shadow-lg transition flex flex-col group p-5 relative">
+      <div className="absolute top-4 left-4 z-20">
+        <Checkbox checked={isSelected || false} onChange={(e) => { e.stopPropagation(); toggleSelection(userItem._id); }} />
+      </div>
+      <div className="cursor-pointer" onClick={() => onRowClick(userItem)}>
       <div className="flex justify-between items-start mb-4">
         <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-slate-100 dark:border-slate-800 shrink-0">
           {userItem.profileImage ? (
@@ -54,6 +56,7 @@ const UserGridCard = ({ userItem, onToggleActive, onRoleChange, onDeleteClick, o
           <span className="text-xs text-slate-400 capitalize">{userItem.authProvider || "Local email"}</span>
           <button onClick={(e) => onDeleteClick(e, userItem._id)} className="p-1.5 text-slate-400 hover:text-red-500 bg-slate-50 dark:bg-slate-800/50 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition"><FiTrash2 size={14} /></button>
         </div>
+      </div>
       </div>
     </div>
   );

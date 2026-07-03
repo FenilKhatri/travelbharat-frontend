@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiCheck, FiX, FiEye } from 'react-icons/fi';
+import Checkbox from "../../../../../components/ui/Checkbox";
 
 const ModerationGrid = ({ 
   currentList, 
@@ -18,12 +19,7 @@ const ModerationGrid = ({
           className={`bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition flex flex-col p-5 relative ${selectedIds.includes(blog._id) ? 'ring-2 ring-[#E85D04]' : ''}`}
         >
           <div className="flex justify-between items-start mb-3">
-            <input 
-              type="checkbox" 
-              className="w-4 h-4 rounded border-slate-300 text-[#E85D04] focus:ring-[#E85D04] cursor-pointer"
-              checked={selectedIds.includes(blog._id)}
-              onChange={() => toggleSelection(blog._id)}
-            />
+            <Checkbox checked={selectedIds.includes(blog._id)} onChange={() => toggleSelection(blog._id)} />
             <div className="text-xs text-slate-500 font-semibold bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
               {new Date(
                 activeTab === 'new' ? blog.createdAt : 

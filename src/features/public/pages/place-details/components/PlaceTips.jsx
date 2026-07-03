@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
 import { FiInfo } from "react-icons/fi";
 import Reveal from "../../../../../components/ui/Reveal";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
 const PlaceTips = ({ place }) => {
   if (!place.tips?.length) return null;
   return (
-    <section className="py-24 bg-[#0a0a0a] overflow-hidden">
+    <SectionContainer className="bg-[#0a0a0a] overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-4">
         <Reveal>
           <h2 className="text-4xl md:text-5xl font-black mb-16 text-center">Know Before You Go</h2>
@@ -24,7 +25,7 @@ const PlaceTips = ({ place }) => {
           ))}
         </div>
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 export default PlaceTips;

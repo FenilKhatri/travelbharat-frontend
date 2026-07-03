@@ -1,5 +1,7 @@
 import { FiInfo } from "react-icons/fi";
 import Reveal from "../../../../../components/ui/Reveal";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
+import PageContainer from "../../../../../components/layout/PageContainer";
 
 const StateQuickFacts = ({ quickFacts }) => {
   const quickFactsEntries = quickFacts ? Object.entries(quickFacts).filter(([key]) => key !== "_id" && key !== "id") : [];
@@ -8,8 +10,8 @@ const StateQuickFacts = ({ quickFacts }) => {
   const remainingFacts = quickFactsEntries.slice(4);
 
   return (
-    <section className="py-12 bg-white dark:bg-transparent border-b border-slate-200 dark:border-white/5 relative z-10 -mt-10 lg:mt-0 rounded-t-[3rem] lg:rounded-none">
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionContainer className="bg-white dark:bg-transparent border-b border-slate-200 dark:border-white/5 relative z-10 -mt-10 lg:mt-0 rounded-t-[3rem] lg:rounded-none py-12!">
+      <PageContainer>
         <Reveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {remainingFacts.map(([key, value], index) => {
@@ -32,8 +34,8 @@ const StateQuickFacts = ({ quickFacts }) => {
             })}
           </div>
         </Reveal>
-      </div>
-    </section>
+      </PageContainer>
+    </SectionContainer>
   );
 };
 

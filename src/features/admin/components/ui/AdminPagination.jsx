@@ -9,8 +9,9 @@ const AdminPagination = ({ isLoading, isError, pagination }) => {
 
   const handlePageChange = (newPage) => {
     setSearchParams((prev) => {
-      prev.set("page", newPage.toString());
-      return prev;
+      const next = new URLSearchParams(prev);
+      next.set("page", newPage.toString());
+      return next;
     });
   };
 

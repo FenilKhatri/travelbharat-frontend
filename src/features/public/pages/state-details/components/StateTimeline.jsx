@@ -1,13 +1,15 @@
 import { motion } from "framer-motion";
 import { FiClock } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
+import PageContainer from "../../../../../components/layout/PageContainer";
 const StateTimeline = ({ timeline }) => {
   if (!timeline || timeline.length === 0) return null;
   // Sort by order field
   const sortedTimeline = [...timeline].sort((a, b) => (a.order || 0) - (b.order || 0));
   return (
-    <section className="py-24 bg-[#0a0d14] relative border-b border-white/5">
-      <div className="max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionContainer className="bg-[#0a0d14] relative border-b border-white/5">
+      <PageContainer className="max-w-[1200px]">
         <SectionLabel icon={FiClock} text="History" />
         
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-16">
@@ -67,8 +69,8 @@ const StateTimeline = ({ timeline }) => {
             })}
           </div>
         </div>
-      </div>
-    </section>
+      </PageContainer>
+    </SectionContainer>
   );
 };
 export default StateTimeline;

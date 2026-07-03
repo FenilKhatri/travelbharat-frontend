@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
 import { FiBookOpen } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
+import PageContainer from "../../../../../components/layout/PageContainer";
 const StateDiscover = ({ discoverSections }) => {
   if (!discoverSections || discoverSections.length === 0) return null;
   return (
-    <section className="py-24 bg-white dark:bg-[#07090f] relative border-b border-slate-200 dark:border-white/5">
-      <div className="max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
+    <SectionContainer className="bg-white dark:bg-[#07090f] relative border-b border-slate-200 dark:border-white/5">
+      <PageContainer className="space-y-24 max-w-[1200px]">
         {discoverSections.map((section, index) => {
           const isEven = index % 2 === 0;
           
@@ -59,8 +61,8 @@ const StateDiscover = ({ discoverSections }) => {
             </div>
           );
         })}
-      </div>
-    </section>
+      </PageContainer>
+    </SectionContainer>
   );
 };
 export default StateDiscover;

@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
 import { FiInfo } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
+import PageContainer from "../../../../../components/layout/PageContainer";
 const CityQuickFacts = ({ quickFacts }) => {
   if (quickFacts.length === 0) return null;
   return (
-    <section className="py-16 bg-white dark:bg-[#0c1018] border-b border-slate-200 dark:border-white/5">
-      <div className="max-w-[1600px] w-full mx-auto px-4">
+    <SectionContainer className="bg-white dark:bg-[#0c1018] border-b border-slate-200 dark:border-white/5 py-16!">
+      <PageContainer>
         <SectionLabel icon={FiInfo} text="Quick Facts" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {quickFacts.map((fact, i) => (
@@ -25,8 +27,8 @@ const CityQuickFacts = ({ quickFacts }) => {
             </motion.div>
           ))}
         </div>
-      </div>
-    </section>
+      </PageContainer>
+    </SectionContainer>
   );
 };
 export default CityQuickFacts;

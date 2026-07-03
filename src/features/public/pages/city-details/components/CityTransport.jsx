@@ -1,12 +1,13 @@
 import { FaPlane, FaTrain, FaBus, FaCar } from "react-icons/fa";
 import { FiNavigation } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
 
 const CityTransport = ({ city }) => {
   if (!city.transport || (!city.transport.fromAirport && !city.transport.fromStation && !city.transport.busStation && !city.transport.local)) return null;
 
   return (
-    <section className="py-24 bg-[#07090f] border-b border-white/5">
+    <SectionContainer className="bg-[#07090f] border-b border-white/5">
       <div className="max-w-[1600px] w-full mx-auto px-4">
         <SectionLabel icon={FiNavigation} text="Getting Around" />
         <h2 className="text-4xl font-black text-[#edf2ff] mb-12">How To Reach {city.name}</h2>
@@ -22,12 +23,12 @@ const CityTransport = ({ city }) => {
                 <t.icon size={20} />
               </div>
               <h4 className="text-lg font-bold text-[#edf2ff] mb-3">{t.title}</h4>
-              <p className="text-sm text-[#8fa3cc] leading-relaxed">{t.text}</p>
+              <p className="text-sm text-[#8fa3cc] leading-relaxed whitespace-pre-line">{t.text?.replace(/\\n/g, '\n').replace(/;\s*/g, '\n')}</p>
             </div>
           ))}
         </div>
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 

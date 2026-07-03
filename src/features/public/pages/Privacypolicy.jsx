@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { FiShield, FiEye, FiFileText, FiLock, FiUserCheck, FiDatabase, FiPhoneCall, FiInfo } from "react-icons/fi";
+import { FiEye, FiFileText, FiLock, FiPhoneCall, FiInfo, FiDatabase, FiShield, FiUserCheck } from "react-icons/fi";
+import PageContainer from "../../../components/layout/PageContainer";
+import ContentContainer from "../../../components/layout/ContentContainer";
 
 const sections = [
   { id: "introduction", label: "1. Introduction", icon: FiInfo },
@@ -54,10 +56,10 @@ const Privacypolicy = () => {
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#E85D04]/10 blur-[130px] rounded-full pointer-events-none z-0"></div>
       <div className="absolute bottom-10 left-0 w-[450px] h-[450px] bg-[#FFB703]/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
 
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
+      <PageContainer className="relative z-10">
 
         {/* Header Hero Banner */}
-        <div className="text-center mb-16 max-w-3xl mx-auto">
+        <ContentContainer className="text-center mb-16">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -86,7 +88,7 @@ const Privacypolicy = () => {
             At TravelBharat, we are dedicated to protecting your personal data and ensuring transparency in how we collect, process, and safeguard your details.
             <span className="block mt-2 text-sm font-medium text-slate-400 dark:text-slate-500">Last updated: May 29, 2026</span>
           </motion.p>
-        </div>
+        </ContentContainer>
 
         {/* main Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-12 lg:gap-16 items-start">
@@ -316,10 +318,9 @@ const Privacypolicy = () => {
 
           </div>
         </div>
-
-      </div>
+      </PageContainer>
     </div>
   );
 };
 
-export default Privacypolicy;
+export default Privacypolicy;

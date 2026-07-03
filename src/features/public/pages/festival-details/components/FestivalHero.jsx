@@ -15,7 +15,7 @@ const FestivalHero = ({ festival }) => {
           <div className="absolute inset-0 bg-linear-to-r from-black/40 via-transparent to-transparent" />
         </div>
       )}
-      <div className="relative z-10 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 pb-24">
+      <div className="relative z-10 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24">
         <div className="flex flex-col lg:flex-row justify-between items-end gap-10">
           {/* Left Content */}
           <motion.div
@@ -46,7 +46,7 @@ const FestivalHero = ({ festival }) => {
               </p>
             )}
             <div className="flex gap-4">
-              <LikeButton entityId={festival._id} entityType="festival" initialCount={festival.likeCount || 0} className="!px-6 !py-3 !text-sm" />
+              <LikeButton entityId={festival._id} entityType="festival" initialIsLiked={festival.isLiked} className="px-6! py-3! text-sm!" />
             </div>
           </motion.div>
           {/* Right Info Card */}

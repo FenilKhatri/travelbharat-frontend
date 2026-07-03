@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
 import { FiCompass } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
+import PageContainer from "../../../../../components/layout/PageContainer";
 const StateExperiences = ({ experiences }) => {
   if (!experiences || experiences.length === 0) return null;
   return (
-    <section className="py-24 bg-white dark:bg-[#07090f] relative border-b border-slate-200 dark:border-white/5">
-      <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionContainer className="bg-white dark:bg-[#07090f] relative border-b border-slate-200 dark:border-white/5">
+      <PageContainer>
         <SectionLabel icon={FiCompass} text="Experiences" />
         
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-16">
@@ -50,8 +52,8 @@ const StateExperiences = ({ experiences }) => {
             </motion.div>
           ))}
         </div>
-      </div>
-    </section>
+      </PageContainer>
+    </SectionContainer>
   );
 };
 export default StateExperiences;

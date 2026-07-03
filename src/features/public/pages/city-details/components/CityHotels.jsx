@@ -1,12 +1,13 @@
 import { FaHotel } from "react-icons/fa";
 import { FiStar } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
 
 const CityHotels = ({ hotels }) => {
   if (hotels.length === 0) return null;
 
   return (
-    <section className="py-24 bg-[#0c1018] border-b border-white/5">
+    <SectionContainer className="bg-[#0c1018] border-b border-white/5">
       <div className="max-w-[1600px] w-full mx-auto px-4">
         <SectionLabel icon={FaHotel} text="Stays" />
         <h2 className="text-4xl font-black text-[#edf2ff] mb-12">Where to Stay</h2>
@@ -34,7 +35,7 @@ const CityHotels = ({ hotels }) => {
           ))}
         </div>
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 

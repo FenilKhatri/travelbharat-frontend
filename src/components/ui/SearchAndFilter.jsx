@@ -19,13 +19,14 @@ const SearchAndFilter = ({
   useEffect(() => {
     const handler = setTimeout(() => {
       setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
         if (searchTerm.trim()) {
-          prev.set("search", searchTerm.trim());
+          next.set("search", searchTerm.trim());
         } else {
-          prev.delete("search");
+          next.delete("search");
         }
-        prev.set("page", "1"); // Reset to page 1 on search
-        return prev;
+        next.set("page", "1"); // Reset to page 1 on search
+        return next;
       });
     }, 500);
 
@@ -40,13 +41,14 @@ const SearchAndFilter = ({
 
   const handleFilterChange = (key, value) => {
     setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
       if (value) {
-        prev.set(key, value);
+        next.set(key, value);
       } else {
-        prev.delete(key);
+        next.delete(key);
       }
-      prev.set("page", "1"); // Reset page
-      return prev;
+      next.set("page", "1"); // Reset page
+      return next;
     });
   };
 

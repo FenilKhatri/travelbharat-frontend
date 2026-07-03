@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { FiNavigation, FiInfo } from "react-icons/fi";
 import { FaPlane, FaTrain, FaCar, FaBus } from "react-icons/fa";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
+import PageContainer from "../../../../../components/layout/PageContainer";
 const StateTravelInfo = ({ travelInfo }) => {
   if (!travelInfo) return null;
   
@@ -9,8 +11,8 @@ const StateTravelInfo = ({ travelInfo }) => {
   const hasContent = travelInfo.byAir || travelInfo.byTrain || travelInfo.byRoad || travelInfo.localTransport;
   if (!hasContent) return null;
   return (
-    <section className="py-24 bg-[#0a0d14] relative border-b border-white/5">
-      <div className="max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionContainer className="bg-[#0a0d14] relative border-b border-white/5">
+      <PageContainer className="max-w-[1200px]">
         <SectionLabel icon={FiNavigation} text="Getting Around" />
         
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-16">
@@ -112,8 +114,8 @@ const StateTravelInfo = ({ travelInfo }) => {
             </motion.div>
           )}
         </div>
-      </div>
-    </section>
+      </PageContainer>
+    </SectionContainer>
   );
 };
 export default StateTravelInfo;

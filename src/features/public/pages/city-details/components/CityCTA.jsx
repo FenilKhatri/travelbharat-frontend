@@ -1,9 +1,10 @@
 import { FiCompass, FiArrowRight } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
 
 const CityCTA = ({ city, places }) => {
   return (
-    <section className="py-24 bg-[#07090f]">
+    <SectionContainer className="bg-[#07090f]">
       <div className="max-w-[1600px] w-full mx-auto px-4">
         <div className="relative rounded-4xl overflow-hidden bg-[#0c1018] p-12 md:p-20 text-center border border-white/6">
           {city.images?.hero && (
@@ -24,7 +25,7 @@ const CityCTA = ({ city, places }) => {
           </div>
         </div>
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 

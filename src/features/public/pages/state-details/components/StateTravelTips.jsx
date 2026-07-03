@@ -2,6 +2,8 @@ import { FiCheckCircle, FiAlertTriangle, FiInfo, FiHeart, FiStar } from "react-i
 import SectionLabel from "../../../../../components/ui/SectionLabel";
 import * as Icons from "react-icons/fi";
 import { motion } from "framer-motion";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
+import PageContainer from "../../../../../components/layout/PageContainer";
 
 const StateTravelTips = ({ travelTips }) => {
   if (!travelTips || travelTips.length === 0) return null;
@@ -11,8 +13,8 @@ const StateTravelTips = ({ travelTips }) => {
     return <IconComponent size={24} />;
   };
   return (
-    <section className="py-24 bg-[#07090f] relative border-b border-white/5">
-      <div className="max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionContainer className="bg-[#07090f] relative border-b border-white/5">
+      <PageContainer className="max-w-[1200px]">
         <SectionLabel icon={FiStar} text="Good to Know" />
         
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-16">
@@ -41,8 +43,8 @@ const StateTravelTips = ({ travelTips }) => {
             </motion.div>
           ))}
         </div>
-      </div>
-    </section>
+      </PageContainer>
+    </SectionContainer>
   );
 };
 export default StateTravelTips;

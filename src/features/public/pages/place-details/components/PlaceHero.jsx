@@ -4,6 +4,7 @@ import { FiCompass, FiArrowRight, FiShare2 } from "react-icons/fi";
 import { toast } from "react-toastify";
 import Reveal from "../../../../../components/ui/Reveal";
 import LikeButton from "../../../../../components/ui/LikeButton";
+import PageContainer from "../../../../../components/layout/PageContainer";
 const PlaceHero = ({ place, heroImage, validGallery, heroRef }) => {
   const handleShare = () => {
     if (navigator.share) {
@@ -37,7 +38,7 @@ const PlaceHero = ({ place, heroImage, validGallery, heroRef }) => {
         <div className="absolute inset-0 bg-linear-to-t from-[#050505] via-[#050505]/60 to-transparent" />
         <div className="absolute inset-0 bg-linear-to-b from-[#050505]/70 via-transparent to-transparent" />
       </motion.div>
-      <div className="relative z-10 max-w-[1600px] mx-auto px-4 w-full pb-24 md:pb-32">
+      <PageContainer className="relative z-10 w-full pb-24 md:pb-32">
         <Reveal delay={0.2}>
           <div className="flex flex-wrap items-center gap-3 mb-6">
             {place.featured && (
@@ -91,13 +92,13 @@ const PlaceHero = ({ place, heroImage, validGallery, heroRef }) => {
                 Explore Photos <FiArrowRight />
               </a>
             )}
-            <LikeButton entityId={place._id} entityType="place" initialCount={place.likeCount} showCount={false} className="px-6! py-3! text-sm! cursor-pointer" />
+            <LikeButton entityId={place._id} entityType="place" initialIsLiked={place.isLiked} className="px-6! py-3! text-sm! cursor-pointer" />
             <button onClick={handleShare} className="flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm bg-white/10 hover:bg-white/20 text-white backdrop-blur-md transition-colors cursor-pointer">
               <FiShare2 /> Share
             </button>
           </div>
         </Reveal>
-      </div>
+      </PageContainer>
       <motion.div
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}

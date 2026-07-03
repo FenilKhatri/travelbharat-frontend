@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FiCalendar, FiMapPin, FiStar, FiNavigation } from "react-icons/fi";
+import SectionContainer from "../../../../components/layout/SectionContainer";
+import PageContainer from "../../../../components/layout/PageContainer";
 
 const ExploreIconicSection = ({
   type,
@@ -14,22 +16,22 @@ const ExploreIconicSection = ({
 }) => {
   if (isLoading) {
     return (
-      <section className="py-20 bg-white dark:bg-[#060D18]">
-        <div className="max-w-[1600px] w-full mx-auto px-4">
+      <SectionContainer className="bg-white dark:bg-[#060D18]">
+        <PageContainer>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {[...Array(4)].map((_, i) => (
               <div key={i} className="h-96 rounded-2xl bg-slate-200 dark:bg-slate-800 animate-pulse"></div>
             ))}
           </div>
-        </div>
-      </section>
+        </PageContainer>
+      </SectionContainer>
     );
   }
 
   if (data.length === 0) return null;
 
   return (
-    <section className="py-20 bg-slate-50 dark:bg-[#060D18] relative overflow-hidden">
+    <SectionContainer className="bg-slate-50 dark:bg-[#060D18] relative overflow-hidden">
       {/* Decorative element for festivals */}
       {type === 'festival' && (
         <motion.img 
@@ -42,7 +44,7 @@ const ExploreIconicSection = ({
         />
       )}
 
-      <div className="max-w-[1600px] w-full mx-auto px-4 relative z-10">
+      <PageContainer className="relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-[#E85D04] font-bold uppercase tracking-wider text-sm mb-2 block">{highlightText}</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-6 text-slate-900 dark:text-white">
@@ -146,9 +148,9 @@ const ExploreIconicSection = ({
             );
           })}
         </div>
-      </div>
-    </section>
+      </PageContainer>
+    </SectionContainer>
   );
 };
 
-export default ExploreIconicSection;
+export default ExploreIconicSection;

@@ -1,11 +1,12 @@
 import { FiCamera } from "react-icons/fi";
 import Reveal from "../../../../../components/ui/Reveal";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
 
 const PlacePhotography = ({ place }) => {
   if (!place.photographySpots?.length) return null;
 
   return (
-    <section className="py-24 bg-[#0a0a0a]">
+    <SectionContainer className="bg-[#0a0a0a]">
       <div className="max-w-[1600px] mx-auto px-4">
         <Reveal>
           <div className="flex items-center gap-4 mb-12">
@@ -25,7 +26,7 @@ const PlacePhotography = ({ place }) => {
           ))}
         </div>
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 

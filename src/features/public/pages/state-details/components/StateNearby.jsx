@@ -1,6 +1,8 @@
 import TravelCard from "../../../../../components/cards/TravelCard";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
 import { FiMap } from "react-icons/fi";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
+import PageContainer from "../../../../../components/layout/PageContainer";
 
 const StateNearby = ({ nearbyStates }) => {
   if (!nearbyStates || nearbyStates.length === 0) return null;
@@ -11,8 +13,8 @@ const StateNearby = ({ nearbyStates }) => {
   if (states.length === 0) return null;
 
   return (
-    <section className="py-24 bg-slate-50 dark:bg-[#07090f] border-b border-slate-200 dark:border-white/5">
-      <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionContainer className="bg-slate-50 dark:bg-[#07090f] border-b border-slate-200 dark:border-white/5">
+      <PageContainer>
         <SectionLabel icon={FiMap} text="Continue Your Journey" />
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
           <h2 className="text-4xl font-black text-slate-900 dark:text-[#edf2ff]">Explore Nearby</h2>
@@ -23,8 +25,8 @@ const StateNearby = ({ nearbyStates }) => {
             <TravelCard key={nearbyState._id} type="state" data={nearbyState} index={index} />
           ))}
         </div>
-      </div>
-    </section>
+      </PageContainer>
+    </SectionContainer>
   );
 };
 

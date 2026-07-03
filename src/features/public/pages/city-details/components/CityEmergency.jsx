@@ -1,10 +1,11 @@
 import { FiPhoneCall } from "react-icons/fi";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
 
 const CityEmergency = ({ city, validEmergency }) => {
   if (!validEmergency) return null;
 
   return (
-    <section className="py-24 bg-[#0c1018] border-b border-white/5">
+    <SectionContainer className="bg-[#0c1018] border-b border-white/5">
       <div className="max-w-[1600px] w-full mx-auto px-4">
         <div className="rounded-3xl border border-[#E85D04]/20 bg-[#111827] p-10 md:p-14">
           <div className="flex items-center gap-4 mb-10">
@@ -32,7 +33,7 @@ const CityEmergency = ({ city, validEmergency }) => {
           </div>
         </div>
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 

@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import Reveal from "../../../../../components/ui/Reveal";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
 const PlaceStory = ({ place, heroImage }) => {
   return (
-    <section className="py-24 max-w-[1600px] mx-auto px-4">
+    <SectionContainer className="max-w-[1600px] mx-auto px-4">
       <div className="grid lg:grid-cols-12 gap-16 items-center">
         <div className="lg:col-span-7">
           <Reveal>
@@ -30,7 +31,7 @@ const PlaceStory = ({ place, heroImage }) => {
           </Reveal>
         </div>
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 export default PlaceStory;

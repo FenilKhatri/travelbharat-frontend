@@ -2,6 +2,7 @@ import { FiMapPin, FiGlobe, FiInfo, FiCalendar } from "react-icons/fi";
 import TravelBadge from "../../../../../components/ui/TravelBadge";
 import LikeButton from "../../../../../components/ui/LikeButton";
 import { motion } from "framer-motion";
+import PageContainer from "../../../../../components/layout/PageContainer";
 
 const StateHero = ({ state }) => {
   const quickFactsEntries = state.quickFacts ? Object.entries(state.quickFacts).filter(([key]) => key !== "_id" && key !== "id") : [];
@@ -22,7 +23,7 @@ const StateHero = ({ state }) => {
           <div className="absolute inset-0 bg-linear-to-r from-black/40 via-transparent to-transparent" />
         </div>
       )}
-      <div className="relative z-10 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24">
+      <PageContainer className="relative z-10 pt-32 pb-24">
         <div className="flex flex-col lg:flex-row justify-between items-end gap-10">
           {/* Overlay Illustration */}
           {state.stateBranding?.overlayImage && (
@@ -71,10 +72,10 @@ const StateHero = ({ state }) => {
             )}
 
             <div className="flex gap-4">
-              <LikeButton
-                entityId={state._id}
-                entityType="state"
-                initialCount={state.likeCount}
+              <LikeButton 
+                entityId={state._id} 
+                entityType="state" 
+                initialIsLiked={state.isLiked}
                 className="px-6! py-3! text-sm!"
               />
 
@@ -204,7 +205,7 @@ const StateHero = ({ state }) => {
             </motion.div>
           )}
         </div>
-      </div>
+      </PageContainer>
     </section>
   );
 };

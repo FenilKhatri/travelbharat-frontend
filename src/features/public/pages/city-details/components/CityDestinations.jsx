@@ -2,10 +2,11 @@ import { FiCompass } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
 import TravelCard from "../../../../../components/cards/TravelCard";
 import DestinationSkeleton from "../../../../../components/ui/DestinationSkeleton";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
 
 const CityDestinations = ({ city, places, placesLoading, resolvedStateSlug }) => {
   return (
-    <section id="destinations" className="py-24 bg-slate-50 dark:bg-[#07090f] border-b border-slate-200 dark:border-white/5">
+    <SectionContainer id="destinations" className="bg-slate-50 dark:bg-[#07090f] border-b border-slate-200 dark:border-white/5">
       <div className="max-w-[1600px] w-full mx-auto px-4">
         <SectionLabel icon={FiCompass} text="Must Visit" />
         <h2 className="text-4xl font-black text-slate-900 dark:text-[#edf2ff] mb-4">
@@ -37,7 +38,7 @@ const CityDestinations = ({ city, places, placesLoading, resolvedStateSlug }) =>
           </div>
         )}
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 

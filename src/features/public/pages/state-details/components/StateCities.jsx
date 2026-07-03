@@ -2,11 +2,13 @@ import { FiMapPin } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
 import CardSkeleton from "../../../../../components/ui/CardSkeleton";
 import TravelCard from "../../../../../components/cards/TravelCard";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
+import PageContainer from "../../../../../components/layout/PageContainer";
 
 const StateCities = ({ state, cities, citiesLoading, slug }) => {
   return (
-    <section className="py-24 bg-slate-50 dark:bg-[#0c1018] border-b border-slate-200 dark:border-white/5">
-      <div className="max-w-[1600px] w-full mx-auto px-4">
+    <SectionContainer className="bg-slate-50 dark:bg-[#0c1018] border-b border-slate-200 dark:border-white/5">
+      <PageContainer>
         <SectionLabel icon={FiMapPin} text="Urban Destinations" />
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
           <h2 className="text-4xl font-black text-slate-900 dark:text-[#edf2ff]">
@@ -33,8 +35,8 @@ const StateCities = ({ state, cities, citiesLoading, slug }) => {
             <p className="text-slate-500 dark:text-[#8fa3cc] font-medium">Cities for this state are coming soon.</p>
           </div>
         )}
-      </div>
-    </section>
+      </PageContainer>
+    </SectionContainer>
   );
 };
 

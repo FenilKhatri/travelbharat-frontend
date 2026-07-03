@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
 import { FiCamera } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
+import PageContainer from "../../../../../components/layout/PageContainer";
 const StateWildlife = ({ wildlifeHighlights }) => {
   if (!wildlifeHighlights || wildlifeHighlights.length === 0) return null;
   return (
-    <section className="py-24 bg-slate-50 dark:bg-[#0a0d14] relative border-b border-slate-200 dark:border-white/5">
-      <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionContainer className="bg-slate-50 dark:bg-[#0a0d14] relative border-b border-slate-200 dark:border-white/5">
+      <PageContainer>
         <SectionLabel icon={FiCamera} text="Wildlife & Nature" />
         
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-16">
@@ -44,8 +46,8 @@ const StateWildlife = ({ wildlifeHighlights }) => {
             </motion.div>
           ))}
         </div>
-      </div>
-    </section>
+      </PageContainer>
+    </SectionContainer>
   );
 };
 export default StateWildlife;

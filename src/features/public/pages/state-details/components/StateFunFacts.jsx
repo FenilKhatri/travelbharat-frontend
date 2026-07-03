@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
 import { FiStar } from "react-icons/fi";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
+import PageContainer from "../../../../../components/layout/PageContainer";
 
 const StateFunFacts = ({ funFacts }) => {
   if (!funFacts || funFacts.length === 0) return null;
 
   return (
-    <section className="py-24 bg-slate-50 dark:bg-[#0a0d14] relative border-b border-slate-200 dark:border-white/5">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-8 relative z-10">
+    <SectionContainer className="bg-slate-50 dark:bg-[#0a0d14] relative border-b border-slate-200 dark:border-white/5">
+      <PageContainer className="max-w-[1400px] relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -41,8 +43,8 @@ const StateFunFacts = ({ funFacts }) => {
             </motion.div>
           ))}
         </div>
-      </div>
-    </section>
+      </PageContainer>
+    </SectionContainer>
   );
 };
 

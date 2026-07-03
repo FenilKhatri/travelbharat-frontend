@@ -1,12 +1,14 @@
 import React from 'react';
 import { FiClock, FiMapPin, FiStar, FiUser, FiCheck, FiX, FiMessageSquare, FiTrash2 } from 'react-icons/fi';
+import Checkbox from "../../../../../components/ui/Checkbox";
 
-const ReviewGridCard = ({ review, onApprove, onReject, onRespondClick, onDeleteClick, onRowClick }) => {
+const ReviewGridCard = ({ review, onApprove, onReject, onRespondClick, onDeleteClick, onRowClick, isSelected, toggleSelection }) => {
   return (
-    <div 
-      onClick={() => onRowClick(review)}
-      className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition flex flex-col group cursor-pointer p-5 relative"
-    >
+    <div className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm hover:shadow-lg transition flex flex-col group p-5 relative">
+      <div className="absolute top-4 left-4 z-20">
+        <Checkbox checked={isSelected || false} onChange={(e) => { e.stopPropagation(); toggleSelection(review._id); }} />
+      </div>
+      <div className="cursor-pointer" onClick={() => onRowClick(review)}>
       <div className="flex justify-between items-start mb-3">
         <div className="flex items-center gap-2">
           {review.userId?.profileImage ? (
@@ -65,6 +67,7 @@ const ReviewGridCard = ({ review, onApprove, onReject, onRespondClick, onDeleteC
           <button onClick={(e) => onRespondClick(e, review)} className="p-1.5 text-slate-400 hover:text-[#E85D04] hover:bg-orange-50 dark:hover:bg-[#E85D04]/10 rounded-lg transition cursor-pointer"><FiMessageSquare size={14} /></button>
         </div>
         <button onClick={(e) => { e.stopPropagation(); onDeleteClick(review._id); }} className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition cursor-pointer"><FiTrash2 size={14} /></button>
+      </div>
       </div>
     </div>
   );

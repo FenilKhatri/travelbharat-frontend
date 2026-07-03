@@ -142,7 +142,7 @@ const DashboardLayout = memo(({ theme, toggleTheme }) => {
           {/* Subtle page background details */}
           <div className="absolute top-0 right-10 w-96 h-96 bg-[#E85D04]/2 blur-[100px] rounded-full pointer-events-none -z-10" />
           
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
               variants={pageVariants}

@@ -1,11 +1,12 @@
 import { FiMapPin } from "react-icons/fi";
 import Reveal from "../../../../../components/ui/Reveal";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
 
 const PlaceMap = ({ place, hasValidMap }) => {
   if (!hasValidMap) return null;
 
   return (
-    <section className="py-24 bg-[#0a0a0a] border-t border-white/5">
+    <SectionContainer className="bg-[#0a0a0a] border-t border-white/5">
       <div className="max-w-[1600px] mx-auto px-4">
         <Reveal>
           <div className="flex justify-between items-end mb-12">
@@ -35,7 +36,7 @@ const PlaceMap = ({ place, hasValidMap }) => {
           </div>
         </Reveal>
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 

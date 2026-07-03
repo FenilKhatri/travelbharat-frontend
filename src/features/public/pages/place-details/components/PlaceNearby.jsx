@@ -4,12 +4,13 @@ import { Autoplay, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import Reveal from "../../../../../components/ui/Reveal";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
 
 const PlaceNearby = ({ place }) => {
   if (!place.nearbyAttractions?.length) return null;
 
   return (
-    <section className="py-24 bg-[#050505] overflow-hidden">
+    <SectionContainer className="bg-[#050505] overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-4">
         <Reveal>
           <div className="flex justify-between items-end mb-12">
@@ -58,7 +59,7 @@ const PlaceNearby = ({ place }) => {
           </div>
         </Reveal>
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 

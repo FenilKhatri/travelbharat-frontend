@@ -3,14 +3,17 @@ import { FaUtensils } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
+import PageContainer from "../../../../../components/layout/PageContainer";
+
 const StateCuisine = ({ featuredCuisine }) => {
   if (!featuredCuisine || featuredCuisine.length === 0) return null;
   // Filter out any missing populations
   const foods = featuredCuisine.filter(fc => fc.food).slice(0, 6);
   if (foods.length === 0) return null;
   return (
-    <section className="py-24 bg-[#0a0d14] border-b border-white/5 relative">
-      <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionContainer className="bg-[#0a0d14] border-b border-white/5 relative">
+      <PageContainer>
         
         <SectionLabel icon={FaUtensils} text="Culinary Journey" />
         
@@ -84,8 +87,8 @@ const StateCuisine = ({ featuredCuisine }) => {
             );
           })}
         </div>
-      </div>
-    </section>
+      </PageContainer>
+    </SectionContainer>
   );
 };
 export default StateCuisine;

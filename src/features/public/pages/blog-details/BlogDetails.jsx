@@ -7,13 +7,18 @@ import BlogContent from "./components/BlogContent";
 import BlogAuthorBox from "./components/BlogAuthorBox";
 import BlogComments from "./components/BlogComments";
 import BlogTOC from "./components/BlogTOC";
-import PageLoader from "../../../../components/ui/PageLoader";
+import BlogDetailsSkeleton from "./components/BlogDetailsSkeleton";
+import StickyProgressBar from "./components/StickyProgressBar";
+import StickyActionBar from "./components/StickyActionBar";
+import RelatedArticles from "./components/RelatedArticles";
+import PageContainer from "../../../../components/layout/PageContainer";
 
 const BlogDetails = () => {
   const { slug } = useParams();
 
   const {
     blog,
+    relatedBlogs,
     isLoading,
     isError,
     comments,
@@ -29,7 +34,7 @@ const BlogDetails = () => {
     expandedFaq,
     setExpandedFaq,
     selectedImage,
-    setSelectedImage
+    setSelectedImage,
   } = useBlogDetails(slug);
 
   useLogHistory({
@@ -37,22 +42,23 @@ const BlogDetails = () => {
     entityId: blog?._id,
     entityModel: "Blog",
     entityTitle: blog?.title,
-    entitySlug: slug
+    entitySlug: slug,
   });
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-50 dark:bg-[#050B14] pt-24">
-        <PageLoader fullScreen={false} message="Loading story..." size="md" />
-      </div>
-    );
+    return <BlogDetailsSkeleton />;
   }
 
   if (isError || !blog) {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-[#050B14] pt-24 flex items-center justify-center flex-col">
-        <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-4">Blog Post Not Found</h2>
-        <Link to="/blogs" className="px-6 py-3 bg-[#E85D04] text-white rounded-xl font-bold hover:bg-[#D05203] transition">
+      <div className="min-h-screen bg-white dark:bg-[#050B14] pt-24 flex items-center justify-center flex-col">
+        <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-4">
+          Blog Post Not Found
+        </h2>
+        <Link
+          to="/blogs"
+          className="px-6 py-3 bg-[#E85D04] text-white rounded-xl font-bold hover:bg-[#D05203] transition"
+        >
           Return to Blogs
         </Link>
       </div>
@@ -60,14 +66,17 @@ const BlogDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#050B14] pb-24 font-sans text-slate-800 dark:text-slate-200">
-      <BlogDetailsHero blog={blog} likeMutation={likeMutation} />
+    <div className="min-h-screen bg-white dark:bg-[#050B14] font-sans text-slate-900 dark:text-white">
+      <StickyProgressBar />
 
-      {/* Main Layout */}
-      <section className="max-w-[1600px] w-full mx-auto px-4 mt-12 grid grid-cols-1 lg:grid-cols-12 gap-16">
+      <BlogDetailsHero blog={blog} />
 
-        {/* CONTENT AREA (LEFT 70%) */}
-        <article className="lg:col-span-8">
+      {/* Main Content Layout */}
+      <PageContainer as="section" className="mt-10 lg:mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 relative">
+        <StickyActionBar blog={blog} handleShare={handleShare} />
+
+        {/* CONTENT AREA (LEFT 8 COLS) */}
+        <article className="lg:col-span-8 min-w-0" id="blog-content-article">
           <BlogContent
             blog={blog}
             handleShare={handleShare}
@@ -77,6 +86,8 @@ const BlogDetails = () => {
           />
 
           <BlogAuthorBox blog={blog} />
+
+          <RelatedArticles relatedBlogs={relatedBlogs} />
 
           <BlogComments
             blog={blog}
@@ -88,19 +99,29 @@ const BlogDetails = () => {
           />
         </article>
 
-        {/* SIDEBAR (RIGHT 30%) */}
-        <BlogTOC
-          headings={headings}
-          activeHeading={activeHeading}
-          setActiveHeading={setActiveHeading}
-        />
-
-      </section>
+        {/* SIDEBAR (RIGHT 4 COLS) */}
+        <aside className="hidden lg:block lg:col-span-4">
+          <div className="sticky top-24">
+            <BlogTOC
+              headings={headings}
+              activeHeading={activeHeading}
+              setActiveHeading={setActiveHeading}
+            />
+          </div>
+        </aside>
+      </PageContainer>
 
       {/* Lightbox for Gallery */}
       {selectedImage && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 cursor-pointer" onClick={() => setSelectedImage(null)}>
-          <img src={selectedImage} alt="Gallery" className="max-w-full max-h-full rounded-lg shadow-2xl" />
+        <div
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 cursor-pointer backdrop-blur-sm"
+          onClick={() => setSelectedImage(null)}
+        >
+          <img
+            src={selectedImage}
+            alt="Gallery"
+            className="max-w-full max-h-full rounded-lg shadow-2xl object-contain"
+          />
         </div>
       )}
     </div>

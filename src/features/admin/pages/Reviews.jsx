@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
+import { FiTrash2 } from "react-icons/fi";
 import AdminDataExplorer from "../components/ui/AdminDataExplorer";
 import { useReviewsLogic } from "./hooks/useReviewsLogic";
 import ReviewRow from "./components/reviews/ReviewRow";
 import ReviewGridCard from "./components/reviews/ReviewGridCard";
 import { ReviewResponseModal, ReviewDeleteModal } from "./components/reviews/ReviewModals";
+import Checkbox from "../../../components/ui/Checkbox";
 
 const Reviews = () => {
+  const [selectedIds, setSelectedIds] = useState([]);
   const {
     reviews,
     pagination,
@@ -40,8 +43,11 @@ const Reviews = () => {
     }
   ];
 
-  const renderHeader = () => (
+  const renderHeader = ({ isAllSelected, toggleSelectAll }) => (
     <>
+      <th className="py-4 px-6 w-12">
+        <Checkbox checked={isAllSelected || false} onChange={toggleSelectAll} />
+      </th>
       <th className="py-4 px-6">Traveler / Date</th>
       <th className="py-4 px-6">Destination</th>
       <th className="py-4 px-6">Feedback / Comments</th>
@@ -51,7 +57,7 @@ const Reviews = () => {
     </>
   );
 
-  const renderRow = (review) => (
+  const renderRow = (review, { isSelected, toggleSelection }) => (
     <ReviewRow
       key={review._id}
       review={review}
@@ -60,10 +66,12 @@ const Reviews = () => {
       onRespondClick={handleRespondClick}
       onDeleteClick={(id) => setConfirmDelete(id)}
       onRowClick={handleRowClick}
+      isSelected={isSelected}
+      toggleSelection={toggleSelection}
     />
   );
 
-  const renderGridCard = (review) => (
+  const renderGridCard = (review, { isSelected, toggleSelection }) => (
     <ReviewGridCard
       key={review._id}
       review={review}
@@ -72,8 +80,34 @@ const Reviews = () => {
       onRespondClick={handleRespondClick}
       onDeleteClick={(id) => setConfirmDelete(id)}
       onRowClick={handleRowClick}
+      isSelected={isSelected}
+      toggleSelection={toggleSelection}
     />
   );
+
+  const bulkActions = [
+    {
+      label: "Delete",
+      icon: <FiTrash2 />,
+      variant: "danger",
+      onClick: async (ids, clearSelection) => {
+        const results = await Promise.allSettled(
+          ids.map(id => deleteMutation.mutateAsync(id))
+        );
+        const failed = results.filter(r => r.status === 'rejected');
+        if (failed.length > 0) {
+          import("react-toastify").then(({ toast }) => {
+            toast.error(`Failed to delete ${failed.length} reviews`);
+          });
+        } else {
+          import("react-toastify").then(({ toast }) => {
+            toast.success(`Successfully deleted ${ids.length} reviews`);
+          });
+        }
+        clearSelection();
+      }
+    }
+  ];
 
   return (
     <>
@@ -90,6 +124,9 @@ const Reviews = () => {
         renderHeader={renderHeader}
         renderRow={renderRow}
         renderGridCard={renderGridCard}
+        selectedIds={selectedIds}
+        onSelectionChange={setSelectedIds}
+        bulkActions={bulkActions}
         emptyStateMessage="No traveler reviews found under selected criteria."
       />
 

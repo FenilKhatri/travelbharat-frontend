@@ -55,17 +55,19 @@ const ListingPage = ({ config }) => {
 
   const handleCollectionClick = useCallback((badgeName) => {
     setSearchParams((prev) => {
-      prev.set("badge", badgeName);
-      prev.set("page", "1");
-      return prev;
+      const next = new URLSearchParams(prev);
+      next.set("badge", badgeName);
+      next.set("page", "1");
+      return next;
     });
     exploreRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [setSearchParams]);
 
   const handleClearBadge = useCallback(() => {
     setSearchParams((prev) => {
-      prev.delete("badge");
-      return prev;
+      const next = new URLSearchParams(prev);
+      next.delete("badge");
+      return next;
     });
   }, [setSearchParams]);
 

@@ -1,11 +1,12 @@
 import { FiMapPin } from "react-icons/fi";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
 
 const CityAbout = ({ city }) => {
   if (!city.overview && !city.description) return null;
 
   return (
-    <section className="py-24 bg-white dark:bg-[#07090f] border-b border-slate-200 dark:border-white/5">
+    <SectionContainer className="bg-white dark:bg-[#07090f] border-b border-slate-200 dark:border-white/5">
       <div className="max-w-[1600px] w-full mx-auto px-4 grid lg:grid-cols-12 gap-14 items-center">
         <div className="lg:col-span-7">
           <SectionLabel icon={FiMapPin} text="About" />
@@ -13,7 +14,7 @@ const CityAbout = ({ city }) => {
             About <span className="text-[#E85D04]">{city.name}</span>
           </h2>
           <p className="text-slate-600 dark:text-[#8fa3cc] leading-relaxed text-base whitespace-pre-line">
-            {city.overview || city.description}
+            {(city.overview || city.description)?.replace(/\\n/g, '\n')}
           </p>
         </div>
         {city.images?.thumbnail && (
@@ -24,7 +25,7 @@ const CityAbout = ({ city }) => {
           </div>
         )}
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 

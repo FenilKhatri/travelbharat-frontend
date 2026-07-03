@@ -17,13 +17,14 @@ const SidebarFilter = ({
 
   useEffect(() => {
     setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
       if (debouncedSearchTerm.trim()) {
-        prev.set("search", debouncedSearchTerm.trim());
+        next.set("search", debouncedSearchTerm.trim());
       } else {
-        prev.delete("search");
+        next.delete("search");
       }
-      prev.set("page", "1");
-      return prev;
+      next.set("page", "1");
+      return next;
     });
   }, [debouncedSearchTerm, setSearchParams]);
 
@@ -34,13 +35,14 @@ const SidebarFilter = ({
 
   const handleFilterChange = (key, value) => {
     setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
       if (value) {
-        prev.set(key, value);
+        next.set(key, value);
       } else {
-        prev.delete(key);
+        next.delete(key);
       }
-      prev.set("page", "1");
-      return prev;
+      next.set("page", "1");
+      return next;
     });
   };
 

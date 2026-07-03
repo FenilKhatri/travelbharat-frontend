@@ -20,6 +20,7 @@ export const useBlogDetails = (slug) => {
   });
 
   const blog = data?.data?.data?.blog || data?.data?.blog;
+  const relatedBlogs = data?.data?.data?.relatedBlogs || data?.data?.relatedBlogs || [];
 
   const { data: savedData } = useQuery({
     queryKey: ['savedBlogs'],
@@ -78,12 +79,31 @@ export const useBlogDetails = (slug) => {
     commentMutation.mutate(commentText);
   };
 
-  const handleShare = (platform) => {
+  const handleShare = async (platform) => {
     const url = window.location.href;
     const title = blog?.title;
 
     if (navigator.share) {
-      navigator.share({ title, url }).catch(console.error);
+      try {
+        await navigator.share({ title, url });
+        toast.success("Shared successfully!");
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          try {
+            await navigator.clipboard.writeText(url);
+            toast.success("Link copied to clipboard!");
+          } catch (e) {
+            toast.error("Failed to copy link");
+          }
+        }
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(url);
+        toast.success("Link copied to clipboard!");
+      } catch (e) {
+        toast.error("Failed to copy link");
+      }
     }
   };
 
@@ -128,6 +148,7 @@ export const useBlogDetails = (slug) => {
 
   return {
     blog,
+    relatedBlogs,
     isLoading,
     isError,
     comments,

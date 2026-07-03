@@ -2,13 +2,17 @@ import React from 'react';
 import { FiMail, FiTrash2, FiXCircle } from 'react-icons/fi';
 import { MdVerified } from 'react-icons/md';
 import CustomDropdown from '../../../../../components/ui/CustomDropdown';
+import Checkbox from "../../../../../components/ui/Checkbox";
 
-const UserRow = ({ userItem, onToggleActive, onRoleChange, onDeleteClick, onRowClick }) => {
+const UserRow = ({ userItem, onToggleActive, onRoleChange, onDeleteClick, onRowClick, isSelected, toggleSelection }) => {
   return (
     <tr 
       onClick={() => onRowClick(userItem)}
-      className="hover:bg-slate-50/50 dark:hover:bg-slate-850/5 transition cursor-pointer"
+      className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800/30 cursor-pointer"
     >
+      <td className="py-4 px-6" onClick={(e) => e.stopPropagation()}>
+        <Checkbox checked={isSelected || false} onChange={() => toggleSelection(userItem._id)} />
+      </td>
       <td className="py-4 px-6">
         <div className="flex items-center gap-3.5">
           {userItem.profileImage ? (

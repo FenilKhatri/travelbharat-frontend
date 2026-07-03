@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { FiSun, FiCloudRain, FiThermometer, FiCalendar } from "react-icons/fi";
 import { BsSnow } from "react-icons/bs";
 import SectionLabel from "../../../../../components/ui/SectionLabel";
+import SectionContainer from "../../../../../components/layout/SectionContainer";
+import PageContainer from "../../../../../components/layout/PageContainer";
 const StateSeasons = ({ seasons }) => {
   if (!seasons || seasons.length === 0) return null;
   const getSeasonIcon = (seasonName) => {
@@ -12,8 +14,8 @@ const StateSeasons = ({ seasons }) => {
     return <FiThermometer size={24} className="text-orange-400" />;
   };
   return (
-    <section className="py-24 bg-[#07090f] relative border-b border-white/5">
-      <div className="max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionContainer className="bg-[#07090f] relative border-b border-white/5">
+      <PageContainer className="max-w-[1200px]">
         <SectionLabel icon={FiCalendar} text="Climate & Seasons" />
         
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-16">
@@ -63,8 +65,8 @@ const StateSeasons = ({ seasons }) => {
             </motion.div>
           ))}
         </div>
-      </div>
-    </section>
+      </PageContainer>
+    </SectionContainer>
   );
 };
 export default StateSeasons;

@@ -3,6 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import PageLoader from "../../../../components/ui/PageLoader";
 import GalleryCarousel from "../../../../components/ui/GalleryCarousel";
 import ExploreIconicSection from "../../sections/home/ExploreIconicSection";
+import ContentContainer from "../../../../components/layout/ContentContainer";
+import SectionContainer from "../../../../components/layout/SectionContainer";
 import ReviewSection from "../../components/ReviewSection";
 import Reveal from "../../../../components/ui/Reveal";
 import { useLogHistory } from "../../../../utils/auth/useLogHistory";
@@ -111,13 +113,13 @@ const PlaceDetails = () => {
 
       <PlaceMap place={place} hasValidMap={hasValidMap} />
 
-      <section className="py-24 bg-slate-50 dark:bg-[#050505] border-t border-slate-200 dark:border-white/5">
-        <div className="max-w-4xl mx-auto px-4">
+      <SectionContainer className="bg-slate-50 dark:bg-[#050505] border-t border-slate-200 dark:border-white/5 py-24!">
+        <ContentContainer>
           <Reveal>
             <ReviewSection placeId={place._id} />
           </Reveal>
-        </div>
-      </section>
+        </ContentContainer>
+      </SectionContainer>
 
     </div>
   );

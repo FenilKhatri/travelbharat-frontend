@@ -8,12 +8,14 @@ import AdminDataExplorer from "../components/ui/AdminDataExplorer";
 import { useAdminList } from "../hooks/useAdminList";
 import { useAdminMutations } from "../hooks/useAdminMutations";
 import { fest_filters } from "../data/adminData";
+import Checkbox from "../../../components/ui/Checkbox";
 
 const Festivals = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]);
 
   // Fetch festivals
   const { data, isLoading, isError, error } = useAdminList({
@@ -41,8 +43,11 @@ const Festivals = () => {
   const handleEditClick = (f) => navigate(`/admin/festivals/edit/${f._id}`);
   const handleOpenCreate = () => navigate("/admin/festivals/create");
 
-  const renderHeader = () => (
+  const renderHeader = ({ isAllSelected, toggleSelectAll }) => (
     <>
+      <th className="py-4 px-6 w-12">
+        <Checkbox checked={isAllSelected || false} onChange={toggleSelectAll} />
+      </th>
       <th className="py-4 px-6">Festival</th>
       <th className="py-4 px-6">State</th>
       <th className="py-4 px-6">Month</th>
@@ -52,12 +57,15 @@ const Festivals = () => {
     </>
   );
 
-  const renderRow = (f) => (
+  const renderRow = (f, { isSelected, toggleSelection }) => (
     <tr 
       key={f._id}
       onClick={() => navigate(`/admin/festivals/${f._id}`)}
-      className="hover:bg-slate-50/50 dark:hover:bg-slate-900/70 transition cursor-pointer"
+      className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800/30 cursor-pointer"
     >
+      <td className="py-4 px-6" onClick={(e) => e.stopPropagation()}>
+        <Checkbox checked={isSelected || false} onChange={() => toggleSelection(f._id)} />
+      </td>
       <td className="py-4 px-6">
         <div className="flex items-center gap-4">
           {f.images?.thumbnail ? (
@@ -109,13 +117,18 @@ const Festivals = () => {
     </tr>
   );
 
-  const renderGridCard = (f) => (
+  const renderGridCard = (f, { isSelected, toggleSelection }) => (
     <div 
-      key={f._id}
-      onClick={() => navigate(`/admin/festivals/${f._id}`)}
-      className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition flex flex-col group cursor-pointer relative"
+      key={f._id} 
+      className="bg-white dark:bg-[#0A121F] border border-slate-200/80 dark:border-slate-800/40 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition flex flex-col group relative"
     >
-      <div className="h-44 bg-slate-100 dark:bg-slate-800 relative">
+      <div className="absolute top-4 left-4 z-20">
+        <Checkbox checked={isSelected || false} onChange={(e) => { e.stopPropagation(); toggleSelection(f._id); }} />
+      </div>
+      <div 
+        onClick={() => navigate(`/admin/festivals/${f._id}`)}
+        className="h-40 bg-slate-100 dark:bg-slate-800 relative cursor-pointer"
+      >
         {f.images?.thumbnail ? (
           <img src={f.images.thumbnail?.url || f.images.thumbnail} alt={f.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
         ) : (
@@ -124,7 +137,7 @@ const Festivals = () => {
           </div>
         )}
         <div className="absolute inset-0 bg-linear-to-t from-[#0A121F] via-transparent to-transparent opacity-80" />
-        <div className="absolute top-3 left-3 flex gap-2">
+        <div className="absolute top-3 right-3 flex gap-2">
           {!f.isActive && (
             <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm">
               HIDDEN
@@ -157,11 +170,35 @@ const Festivals = () => {
     </div>
   );
 
+  const bulkActions = [
+    {
+      label: "Delete",
+      icon: <FiTrash2 />,
+      variant: "danger",
+      onClick: async (ids, clearSelection) => {
+        const results = await Promise.allSettled(
+          ids.map(id => deleteMutation.mutateAsync(id))
+        );
+        const failed = results.filter(r => r.status === 'rejected');
+        if (failed.length > 0) {
+          import("react-toastify").then(({ toast }) => {
+            toast.error(`Failed to delete ${failed.length} items`);
+          });
+        } else {
+          import("react-toastify").then(({ toast }) => {
+            toast.success(`Successfully deleted ${ids.length} items`);
+          });
+        }
+        clearSelection();
+      }
+    }
+  ];
+
   return (
     <>
       <AdminDataExplorer
         title="Festivals Directory"
-        subtitle="Manage Indian festivals and cultural celebrations."
+        subtitle="Manage cultural festivals, events, and fairs across India."
         onAddClick={handleOpenCreate}
         addButtonLabel="Add New Festival"
         searchPlaceholder="Search festivals by name..."
@@ -174,7 +211,10 @@ const Festivals = () => {
         renderHeader={renderHeader}
         renderRow={renderRow}
         renderGridCard={renderGridCard}
-        emptyStateMessage="No festivals found."
+        selectedIds={selectedIds}
+        onSelectionChange={setSelectedIds}
+        bulkActions={bulkActions}
+        emptyStateMessage="No festivals registered."
       />
 
       {confirmDelete && (

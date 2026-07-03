@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiCheck, FiX, FiEye } from 'react-icons/fi';
+import Checkbox from "../../../../../components/ui/Checkbox";
 
 const ModerationTable = ({ 
   currentList, 
@@ -18,12 +19,7 @@ const ModerationTable = ({
           <thead>
             <tr className="border-b border-slate-100 dark:border-slate-800/60 bg-slate-55/40 dark:bg-slate-900/10 text-slate-400 text-xs font-extrabold uppercase tracking-wider">
               <th className="p-4 w-12 text-center">
-                <input 
-                  type="checkbox" 
-                  className="w-4 h-4 rounded border-slate-300 text-[#E85D04] focus:ring-[#E85D04]"
-                  checked={currentList.length > 0 && selectedIds.length === currentList.length}
-                  onChange={toggleAll}
-                />
+                <Checkbox checked={currentList.length > 0 && selectedIds.length === currentList.length} onChange={toggleAll} />
               </th>
               <th className="p-4 font-bold">Blog Title</th>
               <th className="p-4 font-bold">Author</th>
@@ -35,12 +31,7 @@ const ModerationTable = ({
             {currentList.map(blog => (
               <tr key={blog._id} className={`transition-colors ${selectedIds.includes(blog._id) ? 'bg-[#E85D04]/5 dark:bg-[#E85D04]/10' : 'hover:bg-slate-50/50 dark:hover:bg-slate-800/20'}`}>
                 <td className="p-4 text-center">
-                  <input 
-                    type="checkbox" 
-                    className="w-4 h-4 rounded border-slate-300 text-[#E85D04] focus:ring-[#E85D04]"
-                    checked={selectedIds.includes(blog._id)}
-                    onChange={() => toggleSelection(blog._id)}
-                  />
+                  <Checkbox checked={selectedIds.includes(blog._id)} onChange={() => toggleSelection(blog._id)} />
                 </td>
                 <td className="p-4">
                   <p className="font-bold text-slate-900 dark:text-white line-clamp-1">{activeTab === 'edit' ? blog.editRequest.title : blog.title}</p>
